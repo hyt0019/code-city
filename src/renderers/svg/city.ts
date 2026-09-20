@@ -180,7 +180,8 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
         line(p(x + w, y + d), p(x + w, y + d, h), palette.highlight, 1.8) +
         line(p(x + w, y), p(x + w, y, h), palette.highlight, 1.8);
     }
-    return `<g data-building="${escapeXml(b.id)}" ${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${b.lines} lines" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${b.lines} lines</title>${output}</g>`;
+    const metric = scene.heightMetric === 'bytes' ? `${b.bytes} bytes` : `${b.lines} lines`;
+    return `<g data-building="${escapeXml(b.id)}" ${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${metric}" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${metric}</title>${output}</g>`;
   }
 
   let output =

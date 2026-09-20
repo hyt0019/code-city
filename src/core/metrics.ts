@@ -1,4 +1,28 @@
-import type { CityScene } from './model';
+import type { CityScene, HeightMetric } from './model';
+
+/** Height changes never allocate new land or move a building. */
+export function applyHeightMetric(scene: CityScene, metric: HeightMetric): CityScene {
+  if ((scene.heightMetric ?? 'lines') === metric) return scene;
+  return {
+    ...scene,
+    heightMetric: metric,
+    repositories: scene.repositories.map((repo) => ({
+      ...repo,
+      buildings: repo.buildings.map((building) => {
+        const lineHeight = building.lineHeight ?? building.height;
+        const bytesHeight = Math.max(3, Math.min(28, 2 + Math.log2(building.bytes + 1) * 1.1));
+        return {
+          ...building,
+          lineHeight,
+          height:
+            metric === 'lines'
+              ? lineHeight
+              : bytesHeight * (building.landmark ? 2.5 : building.category === 'docs' ? 0.7 : 1.3),
+        };
+      }),
+    })),
+  };
+}
 
 export function heightFromLines(lines: number): number {
   return Math.max(3, Math.min(28, 2 + Math.log2(Math.max(0, lines) + 1) * 1.5));

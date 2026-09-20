@@ -7,6 +7,7 @@ export interface Rect extends Point {
   depth: number;
 }
 export type Category = 'source' | 'test' | 'docs' | 'config' | 'asset';
+export type HeightMetric = 'lines' | 'bytes';
 export interface CityTheme {
   name: string;
   background: string;
@@ -30,6 +31,7 @@ export interface Building {
   width: number;
   depth: number;
   height: number;
+  lineHeight?: number;
   color: string;
   landmark?: boolean;
   seed?: number;
@@ -52,6 +54,7 @@ export interface CityBlock {
   bounds: Rect;
 }
 export interface CityScene {
+  heightMetric?: HeightMetric;
   schemaVersion: 1;
   generatedAt: string;
   owner: string;

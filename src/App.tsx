@@ -26,7 +26,7 @@ import {
   Tag,
   X,
 } from 'lucide-react';
-import type { CityScene } from './core/model';
+import type { CityScene, HeightMetric } from './core/model';
 import { applyTheme, cityLegend, daylightTheme } from './core/theme';
 import type { ThemeId } from './core/theme';
 import { repositoryScene, repositorySlug } from './core/repository-scene';
@@ -36,7 +36,7 @@ import { downloadImage, svgToPng } from './core/image-export';
 import { sitePath, siteUrl } from './core/site-paths';
 import { sceneSource } from './core/source-label';
 import config from '../codecity.config';
-import { compactNumber, sceneStats } from './core/metrics';
+import { applyHeightMetric, compactNumber, sceneStats } from './core/metrics';
 import { renderBanner, renderCitySvg } from './renderers/svg/city';
 
 function Logo({ small = false }: { small?: boolean }) {
@@ -100,7 +100,13 @@ export default function App({
   const [theme, setTheme] = useState<ThemeId>(
     sourceScene.theme.background === daylightTheme.background ? 'github-light' : 'github-dark',
   );
-  const scene = useMemo(() => applyTheme(sourceScene, theme), [sourceScene, theme]);
+  const [heightMetric, setHeightMetric] = useState<HeightMetric>(
+    sourceScene.heightMetric ?? 'lines',
+  );
+  const scene = useMemo(
+    () => applyTheme(applyHeightMetric(sourceScene, heightMetric), theme),
+    [sourceScene, theme, heightMetric],
+  );
   const source = sceneSource(scene);
   const [dimension, setDimension] = useState<'2.5D' | '3D'>('2.5D');
   const [reset, setReset] = useState(0);
@@ -472,9 +478,17 @@ export default function App({
                   </select>
                   <ChevronDown size={13} />
                 </div>
-                <span className="metric-label">
-                  Height <span>Lines of code</span>
-                </span>
+                <div className="select-wrap">
+                  <select
+                    aria-label="Building height"
+                    value={heightMetric}
+                    onChange={(event) => setHeightMetric(event.target.value as HeightMetric)}
+                  >
+                    <option value="lines">Height: lines</option>
+                    <option value="bytes">Height: file size</option>
+                  </select>
+                  <ChevronDown size={13} />
+                </div>
                 <button
                   className="icon-button"
                   aria-label="Download view PNG"
@@ -856,7 +870,10 @@ export default function App({
             {[
               ['Repository', 'A distinct neighborhood'],
               ['File', 'One building in the city'],
-              ['Lines of code', 'Building height, logarithmically scaled'],
+              [
+                'Building height',
+                'Switch between lines of code and file size; logarithmically scaled',
+              ],
               ['Language', 'The color of its buildings'],
               ['Test file', 'A green roof'],
               ['Documentation', 'A library and a shared plaza'],

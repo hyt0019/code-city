@@ -1,7 +1,7 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import type { CityScene } from '../src/core/model';
 import { configSchema, sceneSchema } from '../src/core/config';
-import { sceneStats } from '../src/core/metrics';
+import { applyHeightMetric, sceneStats } from '../src/core/metrics';
 import { renderBanner } from '../src/renderers/svg/city';
 import { applyTheme } from '../src/core/theme';
 import { repositoryScene, repositorySlug } from '../src/core/repository-scene';
@@ -9,6 +9,7 @@ import rawConfig from '../codecity.config';
 export async function writeAssets(scene: CityScene) {
   const config = configSchema.parse(rawConfig);
   sceneSchema.parse(scene);
+  scene = applyHeightMetric(scene, config.appearance.heightMetric);
   const files = new Map<string, string>();
   const themed = applyTheme(scene, config.appearance.theme);
   files.set('scene.json', `${JSON.stringify(themed, null, 2)}\n`);

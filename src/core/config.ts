@@ -41,8 +41,9 @@ export const configSchema = z
         theme: z.enum(['github-dark', 'github-light']).default('github-dark'),
         showLabels: z.boolean().default(true),
         showLegend: z.boolean().default(true),
+        heightMetric: z.enum(['lines', 'bytes']).default('lines'),
       })
-      .default({ theme: 'github-dark', showLabels: true, showLegend: true }),
+      .default({ theme: 'github-dark', showLabels: true, showLegend: true, heightMetric: 'lines' }),
     profile: z
       .object({
         title: z.string().min(1).max(28).default('My Code City'),
@@ -80,6 +81,7 @@ const building = z.object({
   width: positive,
   depth: positive,
   height: positive,
+  lineHeight: positive.optional(),
   color,
   landmark: z.boolean().optional(),
   seed: number.int().nonnegative().optional(),
@@ -87,6 +89,7 @@ const building = z.object({
 });
 
 export const sceneSchema = z.object({
+  heightMetric: z.enum(['lines', 'bytes']).optional(),
   schemaVersion: z.literal(1),
   generatedAt: z.string(),
   owner: z.string(),

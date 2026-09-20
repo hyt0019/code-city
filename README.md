@@ -88,6 +88,7 @@ GitHub 描述和 Star 元数据缓存 6 小时。接口限流、离线或响应�
 - 点击城市工具栏的 **3D**：拖动旋转、右键拖动平移、滚轮缩放。手机支持单指旋转、双指缩放和平移。
 - 悬停高亮建筑，点选后在文件详情查看路径、语言、行数和大小；**Inspect file** 下拉框也支持键盘操作。
 - 聚焦 3D 画布后，方向键旋转，Home 恢复默认视角。右下角按钮调整缩放或重置取景。
+- **Building height** 下拉框可按有效代码行数或文件字节数映射建筑高度，保留文件选择、城区位置和建筑占地。2.5D、3D 和下载的 SVG / PNG 同步使用所选指标。`appearance.heightMetric: 'lines' | 'bytes'` 设置构建默认值；线上 README 链接始终引用构建时生成的指标。
 - 顶栏太阳 / 月亮按钮切换主题，手机上同样可用。工具栏标签按钮控制城区名称。
 - `?repo=tools` 可打开指定仓库的高亮视图，名称需要与当前场景一致。
 - `repos/<name>/` 是独立仓库页面，只展示该仓库的建筑；点击文件详情中的仓库名进入，点击页顶 **All repositories** 返回城市总览。构建会写出真实 HTML，支持 GitHub Pages 子路径和直接刷新；禁用 JavaScript 时仍展示对应 SVG。
@@ -193,7 +194,7 @@ Windows 默认使用已安装的 Microsoft Edge。其他平台默认使用 Playw
 
 ## 后续路线图
 
-本地 / 公开 GitHub 采集、独立仓库页面、Pages 部署链路和横幅 / 当前视角 PNG 导出已经实现。后续可增加逐文件更新时间、Star 地标细节、展示指标切换与更多城市装饰；完整 Git 历史动画、私有仓库和登录服务不在当前 MVP 范围内。
+本地 / 公开 GitHub 采集、独立仓库页面、Pages 部署链路、展示指标切换和横幅 / 当前视角 PNG 导出已经实现。后续可增加逐文件更新时间、Star 地标细节与更多城市装饰；完整 Git 历史动画、私有仓库和登录服务不在当前 MVP 范围内。
 
 技术参考：[Node.js 版本说明](https://nodejs.org/en/about/previous-releases)、[Vite 文档](https://vite.dev/guide/)、[Three.js OrbitControls](https://threejs.org/docs/pages/OrbitControls.html)。
 
