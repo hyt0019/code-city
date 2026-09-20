@@ -100,6 +100,8 @@ GitHub 描述和 Star 元数据缓存 6 小时。接口限流、离线或响应�
 
 单仓库导出仅调整镜头取景，保留原始建筑位置和尺寸。构建会同时生成默认主题、深色和浅色三个版本；默认主题由 `appearance.theme` 决定。中文、特殊字符和 Windows 保留名称使用安全文件名，可在产物清单中查看对应路径。
 
+导出窗口的 **Download PNG** 将当前标题、主题和仓库选择保存为 2 倍分辨率 PNG：个人横幅 `2400 × 840`、单仓库 `1800 × 630`。城市工具栏的相机按钮 **Download view PNG** 保存当前视角：2.5D 保留缩放、筛选与标签，3D 保留旋转、平移、缩放与标签。图片使用当前主题背景，在浏览器本地生成，不上传任何数据。
+
 当前项目的 README 可直接引用：
 
 ```md
@@ -191,7 +193,7 @@ Windows 默认使用已安装的 Microsoft Edge。其他平台默认使用 Playw
 
 ## 后续路线图
 
-本地 / 公开 GitHub 采集、独立仓库页面和 Pages 部署链路已经实现。后续可增加逐文件更新时间、Star 地标细节、当前视角 PNG 导出与更多城市装饰；完整 Git 历史动画、私有仓库和登录服务不在当前 MVP 范围内。
+本地 / 公开 GitHub 采集、独立仓库页面、Pages 部署链路和横幅 / 当前视角 PNG 导出已经实现。后续可增加逐文件更新时间、Star 地标细节、展示指标切换与更多城市装饰；完整 Git 历史动画、私有仓库和登录服务不在当前 MVP 范围内。
 
 技术参考：[Node.js 版本说明](https://nodejs.org/en/about/previous-releases)、[Vite 文档](https://vite.dev/guide/)、[Three.js OrbitControls](https://threejs.org/docs/pages/OrbitControls.html)。
 

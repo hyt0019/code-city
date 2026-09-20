@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type { Building, CityScene } from '../../core/model';
 import { cityPalette } from '../../core/theme';
 import { stableHash } from '../../core/metrics';
+import { canvasToPng } from '../../core/image-export';
 
 export interface ViewerState {
   selectedId: string;
@@ -421,6 +422,36 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
   const observer = new ResizeObserver(resize);
   observer.observe(host);
   return {
+    capture() {
+      if (disposed) throw new Error('3D view is unavailable.');
+      // Redraw and copy synchronously before WebGL discards its drawing buffer.
+      renderer.render(world, camera);
+      const image = document.createElement('canvas');
+      image.width = canvas.width;
+      image.height = canvas.height;
+      const context = image.getContext('2d');
+      if (!context) throw new Error('Image export is unavailable.');
+      context.fillStyle = data.theme.background;
+      context.fillRect(0, 0, image.width, image.height);
+      context.drawImage(canvas, 0, 0);
+      const ratio = image.width / width;
+      context.scale(ratio, ratio);
+      context.font = '12px system-ui, sans-serif';
+      context.textAlign = 'center';
+      for (const item of labels) {
+        const point = item.position.clone().project(camera);
+        if (!state.showLabels || point.z < -1 || point.z > 1) continue;
+        const x = ((point.x + 1) * width) / 2;
+        const y = ((1 - point.y) * height) / 2;
+        const labelWidth = context.measureText(item.repo).width + 16;
+        context.globalAlpha = state.repository && item.repo !== state.repository ? 0.25 : 1;
+        context.fillStyle = palette.label;
+        context.fillRect(x - labelWidth / 2, y - 10, labelWidth, 22);
+        context.fillStyle = data.theme.text;
+        context.fillText(item.repo, x, y + 5);
+      }
+      return canvasToPng(image);
+    },
     update(next: ViewerState) {
       const reset = next.reset !== state.reset;
       const refilter = next.repository !== state.repository;

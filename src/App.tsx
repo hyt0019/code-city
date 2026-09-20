@@ -4,6 +4,7 @@ import {
   ArrowDownToLine,
   ArrowRight,
   Check,
+  Camera,
   ChevronDown,
   ChevronRight,
   Code2,
@@ -30,6 +31,8 @@ import { applyTheme, cityLegend, daylightTheme } from './core/theme';
 import type { ThemeId } from './core/theme';
 import { repositoryScene, repositorySlug } from './core/repository-scene';
 import City3D from './renderers/three/City3D';
+import type { City3DHandle } from './renderers/three/City3D';
+import { downloadImage, svgToPng } from './core/image-export';
 import { sitePath, siteUrl } from './core/site-paths';
 import { sceneSource } from './core/source-label';
 import config from '../codecity.config';
@@ -129,6 +132,8 @@ export default function App({
   const [dialog, setDialog] = useState<'export' | 'mapping' | null>(null);
   const [notice, setNotice] = useState('');
   const [copied, setCopied] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const threeView = useRef<City3DHandle>(null);
   const [exportTitle, setExportTitle] = useState<string>(
     pageRepository ? pageRepository.slice(0, 28) : config.profile.title,
   );
@@ -195,6 +200,43 @@ export default function App({
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     setNotice('Your skyline is ready. SVG downloaded.');
+  }
+
+  async function downloadPng(view = false) {
+    setExporting(true);
+    try {
+      let blob: Blob;
+      if (view && dimension === '3D') {
+        if (!threeView.current) throw new Error('Wait for the 3D city to finish loading.');
+        blob = await threeView.current.capture();
+      } else {
+        const svg = view
+          ? city
+              .replace(
+                '>',
+                `><g transform="translate(520 330) scale(${zoom}) translate(-520 -330)">`,
+              )
+              .replace('</svg>', '</g></svg>')
+          : banner;
+        blob = await svgToPng(
+          svg,
+          view ? 1040 : exportRepository ? 900 : 1200,
+          view ? 660 : exportRepository ? 315 : 420,
+          scene.theme.background,
+        );
+      }
+      const name = view
+        ? `view-${dimension.toLowerCase()}`
+        : exportRepository
+          ? repositorySlug(exportRepository)
+          : 'profile';
+      downloadImage(blob, `code-city-${name}${theme === 'github-light' ? '-light' : ''}.png`);
+      setNotice('Your skyline is ready. PNG downloaded.');
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'PNG export failed. Please try again.');
+    } finally {
+      setExporting(false);
+    }
   }
 
   async function copyEmbed() {
@@ -434,6 +476,15 @@ export default function App({
                   Height <span>Lines of code</span>
                 </span>
                 <button
+                  className="icon-button"
+                  aria-label="Download view PNG"
+                  title="Download current view as PNG"
+                  disabled={exporting}
+                  onClick={() => void downloadPng(true)}
+                >
+                  <Camera size={16} />
+                </button>
+                <button
                   className={`icon-button labels-button ${showLabels ? 'toggled' : ''}`}
                   aria-label="Toggle district labels"
                   aria-pressed={showLabels}
@@ -465,6 +516,7 @@ export default function App({
               </div>
               {dimension === '3D' ? (
                 <City3D
+                  ref={threeView}
                   scene={scene}
                   state={{
                     selectedId: hoveredId || selectedId,
@@ -770,6 +822,14 @@ export default function App({
             </div>
           </div>
           <div className="dialog-actions">
+            <button
+              className="secondary-button"
+              disabled={exporting}
+              onClick={() => void downloadPng()}
+            >
+              <Camera size={14} />
+              {exporting ? 'Preparing PNG…' : 'Download PNG'}
+            </button>
             <button
               className="secondary-button"
               onClick={() => {

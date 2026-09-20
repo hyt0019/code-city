@@ -1,12 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import type { Ref } from 'react';
 import type { CityScene } from '../../core/model';
 import type { ViewerState, ViewerEvents } from './viewer';
 
+export interface City3DHandle {
+  capture: () => Promise<Blob>;
+}
+
 export default function City3D({
+  ref,
   scene,
   state,
   events,
 }: {
+  ref?: Ref<City3DHandle>;
   scene: CityScene;
   state: ViewerState;
   events: ViewerEvents;
@@ -15,6 +22,16 @@ export default function City3D({
   const viewer = useRef<ReturnType<typeof import('./viewer').createViewer> | null>(null);
   const latest = useRef({ state, events });
   const [ready, setReady] = useState(false);
+  useImperativeHandle(
+    ref,
+    () => ({
+      capture: async () => {
+        if (!viewer.current) throw new Error('Wait for the 3D city to finish loading.');
+        return viewer.current.capture();
+      },
+    }),
+    [],
+  );
   latest.current = { state, events };
   useEffect(() => {
     let cancelled = false;
