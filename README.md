@@ -110,7 +110,25 @@ GitHub 描述和 Star 元数据缓存 6 小时。接口限流、离线或响应�
 [![My Code City](https://USERNAME.github.io/code-city/assets/profile.svg)](https://USERNAME.github.io/code-city/)
 ```
 
-UI 中的复制按钮提供相对路径模板；用于不同仓库的 README 时，需要换成已托管的完整图片 URL。部署工作流留待后续阶段。
+UI 中的复制按钮提供站点路径模板；用于不同仓库的 README 时，需要换成已托管的完整图片 URL。
+
+## GitHub Pages 自动部署
+
+仓库包含两个工作流：PR / 手动运行的 **Check Code City**，以及复用同一检查流程的 **Deploy Code City**。发布前会重新扫描配置中的仓库，运行格式检查、单元测试、类型检查、生产构建、桌面/手机交互和 Pages 子路径检查；全部通过后才上传并部署 `dist/`。
+
+1. 在 GitHub 仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
+2. 推送代码或配置到 `main`，或在 Actions 中手动运行 **Deploy Code City**。
+3. 部署成功后访问 `https://OWNER.github.io/REPOSITORY/`，独立仓库页为 `repos/<name>/`。
+
+工作流还会在每周一 02:17 UTC（北京时间 10:17）刷新城市。修改 `codecity.config.ts` 即可选择最多 8 个本地 / 公开 GitHub 仓库；发布时本地路径必须存在于 runner，跨仓库配置通常使用 `{ github: 'owner/repo' }`。默认扫描刚检出的 Code City，因此源码链接固定到这次构建的 commit。
+
+构建只需要 `contents: read`；部署作业单独获得 `pages: write` 和 `id-token: write`。不会提交生成文件回仓库，也不需要创建 PAT。Actions 固定到已核实的提交版本，Node.js 使用 `.nvmrc`。GitHub Pages 子路径使用相对资源，无需手工修改 Vite base。
+
+自己的 GitHub 个人主页可使用：
+
+```md
+[![My Code City](https://hyt0019.github.io/code-city/assets/profile.svg)](https://hyt0019.github.io/code-city/)
+```
 
 GitHub README 也可以跟随阅读者的主题自动切换图片：
 
@@ -169,9 +187,9 @@ Windows 默认使用已安装的 Microsoft Edge。其他平台默认使用 Playw
 
 浅色预览见 [daylight-desktop.png](./previews/daylight-desktop.png)，手机 3D 预览见 [three-mobile.png](./previews/three-mobile.png)。这些截图使用固定演示数据；真实扫描截图使用 `local-city-` 前缀。
 
-## 下一阶段
+## 后续路线图
 
-独立仓库页面和公开 GitHub 仓库采集已接通。下一步完成 GitHub Actions 检查与 GitHub Pages 自动部署。
+本地 / 公开 GitHub 采集、独立仓库页面和 Pages 部署链路已经实现。后续可增加逐文件更新时间、Star 地标细节、当前视角 PNG 导出与更多城市装饰；完整 Git 历史动画、私有仓库和登录服务不在当前 MVP 范围内。
 
 技术参考：[Node.js 版本说明](https://nodejs.org/en/about/previous-releases)、[Vite 文档](https://vite.dev/guide/)、[Three.js OrbitControls](https://threejs.org/docs/pages/OrbitControls.html)。
 

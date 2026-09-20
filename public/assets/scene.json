@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-20T10:49:13+08:00",
-  "owner": "local",
+  "generatedAt": "2026-09-20T16:25:01+08:00",
+  "owner": "hyt0019",
   "isFixture": false,
   "theme": {
     "name": "Midnight Skyline",
@@ -35,10 +35,11 @@
   },
   "repositories": [
     {
+      "source": "github",
       "name": "code-city",
-      "description": "Local repository · 85eb8bc · uncommitted changes",
+      "description": "将本地与 GitHub 代码仓库转换为确定性的等距代码城市，支持 README SVG 横幅和交互式浏览。Turn local and GitHub repositories into deterministic isometric code cities, with embeddable SVG banners and an interactive explorer.",
       "url": "https://github.com/hyt0019/code-city",
-      "commitSha": "85eb8bc6c2dafa7bfae7d1b80d576a2f3980828b",
+      "commitSha": "a9d032b382c9a52c0477218f1f02e6085d52f865",
       "primaryLanguage": "TypeScript",
       "stars": 0,
       "bounds": {
@@ -56,15 +57,16 @@
           "lines": 6,
           "bytes": 69,
           "position": {
-            "x": 69.546129,
-            "y": 150.77387
+            "x": 82.146831,
+            "y": 136.792481
           },
-          "width": 17.56181,
-          "depth": 8.131621,
+          "width": 13.537954,
+          "depth": 8.750322,
           "height": 8.074342,
           "color": "#8195aa",
           "landmark": false,
-          "seed": 574211251
+          "seed": 3496731190,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/.gitignore"
         },
         {
           "id": "b-code-city:.nvmrc",
@@ -74,15 +76,16 @@
           "lines": 1,
           "bytes": 8,
           "position": {
-            "x": 105.869894,
-            "y": 139.668699
+            "x": 100.408524,
+            "y": 139.037047
           },
-          "width": 5.959353,
-          "depth": 16.962239,
+          "width": 4.801273,
+          "depth": 17.464517,
           "height": 4.55,
           "color": "#8195aa",
           "landmark": false,
-          "seed": 2071204217
+          "seed": 2708391008,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/.nvmrc"
         },
         {
           "id": "b-code-city:.prettierignore",
@@ -92,15 +95,16 @@
           "lines": 9,
           "bytes": 127,
           "position": {
-            "x": 69.546129,
-            "y": 137.57419
+            "x": 95.26049,
+            "y": 116.350625
           },
-          "width": 17.56181,
-          "depth": 8.830618,
+          "width": 8.89489,
+          "depth": 14.462735,
           "height": 9.07776,
           "color": "#8195aa",
           "landmark": false,
-          "seed": 1405462416
+          "seed": 2100705541,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/.prettierignore"
         },
         {
           "id": "b-code-city:.prettierrc.json",
@@ -110,15 +114,16 @@
           "lines": 1,
           "bytes": 67,
           "position": {
-            "x": 93.791025,
-            "y": 139.668699
+            "x": 82.146831,
+            "y": 150.04124
           },
-          "width": 8.384293,
-          "depth": 16.962239,
+          "width": 13.537954,
+          "depth": 8.714195,
           "height": 4.55,
           "color": "#96aa81",
           "landmark": false,
-          "seed": 3809319169
+          "seed": 695750776,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/.prettierrc.json"
         },
         {
           "id": "b-code-city:LICENSE",
@@ -128,33 +133,35 @@
           "lines": 17,
           "bytes": 1079,
           "position": {
-            "x": 43.372009,
-            "y": 113.469064
+            "x": 38.660964,
+            "y": 115.469613
           },
-          "width": 17.216158,
-          "depth": 11.52752,
+          "width": 14.908774,
+          "depth": 11.042333,
           "height": 5.778421,
           "color": "#a594c2",
           "landmark": false,
-          "seed": 3775229280
+          "seed": 3482833301,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/LICENSE"
         },
         {
           "id": "b-code-city:README.md",
           "path": "README.md",
           "category": "docs",
           "language": "Markdown",
-          "lines": 111,
-          "bytes": 11821,
+          "lines": 125,
+          "bytes": 13376,
           "position": {
-            "x": 12.429382,
-            "y": 131.808748
+            "x": 11.72954,
+            "y": 132.94654
           },
-          "width": 21.078779,
-          "depth": 11.724221,
-          "height": 8.547723,
+          "width": 18.361745,
+          "depth": 11.278227,
+          "height": 8.726144,
           "color": "#a2b5ba",
           "landmark": false,
-          "seed": 2669876518
+          "seed": 396025287,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/README.md"
         },
         {
           "id": "b-code-city:code-city-project-brief.md",
@@ -164,15 +171,16 @@
           "lines": 473,
           "bytes": 16929,
           "position": {
-            "x": 12.429382,
-            "y": 113.608987
+            "x": 11.72954,
+            "y": 115.586124
           },
-          "width": 21.078779,
-          "depth": 12.070752,
+          "width": 18.361745,
+          "depth": 11.49467,
           "height": 10.73318,
           "color": "#a2b5ba",
           "landmark": false,
-          "seed": 3658099616
+          "seed": 3906794709,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/code-city-project-brief.md"
         },
         {
           "id": "b-code-city:codecity.config.ts",
@@ -180,17 +188,18 @@
           "category": "config",
           "language": "TypeScript",
           "lines": 12,
-          "bytes": 293,
+          "bytes": 327,
           "position": {
-            "x": 84.907031,
-            "y": 114.715817
+            "x": 61.022361,
+            "y": 148.041223
           },
-          "width": 10.508096,
-          "depth": 16.367857,
+          "width": 14.024937,
+          "depth": 10.30457,
           "height": 9.815857,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 545850824
+          "seed": 3084379021,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/codecity.config.ts"
         },
         {
           "id": "b-code-city:fixtures%2Fcity.ts",
@@ -200,15 +209,16 @@
           "lines": 107,
           "bytes": 3622,
           "position": {
-            "x": 154.342432,
-            "y": 119.013877
+            "x": 117.398376,
+            "y": 153.374269
           },
-          "width": 6.175702,
-          "depth": 29.195257,
+          "width": 21.706533,
+          "depth": 6.866322,
           "height": 15.772031,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3471424042
+          "seed": 2651878779,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/fixtures/city.ts"
         },
         {
           "id": "b-code-city:index.html",
@@ -218,33 +228,35 @@
           "lines": 18,
           "bytes": 588,
           "position": {
-            "x": 43.372009,
-            "y": 147.404055
+            "x": 38.660964,
+            "y": 147.9763
           },
-          "width": 17.216158,
-          "depth": 10.811233,
+          "width": 14.908774,
+          "depth": 10.356195,
           "height": 10.883459,
           "color": "#c68b69",
           "landmark": false,
-          "seed": 3264615342
+          "seed": 2087705151,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/index.html"
         },
         {
           "id": "b-code-city:package.json",
           "path": "package.json",
           "category": "config",
           "language": "JSON",
-          "lines": 46,
-          "bytes": 1222,
+          "lines": 47,
+          "bytes": 1325,
           "position": {
-            "x": 12.429382,
-            "y": 149.008861
+            "x": 11.72954,
+            "y": 149.487705
           },
-          "width": 21.078779,
-          "depth": 9.535123,
-          "height": 13.431448,
+          "width": 18.361745,
+          "depth": 9.154355,
+          "height": 13.490677,
           "color": "#96aa81",
           "landmark": false,
-          "seed": 1433053147
+          "seed": 1686409582,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/package.json"
         },
         {
           "id": "b-code-city:playwright.config.ts",
@@ -254,15 +266,35 @@
           "lines": 22,
           "bytes": 685,
           "position": {
-            "x": 43.372009,
-            "y": 130.796896
+            "x": 38.660964,
+            "y": 132.068127
           },
-          "width": 17.216158,
-          "depth": 10.991343,
+          "width": 14.908774,
+          "depth": 10.528724,
           "height": 11.420946,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 4134404771
+          "seed": 1362131110,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/playwright.config.ts"
+        },
+        {
+          "id": "b-code-city:playwright.pages.config.ts",
+          "path": "playwright.pages.config.ts",
+          "category": "config",
+          "language": "TypeScript",
+          "lines": 12,
+          "bytes": 435,
+          "position": {
+            "x": 61.022361,
+            "y": 131.997628
+          },
+          "width": 14.024937,
+          "depth": 10.646983,
+          "height": 9.815857,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 3570052516,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/playwright.pages.config.ts"
         },
         {
           "id": "b-code-city:public%2Ffavicon.svg",
@@ -272,15 +304,16 @@
           "lines": 1,
           "bytes": 219,
           "position": {
-            "x": 125.641126,
-            "y": 159.883645
+            "x": 151.251077,
+            "y": 153.374269
           },
-          "width": 29.451981,
-          "depth": 2.222989,
+          "width": 8.554643,
+          "depth": 6.866322,
           "height": 4.55,
           "color": "#7aa69b",
           "landmark": false,
-          "seed": 2863138805
+          "seed": 3779969724,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/public/favicon.svg"
         },
         {
           "id": "b-code-city:scripts%2Fbuild-assets.ts",
@@ -290,33 +323,73 @@
           "lines": 12,
           "bytes": 441,
           "position": {
-            "x": 124.452809,
-            "y": 144.310449
+            "x": 138.505067,
+            "y": 137.177983
           },
-          "width": 18.319181,
-          "depth": 8.198178,
+          "width": 17.887537,
+          "depth": 7.209806,
           "height": 9.815857,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 316911463
+          "seed": 2531408490,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/scripts/build-assets.ts"
+        },
+        {
+          "id": "b-code-city:scripts%2Fbuild-pages.ts",
+          "path": "scripts/build-pages.ts",
+          "category": "source",
+          "language": "TypeScript",
+          "lines": 13,
+          "bytes": 747,
+          "position": {
+            "x": 136.218342,
+            "y": 116.251381
+          },
+          "width": 9.009666,
+          "depth": 15.163723,
+          "height": 10.024342,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 3568112625,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/scripts/build-pages.ts"
         },
         {
           "id": "b-code-city:scripts%2Fgenerate.ts",
           "path": "scripts/generate.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 47,
-          "bytes": 2022,
+          "lines": 59,
+          "bytes": 2665,
           "position": {
-            "x": 136.162435,
-            "y": 117.634063
+            "x": 116.400289,
+            "y": 132.225137
           },
-          "width": 9.007912,
-          "depth": 19.533402,
-          "height": 13.490677,
+          "width": 13.91358,
+          "depth": 11.148213,
+          "height": 14.118437,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1919566114
+          "seed": 2465953635,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/scripts/generate.ts"
+        },
+        {
+          "id": "b-code-city:scripts%2Frepository-page.ts",
+          "path": "scripts/repository-page.ts",
+          "category": "source",
+          "language": "TypeScript",
+          "lines": 12,
+          "bytes": 651,
+          "position": {
+            "x": 149.835404,
+            "y": 116.251381
+          },
+          "width": 8.877871,
+          "depth": 15.163723,
+          "height": 9.815857,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 1962038596,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/scripts/repository-page.ts"
         },
         {
           "id": "b-code-city:scripts%2Fwrite-assets.ts",
@@ -326,69 +399,73 @@
           "lines": 58,
           "bytes": 2869,
           "position": {
-            "x": 122.132589,
-            "y": 117.634063
+            "x": 116.400289,
+            "y": 115.236943
           },
-          "width": 9.311269,
-          "depth": 19.533402,
+          "width": 13.91358,
+          "depth": 11.225316,
           "height": 14.071154,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3473805342
+          "seed": 1217956719,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/scripts/write-assets.ts"
         },
         {
           "id": "b-code-city:src%2FApp.tsx",
           "path": "src/App.tsx",
           "category": "source",
           "language": "TypeScript",
-          "lines": 795,
-          "bytes": 29869,
+          "lines": 813,
+          "bytes": 30655,
           "position": {
-            "x": 12.830798,
-            "y": 30.936805
+            "x": 11.738374,
+            "y": 31.396259
           },
-          "width": 22.637216,
-          "depth": 13.35629,
-          "height": 41.137342,
+          "width": 18.396042,
+          "depth": 13.635129,
+          "height": 41.258319,
           "color": "#459fd5",
           "landmark": true,
-          "seed": 548101492
+          "seed": 1644049721,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/App.tsx"
         },
         {
           "id": "b-code-city:src%2FCityLoader.tsx",
           "path": "src/CityLoader.tsx",
           "category": "source",
           "language": "TypeScript",
-          "lines": 48,
-          "bytes": 1551,
+          "lines": 73,
+          "bytes": 2462,
           "position": {
-            "x": 78.276744,
-            "y": 43.907194
+            "x": 56.099294,
+            "y": 39.038301
           },
-          "width": 13.017505,
-          "depth": 17.973891,
-          "height": 13.548684,
+          "width": 11.911903,
+          "depth": 17.005228,
+          "height": 14.708434,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3544108793
+          "seed": 4181295584,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/CityLoader.tsx"
         },
         {
           "id": "b-code-city:src%2Fcore%2Fconfig.ts",
           "path": "src/core/config.ts",
           "category": "config",
           "language": "TypeScript",
-          "lines": 94,
-          "bytes": 3053,
+          "lines": 114,
+          "bytes": 3840,
           "position": {
-            "x": 81.121749,
-            "y": 12.487184
+            "x": 91.905464,
+            "y": 11.701888
           },
-          "width": 11.717757,
-          "depth": 21.303186,
-          "height": 15.411218,
+          "width": 11.562742,
+          "depth": 18.25439,
+          "height": 15.948706,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1275550169
+          "seed": 3753268672,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/core/config.ts"
         },
         {
           "id": "b-code-city:src%2Fcore%2Fmetrics.ts",
@@ -398,33 +475,35 @@
           "lines": 23,
           "bytes": 887,
           "position": {
-            "x": 79.459866,
-            "y": 69.744044
+            "x": 66.184972,
+            "y": 65.249968
           },
-          "width": 17.610803,
-          "depth": 12.552891,
+          "width": 9.768463,
+          "depth": 18.737417,
           "height": 11.540677,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3635670234
+          "seed": 2717339947,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/core/metrics.ts"
         },
         {
           "id": "b-code-city:src%2Fcore%2Fmodel.ts",
           "path": "src/core/model.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 84,
-          "bytes": 1684,
+          "lines": 87,
+          "bytes": 1768,
           "position": {
-            "x": 47.015052,
-            "y": 74.698349
+            "x": 39.768121,
+            "y": 63.083109
           },
-          "width": 22.192459,
-          "depth": 10.628665,
-          "height": 15.098312,
+          "width": 19.005401,
+          "depth": 10.324907,
+          "height": 15.195892,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 507610890
+          "seed": 481373531,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/core/model.ts"
         },
         {
           "id": "b-code-city:src%2Fcore%2Frepository-scene.ts",
@@ -434,15 +513,54 @@
           "lines": 52,
           "bytes": 2085,
           "position": {
-            "x": 47.015052,
-            "y": 42.072529
+            "x": 74.099462,
+            "y": 39.038301
           },
-          "width": 22.192459,
-          "depth": 10.851073,
+          "width": 11.724888,
+          "depth": 17.005228,
           "height": 13.769445,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3472904686
+          "seed": 3080588671,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/core/repository-scene.ts"
+        },
+        {
+          "id": "b-code-city:src%2Fcore%2Fsite-paths.ts",
+          "path": "src/core/site-paths.ts",
+          "category": "source",
+          "language": "TypeScript",
+          "lines": 8,
+          "bytes": 383,
+          "position": {
+            "x": 95.238982,
+            "y": 65.249968
+          },
+          "width": 8.911993,
+          "depth": 18.737417,
+          "height": 8.781354,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 3316567548,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/core/site-paths.ts"
+        },
+        {
+          "id": "b-code-city:src%2Fcore%2Fsource-label.ts",
+          "path": "src/core/source-label.ts",
+          "category": "source",
+          "language": "TypeScript",
+          "lines": 6,
+          "bytes": 354,
+          "position": {
+            "x": 67.371651,
+            "y": 91.778776
+          },
+          "width": 14.375569,
+          "depth": 11.511513,
+          "height": 8.074342,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 2552122256,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/core/source-label.ts"
         },
         {
           "id": "b-code-city:src%2Fcore%2Ftheme.ts",
@@ -452,15 +570,16 @@
           "lines": 76,
           "bytes": 2626,
           "position": {
-            "x": 98.833824,
-            "y": 12.487184
+            "x": 37.959699,
+            "y": 39.038301
           },
-          "width": 11.5543,
-          "depth": 21.303186,
+          "width": 11.984469,
+          "depth": 17.005228,
           "height": 14.820234,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 748576278
+          "seed": 3164447799,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/core/theme.ts"
         },
         {
           "id": "b-code-city:src%2Flayout%2Fisometric.ts",
@@ -470,33 +589,35 @@
           "lines": 17,
           "bytes": 718,
           "position": {
-            "x": 79.459866,
-            "y": 88.692187
+            "x": 80.930119,
+            "y": 65.249968
           },
-          "width": 17.610803,
-          "depth": 12.275735,
+          "width": 9.552784,
+          "depth": 18.737417,
           "height": 10.731354,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1180913987
+          "seed": 338308166,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/layout/isometric.ts"
         },
         {
           "id": "b-code-city:src%2Flayout%2Ftreemap.ts",
           "path": "src/layout/treemap.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 180,
-          "bytes": 6902,
+          "lines": 183,
+          "bytes": 6997,
           "position": {
-            "x": 12.830798,
-            "y": 89.214845
+            "x": 38.013111,
+            "y": 11.701888
           },
-          "width": 22.637216,
-          "depth": 11.860128,
-          "height": 17.224699,
+          "width": 12.191832,
+          "depth": 18.25439,
+          "height": 17.270946,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1386744552
+          "seed": 1194240941,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/layout/treemap.ts"
         },
         {
           "id": "b-code-city:src%2Fmain.tsx",
@@ -506,33 +627,35 @@
           "lines": 9,
           "bytes": 259,
           "position": {
-            "x": 103.605551,
-            "y": 72.905976
+            "x": 89.019417,
+            "y": 91.778776
           },
-          "width": 7.759914,
-          "depth": 24.828626,
+          "width": 13.857671,
+          "depth": 11.511513,
           "height": 9.07776,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1504871190
+          "seed": 3920742711,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/main.tsx"
         },
         {
           "id": "b-code-city:src%2Frenderers%2Fsvg%2Fcity.ts",
           "path": "src/renderers/svg/city.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 380,
-          "bytes": 16040,
+          "lines": 381,
+          "bytes": 16072,
           "position": {
-            "x": 12.830798,
-            "y": 51.010054
+            "x": 11.738374,
+            "y": 51.88248
           },
-          "width": 22.637216,
-          "depth": 12.721315,
-          "height": 19.318612,
+          "width": 18.396042,
+          "depth": 12.963228,
+          "height": 19.325986,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1866861198
+          "seed": 3602670111,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/renderers/svg/city.ts"
         },
         {
           "id": "b-code-city:src%2Frenderers%2Fthree%2FCity3D.tsx",
@@ -542,15 +665,16 @@
           "lines": 54,
           "bytes": 1643,
           "position": {
-            "x": 47.015052,
-            "y": 90.795776
+            "x": 39.768121,
+            "y": 78.707895
           },
-          "width": 22.192459,
-          "depth": 10.603002,
+          "width": 19.005401,
+          "depth": 10.251094,
           "height": 13.873651,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3600206545
+          "seed": 1119029704,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/renderers/three/City3D.tsx"
         },
         {
           "id": "b-code-city:src%2Frenderers%2Fthree%2Fviewer.ts",
@@ -560,15 +684,16 @@
           "lines": 466,
           "bytes": 14816,
           "position": {
-            "x": 12.830798,
-            "y": 70.263893
+            "x": 11.738374,
+            "y": 71.501926
           },
-          "width": 22.637216,
-          "depth": 12.640248,
+          "width": 18.396042,
+          "depth": 12.878559,
           "height": 19.891194,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2292881097
+          "seed": 975163568,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/renderers/three/viewer.ts"
         },
         {
           "id": "b-code-city:src%2Fscanner%2Fexclusions.ts",
@@ -578,33 +703,54 @@
           "lines": 55,
           "bytes": 925,
           "position": {
-            "x": 97.829131,
-            "y": 43.907194
+            "x": 39.768121,
+            "y": 94.090934
           },
-          "width": 12.353212,
-          "depth": 17.973891,
+          "width": 19.005401,
+          "depth": 9.672929,
           "height": 13.924342,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2801529073
+          "seed": 781173864,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/scanner/exclusions.ts"
         },
         {
           "id": "b-code-city:src%2Fscanner%2Fgit-metadata.ts",
           "path": "src/scanner/git-metadata.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 50,
-          "bytes": 1838,
+          "lines": 53,
+          "bytes": 1895,
           "position": {
-            "x": 47.015052,
-            "y": 58.47973
+            "x": 91.836752,
+            "y": 39.038301
           },
-          "width": 22.192459,
-          "depth": 10.719778,
-          "height": 13.661229,
+          "width": 11.617381,
+          "depth": 17.005228,
+          "height": 13.822031,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3336914926
+          "seed": 2944598911,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/scanner/git-metadata.ts"
+        },
+        {
+          "id": "b-code-city:src%2Fscanner%2Fgithub.ts",
+          "path": "src/scanner/github.ts",
+          "category": "source",
+          "language": "TypeScript",
+          "lines": 213,
+          "bytes": 8083,
+          "position": {
+            "x": 11.738374,
+            "y": 90.852496
+          },
+          "width": 18.396042,
+          "depth": 12.248073,
+          "height": 17.695861,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 2950560042,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/scanner/github.ts"
         },
         {
           "id": "b-code-city:src%2Fscanner%2Flanguages.ts",
@@ -614,51 +760,54 @@
           "lines": 169,
           "bytes": 4041,
           "position": {
-            "x": 62.985023,
-            "y": 12.487184
+            "x": 74.31889,
+            "y": 11.701888
           },
-          "width": 12.021953,
-          "depth": 21.303186,
+          "width": 11.616232,
+          "depth": 18.25439,
           "height": 17.048312,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 865608769
+          "seed": 1176112056,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/scanner/languages.ts"
         },
         {
           "id": "b-code-city:src%2Fscanner%2Fscan-local.ts",
           "path": "src/scanner/scan-local.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 135,
-          "bytes": 5075,
+          "lines": 136,
+          "bytes": 5137,
           "position": {
-            "x": 44.459053,
-            "y": 12.487184
+            "x": 56.40213,
+            "y": 11.701888
           },
-          "width": 12.269166,
-          "depth": 21.303186,
-          "height": 16.420553,
+          "width": 11.867834,
+          "depth": 18.25439,
+          "height": 16.441163,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 470892027
+          "seed": 3553372430,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/scanner/scan-local.ts"
         },
         {
           "id": "b-code-city:src%2Fstyles.css",
           "path": "src/styles.css",
           "category": "source",
           "language": "CSS",
-          "lines": 2002,
-          "bytes": 35328,
+          "lines": 2003,
+          "bytes": 35355,
           "position": {
-            "x": 12.830798,
-            "y": 10.484413
+            "x": 11.738374,
+            "y": 10.550311
           },
-          "width": 22.637216,
-          "depth": 13.527722,
-          "height": 23.987496,
+          "width": 18.396042,
+          "depth": 13.783559,
+          "height": 23.9889,
           "color": "#8b7acf",
           "landmark": false,
-          "seed": 2321057843
+          "seed": 948610486,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/src/styles.css"
         },
         {
           "id": "b-code-city:tests%2Fe2e%2Fcity.spec.ts",
@@ -668,15 +817,16 @@
           "lines": 78,
           "bytes": 4081,
           "position": {
-            "x": 123.258299,
-            "y": 37.72855
+            "x": 115.571499,
+            "y": 40.55722
           },
-          "width": 13.681672,
-          "depth": 16.405462,
+          "width": 10.695923,
+          "depth": 17.896092,
           "height": 14.892372,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1427636593
+          "seed": 3702248680,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/e2e/city.spec.ts"
         },
         {
           "id": "b-code-city:tests%2Fe2e%2Fexplorer.spec.ts",
@@ -686,33 +836,35 @@
           "lines": 193,
           "bytes": 8966,
           "position": {
-            "x": 123.274019,
-            "y": 11.505493
+            "x": 115.580288,
+            "y": 11.921096
           },
-          "width": 13.742704,
-          "depth": 17.491914,
+          "width": 10.730045,
+          "depth": 19.10543,
           "height": 17.41983,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3799156841
+          "seed": 2551941968,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/e2e/explorer.spec.ts"
         },
         {
           "id": "b-code-city:tests%2Fe2e%2Flocal-city.spec.ts",
           "path": "tests/e2e/local-city.spec.ts",
           "category": "test",
           "language": "TypeScript",
-          "lines": 55,
-          "bytes": 2701,
+          "lines": 58,
+          "bytes": 2829,
           "position": {
-            "x": 123.343592,
-            "y": 86.83879
+            "x": 117.873837,
+            "y": 79.967925
           },
-          "width": 14.012811,
-          "depth": 15.421689,
-          "height": 13.924342,
+          "width": 19.634412,
+          "depth": 9.426862,
+          "height": 14.071154,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2174063155
+          "seed": 801615798,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/e2e/local-city.spec.ts"
         },
         {
           "id": "b-code-city:tests%2Fexport.test.ts",
@@ -722,15 +874,35 @@
           "lines": 65,
           "bytes": 3272,
           "position": {
-            "x": 143.896289,
-            "y": 62.525831
+            "x": 117.873837,
+            "y": 65.523982
           },
-          "width": 13.600541,
-          "depth": 16.174538,
+          "width": 19.634412,
+          "depth": 9.554742,
           "height": 14.386569,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1009306652
+          "seed": 303600817,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/export.test.ts"
+        },
+        {
+          "id": "b-code-city:tests%2Fgithub.test.ts",
+          "path": "tests/github.test.ts",
+          "category": "test",
+          "language": "TypeScript",
+          "lines": 178,
+          "bytes": 7235,
+          "position": {
+            "x": 131.788008,
+            "y": 11.921096
+          },
+          "width": 10.536224,
+          "depth": 19.10543,
+          "height": 17.193441,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 2769073414,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/github.test.ts"
         },
         {
           "id": "b-code-city:tests%2Fisometric.test.ts",
@@ -740,15 +912,16 @@
           "lines": 34,
           "bytes": 1479,
           "position": {
-            "x": 144.371583,
-            "y": 86.83879
+            "x": 145.699445,
+            "y": 66.744451
           },
-          "width": 13.222596,
-          "depth": 15.421689,
+          "width": 12.166706,
+          "depth": 14.293036,
           "height": 12.602102,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3732460983
+          "seed": 3498054906,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/isometric.test.ts"
         },
         {
           "id": "b-code-city:tests%2Flayout.test.ts",
@@ -758,15 +931,54 @@
           "lines": 86,
           "bytes": 3363,
           "position": {
-            "x": 123.246243,
-            "y": 62.525831
+            "x": 147.783772,
+            "y": 40.55722
           },
-          "width": 13.634866,
-          "depth": 16.174538,
+          "width": 10.509289,
+          "depth": 17.896092,
           "height": 15.16374,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3205974220
+          "seed": 1726681569,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/layout.test.ts"
+        },
+        {
+          "id": "b-code-city:tests%2Fpages.test.ts",
+          "path": "tests/pages.test.ts",
+          "category": "test",
+          "language": "TypeScript",
+          "lines": 25,
+          "bytes": 1228,
+          "position": {
+            "x": 145.699445,
+            "y": 88.332639
+          },
+          "width": 12.166706,
+          "depth": 14.029321,
+          "height": 11.765857,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 710849657,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/pages.test.ts"
+        },
+        {
+          "id": "b-code-city:tests%2Fpages%2Frepository.spec.ts",
+          "path": "tests/pages/repository.spec.ts",
+          "category": "test",
+          "language": "TypeScript",
+          "lines": 43,
+          "bytes": 2565,
+          "position": {
+            "x": 117.873837,
+            "y": 94.22887
+          },
+          "width": 19.634412,
+          "depth": 9.340752,
+          "height": 13.245892,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 1841864123,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/pages/repository.spec.ts"
         },
         {
           "id": "b-code-city:tests%2Fscanner.test.ts",
@@ -776,15 +988,16 @@
           "lines": 153,
           "bytes": 7224,
           "position": {
-            "x": 144.031903,
-            "y": 11.505493
+            "x": 147.751629,
+            "y": 11.921096
           },
-          "width": 13.492703,
-          "depth": 17.491914,
+          "width": 10.534849,
+          "depth": 19.10543,
           "height": 16.770234,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1737597190
+          "seed": 2236131623,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/scanner.test.ts"
         },
         {
           "id": "b-code-city:tests%2Fscene.test.ts",
@@ -794,15 +1007,16 @@
           "lines": 71,
           "bytes": 3679,
           "position": {
-            "x": 143.955152,
-            "y": 37.72855
+            "x": 131.751681,
+            "y": 40.55722
           },
-          "width": 13.553735,
-          "depth": 16.405462,
+          "width": 10.595905,
+          "depth": 17.896092,
           "height": 14.631354,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2926483684
+          "seed": 2942932073,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tests/scene.test.ts"
         },
         {
           "id": "b-code-city:tsconfig.json",
@@ -812,15 +1026,16 @@
           "lines": 21,
           "bytes": 572,
           "position": {
-            "x": 67.942853,
-            "y": 114.715817
+            "x": 61.022361,
+            "y": 115.45245
           },
-          "width": 11.337327,
-          "depth": 16.367857,
+          "width": 14.024937,
+          "depth": 10.9757,
           "height": 11.295892,
           "color": "#96aa81",
           "landmark": false,
-          "seed": 3722572990
+          "seed": 1157495055,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/tsconfig.json"
         },
         {
           "id": "b-code-city:vite.config.ts",
@@ -830,15 +1045,16 @@
           "lines": 7,
           "bytes": 204,
           "position": {
-            "x": 100.712979,
-            "y": 114.715817
+            "x": 81.092414,
+            "y": 116.350625
           },
-          "width": 10.060032,
-          "depth": 16.367857,
+          "width": 9.444336,
+          "depth": 14.462735,
           "height": 8.45,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 4048764128
+          "seed": 3756368149,
+          "githubUrl": "https://github.com/hyt0019/code-city/blob/a9d032b382c9a52c0477218f1f02e6085d52f865/vite.config.ts"
         }
       ],
       "blocks": [
@@ -846,36 +1062,36 @@
           "name": "(root)",
           "bounds": {
             "x": 5,
-            "y": 108.49985402155052,
-            "width": 110.36423165374816,
-            "depth": 54.50014597844948
+            "y": 110.6253753964732,
+            "width": 103.44648851090832,
+            "depth": 52.3746246035268
           }
         },
         {
           "name": "fixtures",
           "bounds": {
-            "x": 151.86056673055873,
-            "y": 110.60273241307176,
-            "width": 11.13943326944127,
-            "depth": 46.017546531996956
+            "x": 110.81648851090833,
+            "y": 150.61486007604367,
+            "width": 34.870309004592826,
+            "depth": 12.38513992395633
           }
         },
         {
           "name": "public",
           "bounds": {
-            "x": 117.73423165374817,
-            "y": 158.99027894506872,
-            "width": 45.26576834625169,
-            "depth": 4.009721054931276
+            "x": 148.05679751550116,
+            "y": 150.61486007604367,
+            "width": 14.943202484499011,
+            "depth": 12.38513992395633
           }
         },
         {
           "name": "scripts",
           "bounds": {
-            "x": 117.73423165374817,
-            "y": 110.60273241307176,
-            "width": 31.756335076810558,
-            "depth": 46.017546531996956
+            "x": 110.81648851090833,
+            "y": 110.34557327729408,
+            "width": 52.18351148909167,
+            "depth": 37.899286798749586
           }
         },
         {
@@ -883,17 +1099,17 @@
           "bounds": {
             "x": 5,
             "y": 5,
-            "width": 110.36423165374816,
-            "depth": 101.12985402155051
+            "width": 103.44648851090832,
+            "depth": 103.2553753964732
           }
         },
         {
           "name": "tests",
           "bounds": {
-            "x": 117.73423165374817,
+            "x": 110.81648851090833,
             "y": 5,
-            "width": 45.26576834625183,
-            "depth": 103.23273241307176
+            "width": 52.18351148909167,
+            "depth": 102.97557327729407
           }
         }
       ]
@@ -905,5 +1121,5 @@
     "width": 168,
     "depth": 168
   },
-  "snapshotHash": "a28719650763a7f1379a15bb228f827bea832417439028d695ff68e7fea789f7"
+  "snapshotHash": "8bd7d817eed8de72e62928245f52f6640b72bb665551cee45d4ea619210430b6"
 }

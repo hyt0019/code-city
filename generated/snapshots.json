@@ -2,12 +2,12 @@
   {
     "schemaVersion": 1,
     "name": "code-city",
-    "source": "local",
-    "commitSha": "85eb8bc6c2dafa7bfae7d1b80d576a2f3980828b",
-    "committedAt": "2026-09-20T10:49:13+08:00",
+    "source": "github",
+    "commitSha": "a9d032b382c9a52c0477218f1f02e6085d52f865",
+    "committedAt": "2026-09-20T16:25:01+08:00",
     "url": "https://github.com/hyt0019/code-city",
-    "dirty": true,
-    "snapshotHash": "0db1f3602fa569b24c1901c4e1a181579d665f1404e52894ec42d5d6da947137",
+    "dirty": false,
+    "snapshotHash": "c6012d1e410b8ed7e09539a2d335b53b74ea41f1bb366e426e10e51ee43d604f",
     "files": [
       {
         "path": ".gitignore",
@@ -53,9 +53,9 @@
         "path": "README.md",
         "language": "Markdown",
         "category": "docs",
-        "lines": 111,
-        "bytes": 11821,
-        "contentHash": "7678a693fa3803fad5b7b5bff66be99f02056c2a5381cede03d662e0d58ca2ec"
+        "lines": 125,
+        "bytes": 13376,
+        "contentHash": "c04992730dda52ca8e35c8fd77ab33bf4da501b90706290b7199f4803255416e"
       },
       {
         "path": "code-city-project-brief.md",
@@ -70,8 +70,8 @@
         "language": "TypeScript",
         "category": "config",
         "lines": 12,
-        "bytes": 293,
-        "contentHash": "c6ade4a8878b99947ca6eedf597424bb4ae28ae3e5e76047c76d61f498438f75"
+        "bytes": 327,
+        "contentHash": "69465221cda752be211940c8e78b113cad418cbef64e941f12ed3b8883631e62"
       },
       {
         "path": "fixtures/city.ts",
@@ -93,9 +93,9 @@
         "path": "package.json",
         "language": "JSON",
         "category": "config",
-        "lines": 46,
-        "bytes": 1222,
-        "contentHash": "3719b6effe0b58b12c83e79c5191cf7b8d0f92ae1f09394fd41268cac5ee4677"
+        "lines": 47,
+        "bytes": 1325,
+        "contentHash": "4d5776100c4a10d0bfaac1c844309c42b4ebfefb01968aa4aea3fa70a05e5050"
       },
       {
         "path": "playwright.config.ts",
@@ -104,6 +104,14 @@
         "lines": 22,
         "bytes": 685,
         "contentHash": "528e2adf98a162c464931b58179103b8943038aeaba32062aae5e49c365101d5"
+      },
+      {
+        "path": "playwright.pages.config.ts",
+        "language": "TypeScript",
+        "category": "config",
+        "lines": 12,
+        "bytes": 435,
+        "contentHash": "8c387451f6fc9cacf302875e28b77ae4fd91b905ee32f5df99eca8b8112cda1d"
       },
       {
         "path": "public/favicon.svg",
@@ -122,12 +130,28 @@
         "contentHash": "48aae822fca765e80fa9dfed1b4018a8ecf7ba3f666b3b857753224f55d96a20"
       },
       {
+        "path": "scripts/build-pages.ts",
+        "language": "TypeScript",
+        "category": "source",
+        "lines": 13,
+        "bytes": 747,
+        "contentHash": "ca8a1cb171cbb37e47eeb3ffabf67aa01f2435b7862156edd670bf71405270f4"
+      },
+      {
         "path": "scripts/generate.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 47,
-        "bytes": 2022,
-        "contentHash": "3e57113da3d01f83a2493b9434f4efa9d4398c0e4c8a4f97d9ea1ec05a98eb05"
+        "lines": 59,
+        "bytes": 2665,
+        "contentHash": "ba9700e1d4bbb6d534cb79b676acc2dd5a6dc163377f99a684ba5e2c4a3b6c50"
+      },
+      {
+        "path": "scripts/repository-page.ts",
+        "language": "TypeScript",
+        "category": "source",
+        "lines": 12,
+        "bytes": 651,
+        "contentHash": "5a65a6a18ceb9f2b52d946fdec399191cabaa8ba8039586999f85bb7ea7c7ca2"
       },
       {
         "path": "scripts/write-assets.ts",
@@ -141,25 +165,25 @@
         "path": "src/App.tsx",
         "language": "TypeScript",
         "category": "source",
-        "lines": 795,
-        "bytes": 29869,
-        "contentHash": "c65940219cae1f75fb7a239735398b4eb6b50917b0f064ba3dc98e1d0f57fa6f"
+        "lines": 813,
+        "bytes": 30655,
+        "contentHash": "d89cd0cc53743db3d229caa6fbda2ab7c930297f2825842bdca37fca012057e3"
       },
       {
         "path": "src/CityLoader.tsx",
         "language": "TypeScript",
         "category": "source",
-        "lines": 48,
-        "bytes": 1551,
-        "contentHash": "d31c43fbe26e11f4bf2a5f9b44ebab884d040c43e24f40793f7d0713a54befd5"
+        "lines": 73,
+        "bytes": 2462,
+        "contentHash": "a3f6bc08cadfdb29d6aaad385f402430e2d14988c06edacf3bb62d4d0be330b4"
       },
       {
         "path": "src/core/config.ts",
         "language": "TypeScript",
         "category": "config",
-        "lines": 94,
-        "bytes": 3053,
-        "contentHash": "f902c1a1068135418c3afa411337f9fb7c6fc5d48cab5ec82588b1abcf48e459"
+        "lines": 114,
+        "bytes": 3840,
+        "contentHash": "be39c2f3bb711243fcfe3c34b29532ee1e9c4657fe6a3dab5f41e1bff8b8afb3"
       },
       {
         "path": "src/core/metrics.ts",
@@ -173,9 +197,9 @@
         "path": "src/core/model.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 84,
-        "bytes": 1684,
-        "contentHash": "8d459d4291157f6d1f950628717329dd2b267f9682b925aaf59287611b10c736"
+        "lines": 87,
+        "bytes": 1768,
+        "contentHash": "13ed58284c3c516ce8546e998a7e2be780f0b243921ecd1e08370bbccefe217e"
       },
       {
         "path": "src/core/repository-scene.ts",
@@ -184,6 +208,22 @@
         "lines": 52,
         "bytes": 2085,
         "contentHash": "6d15b04768c99f529bc554096ab3007cee6ddd68c51286a80805bdcde8c57580"
+      },
+      {
+        "path": "src/core/site-paths.ts",
+        "language": "TypeScript",
+        "category": "source",
+        "lines": 8,
+        "bytes": 383,
+        "contentHash": "78f10834b2b86dfbc7713bdf08aba695034afb5815d4500eae45b0ee5d4bbc73"
+      },
+      {
+        "path": "src/core/source-label.ts",
+        "language": "TypeScript",
+        "category": "source",
+        "lines": 6,
+        "bytes": 354,
+        "contentHash": "941ba4a9012a107488e0c0bd863a8fa9eb407ffab49ac73427f2259f384e50b0"
       },
       {
         "path": "src/core/theme.ts",
@@ -205,9 +245,9 @@
         "path": "src/layout/treemap.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 180,
-        "bytes": 6902,
-        "contentHash": "1db133f96ea43c7df59499d7c0945d209b65bf1689b4c48768b3e328caa1afc9"
+        "lines": 183,
+        "bytes": 6997,
+        "contentHash": "d87de3e94417f0dc7778e0926cd35967cfff1a45f78f1f976ea9a5a29a4f9983"
       },
       {
         "path": "src/main.tsx",
@@ -221,9 +261,9 @@
         "path": "src/renderers/svg/city.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 380,
-        "bytes": 16040,
-        "contentHash": "f4f98dce1799081d76edb14dfe66d9b99f658f86d9e1c6ef87b939d1ffdc4f4a"
+        "lines": 381,
+        "bytes": 16072,
+        "contentHash": "7a584f17a03f369dac07af35c3436b56bd386f278b7cd099dc1494b620bedd58"
       },
       {
         "path": "src/renderers/three/City3D.tsx",
@@ -253,9 +293,17 @@
         "path": "src/scanner/git-metadata.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 50,
-        "bytes": 1838,
-        "contentHash": "eb9a70ccda4c4e837eba00aae481768ff13181b15a87de2afb4f2388493896b7"
+        "lines": 53,
+        "bytes": 1895,
+        "contentHash": "c4a08364fea94c724aea70f48f592dd8f0b1b4696704e17271545a0e646a71b8"
+      },
+      {
+        "path": "src/scanner/github.ts",
+        "language": "TypeScript",
+        "category": "source",
+        "lines": 213,
+        "bytes": 8083,
+        "contentHash": "3d1636aaa21faf74d57fe607e9c56494f9dab00fe35637a1c12de74166410416"
       },
       {
         "path": "src/scanner/languages.ts",
@@ -269,17 +317,17 @@
         "path": "src/scanner/scan-local.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 135,
-        "bytes": 5075,
-        "contentHash": "517e895b49eb98946c532728c158dcd098e3e15b1bb6cd4a7ee70e6d730586d9"
+        "lines": 136,
+        "bytes": 5137,
+        "contentHash": "92ee783c5c15e96aeb90d5b32dc38da43632387e0e8ffff024749f5ffc533e65"
       },
       {
         "path": "src/styles.css",
         "language": "CSS",
         "category": "source",
-        "lines": 2002,
-        "bytes": 35328,
-        "contentHash": "ea56d43f18a746d88892ce08c87347d502203d0d99a6017733667ed99a95d29e"
+        "lines": 2003,
+        "bytes": 35355,
+        "contentHash": "2ed802a81e7c447c6bc6014214d6fe3718bc3622574cffc68f756cfcb441c8ef"
       },
       {
         "path": "tests/e2e/city.spec.ts",
@@ -301,9 +349,9 @@
         "path": "tests/e2e/local-city.spec.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 55,
-        "bytes": 2701,
-        "contentHash": "7fa8a43b3d667112d24b61a630a5797931db149692d2b14d0c1a6f37989d617e"
+        "lines": 58,
+        "bytes": 2829,
+        "contentHash": "951876a33d2dd43c9315586fa9ec85620e9e889631371daf494c936d525030e9"
       },
       {
         "path": "tests/export.test.ts",
@@ -312,6 +360,14 @@
         "lines": 65,
         "bytes": 3272,
         "contentHash": "c0a54c6f8c8bb0cbf42fa461983744fd8227780854a2f19fb56370a32c017173"
+      },
+      {
+        "path": "tests/github.test.ts",
+        "language": "TypeScript",
+        "category": "test",
+        "lines": 178,
+        "bytes": 7235,
+        "contentHash": "bd1427b767e65bb6919c357bd3b1fc757988e3d6e99806f7238c57422e48ec76"
       },
       {
         "path": "tests/isometric.test.ts",
@@ -328,6 +384,22 @@
         "lines": 86,
         "bytes": 3363,
         "contentHash": "078f9bd497421229df6388a4d14921bbad81b877bc3046e6a91a25971648f174"
+      },
+      {
+        "path": "tests/pages.test.ts",
+        "language": "TypeScript",
+        "category": "test",
+        "lines": 25,
+        "bytes": 1228,
+        "contentHash": "7e9e5e03b61936bc287d5f21fb4c51620e636ff64b968dbe93a8b8f3b1c290c2"
+      },
+      {
+        "path": "tests/pages/repository.spec.ts",
+        "language": "TypeScript",
+        "category": "test",
+        "lines": 43,
+        "bytes": 2565,
+        "contentHash": "ee3c60f291d6d4e805f1fcfe3c85d0e24c7201ce48fa9583ed1c5193980ab6e7"
       },
       {
         "path": "tests/scanner.test.ts",
@@ -362,6 +434,8 @@
         "contentHash": "b191bf170b51a3c8336b98bc2f879351a15f56624afe1877aea2faf6ae92f5b0"
       }
     ],
-    "skipped": []
+    "skipped": [],
+    "description": "将本地与 GitHub 代码仓库转换为确定性的等距代码城市，支持 README SVG 横幅和交互式浏览。Turn local and GitHub repositories into deterministic isometric code cities, with embeddable SVG banners and an interactive explorer.",
+    "stars": 0
   }
 ]
