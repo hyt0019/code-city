@@ -1,7 +1,7 @@
 import type { Building, CityScene, Point } from '../../core/model';
 import { compactNumber, sceneStats, stableHash } from '../../core/metrics';
 import { project } from '../../layout/isometric';
-import { cityLegend, languageColor } from '../../core/theme';
+import { cityLegend, cityPalette, languageColor } from '../../core/theme';
 
 export interface RenderOptions {
   selectedId?: string;
@@ -26,6 +26,7 @@ function shade(hex: string, amount: number): string {
 }
 
 export function renderCityContents(scene: CityScene, options: RenderOptions = {}): string {
+  const palette = cityPalette(scene);
   const dense = sceneStats(scene).files > 300;
   const p = (x: number, y: number, z = 0): Point => project({ x, y }, z, scene.camera);
   const points = (vertices: Point[]): string =>
@@ -171,12 +172,12 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       output += polygon(
         [p(x, y, h), p(x + w, y, h), p(x + w, y + d, h), p(x, y + d, h)],
         'none',
-        'stroke="#9be4ff" stroke-width="1.8"',
+        `stroke="${palette.highlight}" stroke-width="1.8"`,
       );
       output +=
-        line(p(x, y + d), p(x, y + d, h), '#9be4ff', 1.8) +
-        line(p(x + w, y + d), p(x + w, y + d, h), '#9be4ff', 1.8) +
-        line(p(x + w, y), p(x + w, y, h), '#9be4ff', 1.8);
+        line(p(x, y + d), p(x, y + d, h), palette.highlight, 1.8) +
+        line(p(x + w, y + d), p(x + w, y + d, h), palette.highlight, 1.8) +
+        line(p(x + w, y), p(x + w, y, h), palette.highlight, 1.8);
     }
     return `<g data-building="${escapeXml(b.id)}" ${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${b.lines} lines" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${b.lines} lines</title>${output}</g>`;
   }
@@ -184,10 +185,26 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
   let output =
     '<ellipse cx="520" cy="462" rx="380" ry="136" fill="#030609" opacity="0.09"/><ellipse cx="520" cy="465" rx="350" ry="116" fill="#030609" opacity="0.09"/>';
   const bounds = scene.bounds ?? { x: 0, y: 0, width: 168, depth: 168 };
-  output += box(bounds.x - 5, bounds.y - 5, bounds.width + 10, bounds.depth + 10, 0, '#344052', -5);
-  output += ground(bounds.x - 5, bounds.y - 5, bounds.width + 10, bounds.depth + 10, '#151d27', 0);
-  if (scene.isFixture) {
-    output += ground(79, -3, 10, 174, '#202936', 0.1) + ground(-3, 79, 174, 10, '#202936', 0.1);
+  output += box(
+    bounds.x - 5,
+    bounds.y - 5,
+    bounds.width + 10,
+    bounds.depth + 10,
+    0,
+    palette.slab,
+    -5,
+  );
+  output += ground(
+    bounds.x - 5,
+    bounds.y - 5,
+    bounds.width + 10,
+    bounds.depth + 10,
+    palette.ground,
+    0,
+  );
+  if (scene.isFixture && scene.repositories.length > 1) {
+    output +=
+      ground(79, -3, 10, 174, palette.road, 0.1) + ground(-3, 79, 174, 10, palette.road, 0.1);
     for (const offset of [80.2, 87.8]) {
       output += line(p(offset, -3, 0.2), p(offset, 171, 0.2), '#455160', 0.6);
       output += line(p(-3, offset, 0.2), p(171, offset, 0.2), '#455160', 0.6);
@@ -214,13 +231,21 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
   for (const repo of repos) {
     const { x, y, width, depth } = repo.bounds;
     const border = Math.min(2, width * 0.08, depth * 0.08);
-    output += ground(x, y, width, depth, '#28313c', 0.3, 'stroke="#414c5a" stroke-width="0.7"');
+    output += ground(
+      x,
+      y,
+      width,
+      depth,
+      palette.district,
+      0.3,
+      `stroke="${palette.border}" stroke-width="0.7"`,
+    );
     output += ground(
       x + border,
       y + border,
       width - 2 * border,
       depth - 2 * border,
-      repo.name === 'docs' ? '#26372f' : '#1d2731',
+      repo.name === 'docs' ? palette.park : palette.pavement,
       0.35,
     );
     if (repo.blocks) {
@@ -231,9 +256,9 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
           b.y,
           b.width,
           b.depth,
-          '#202c37',
+          palette.block,
           0.4,
-          'stroke="#465564" stroke-width="0.7"',
+          `stroke="${palette.blockBorder}" stroke-width="0.7"`,
         );
       }
     }
@@ -306,7 +331,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
         scene.theme.languages[repo.primaryLanguage] ?? languageColor(repo.primaryLanguage);
       const name = repo.name.length > 22 ? `${repo.name.slice(0, 21)}…` : repo.name;
       const width = Math.max(68, name.length * 7 + 28);
-      output += `<g opacity="${options.repository && options.repository !== repo.name ? '0.3' : '1'}"><rect x="${(label.x - width / 2).toFixed(2)}" y="${(label.y + 5).toFixed(2)}" width="${width}" height="27" rx="6" fill="#0c121b" stroke="#394657"/><circle cx="${(label.x - width / 2 + 13).toFixed(2)}" cy="${(label.y + 18.5).toFixed(2)}" r="3" fill="${color}"/><text x="${(label.x + 5).toFixed(2)}" y="${(label.y + 22).toFixed(2)}" fill="#dce8f5" text-anchor="middle" font-size="12" font-family="system-ui,sans-serif">${escapeXml(name)}</text></g>`;
+      output += `<g opacity="${options.repository && options.repository !== repo.name ? '0.3' : '1'}"><rect x="${(label.x - width / 2).toFixed(2)}" y="${(label.y + 5).toFixed(2)}" width="${width}" height="27" rx="6" fill="${palette.label}" stroke="${palette.labelBorder}"/><circle cx="${(label.x - width / 2 + 13).toFixed(2)}" cy="${(label.y + 18.5).toFixed(2)}" r="3" fill="${color}"/><text x="${(label.x + 5).toFixed(2)}" y="${(label.y + 22).toFixed(2)}" fill="${palette.labelText}" text-anchor="middle" font-size="12" font-family="system-ui,sans-serif">${escapeXml(name)}</text></g>`;
       if (!scene.isFixture)
         for (const block of repo.blocks ?? []) {
           const pos = p(
@@ -315,7 +340,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
             0.6,
           );
           if (Math.min(block.bounds.width, block.bounds.depth) * scene.camera.scale < 22) continue;
-          output += `<text x="${pos.x.toFixed(2)}" y="${pos.y.toFixed(2)}" fill="#c1d2e1" stroke="#0b1420" stroke-width="3" paint-order="stroke" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9">${escapeXml(block.name.slice(0, 18))}</text>`;
+          output += `<text x="${pos.x.toFixed(2)}" y="${pos.y.toFixed(2)}" fill="${palette.blockText}" stroke="${palette.blockOutline}" stroke-width="3" paint-order="stroke" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9">${escapeXml(block.name.slice(0, 18))}</text>`;
         }
     }
   }
@@ -327,6 +352,7 @@ export function renderCitySvg(scene: CityScene, options: RenderOptions = {}): st
 }
 
 export interface BannerOptions {
+  size?: 'profile' | 'repository';
   title?: string;
   subtitle?: string;
   showLabels?: boolean;
@@ -334,29 +360,32 @@ export interface BannerOptions {
 }
 
 export function renderBanner(scene: CityScene, options: BannerOptions = {}): string {
+  const width = options.size === 'repository' ? 900 : 1200;
+  const height = options.size === 'repository' ? 315 : 420;
+  const palette = cityPalette(scene);
   const stats = sceneStats(scene);
   const title = options.title ?? 'My Code City';
   const subtitle = options.subtitle ?? 'A skyline built from code';
   const titleSize = Math.min(43, Math.floor(510 / Math.max(title.length, 1)));
   const subtitleSize = Math.min(16, Math.floor(570 / Math.max(subtitle.length, 1)));
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="banner-title banner-desc"><title id="banner-title">${escapeXml(title)}</title><desc id="banner-desc">${stats.repositories} ${scene.isFixture ? 'demo' : 'local'} repositories, ${stats.files} files and ${stats.lines} lines of code, shown as an isometric city.</desc><rect width="1200" height="420" rx="12" fill="${scene.theme.background}"/><rect x="0.5" y="0.5" width="1199" height="419" rx="12" fill="none" stroke="#283444"/><g font-family="system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif"><path d="M46 40 62 49 46 58 30 49Z" fill="#80d6fb"/><path d="M30 49 46 58 46 77 30 68Z" fill="#389ace"/><path d="M46 58 62 49 62 68 46 77Z" fill="#236489"/><text x="78" y="65" fill="#e5edf7" font-size="15" font-weight="600" letter-spacing="3.4">CODE CITY</text><text x="32" y="156" fill="${scene.theme.text}" font-size="${titleSize}" font-weight="700" letter-spacing="-1.4">${escapeXml(title)}</text><text x="34" y="186" fill="${scene.theme.muted}" font-size="${subtitleSize}">${escapeXml(subtitle)}</text>${[
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 1200 420" role="img" aria-labelledby="banner-title banner-desc"><title id="banner-title">${escapeXml(title)}</title><desc id="banner-desc">${stats.repositories} ${scene.isFixture ? 'demo' : 'local'} repositories, ${stats.files} files and ${stats.lines} lines of code, shown as an isometric city.</desc><rect width="1200" height="420" rx="12" fill="${scene.theme.background}"/><rect x="0.5" y="0.5" width="1199" height="419" rx="12" fill="none" stroke="${palette.light ? palette.labelBorder : '#283444'}"/><g font-family="system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif"><path d="M46 40 62 49 46 58 30 49Z" fill="#80d6fb"/><path d="M30 49 46 58 46 77 30 68Z" fill="#389ace"/><path d="M46 58 62 49 62 68 46 77Z" fill="#236489"/><text x="78" y="65" fill="${palette.light ? scene.theme.text : '#e5edf7'}" font-size="15" font-weight="600" letter-spacing="3.4">CODE CITY</text><text x="32" y="156" fill="${scene.theme.text}" font-size="${titleSize}" font-weight="700" letter-spacing="-1.4">${escapeXml(title)}</text><text x="34" y="186" fill="${scene.theme.muted}" font-size="${subtitleSize}">${escapeXml(subtitle)}</text>${[
     { value: String(stats.repositories), label: 'repositories' },
     { value: String(stats.files), label: 'files' },
     { value: compactNumber(stats.lines), label: 'lines of code' },
   ]
     .map(
       (stat, i) =>
-        `<text x="${34 + i * 106}" y="270" fill="#e5edf7" font-size="26" font-weight="600">${stat.value}</text><text x="${34 + i * 106}" y="293" fill="#8d9db0" font-size="12">${stat.label}</text>`,
+        `<text x="${34 + i * 106}" y="270" fill="${palette.light ? scene.theme.text : '#e5edf7'}" font-size="26" font-weight="600">${stat.value}</text><text x="${34 + i * 106}" y="293" fill="${palette.light ? scene.theme.muted : '#8d9db0'}" font-size="12">${stat.label}</text>`,
     )
     .join(
       '',
-    )}<text x="34" y="385" fill="#677b90" font-size="10" letter-spacing="1.6">${scene.isFixture ? 'DEMO CITY' : 'LOCAL CITY'} · MIDNIGHT SKYLINE</text></g><g transform="translate(348 2) scale(0.75 0.62)">${renderCityContents(scene, { showLabels: options.showLabels })}</g>${
+    )}<text x="34" y="385" fill="${palette.light ? scene.theme.muted : '#677b90'}" font-size="10" letter-spacing="1.6">${scene.isFixture ? 'DEMO CITY' : 'LOCAL CITY'} · ${escapeXml(scene.theme.name.toUpperCase())}</text></g><g transform="translate(348 2) scale(0.75 0.62)">${renderCityContents(scene, { showLabels: options.showLabels })}</g>${
     options.showLegend === false
       ? ''
       : `<g font-family="system-ui,sans-serif" font-size="11">${cityLegend(scene)
           .map(
             (item, i) =>
-              `<rect x="${738 + i * 108}" y="388" width="8" height="8" rx="2" fill="${item.color}"/><text x="${752 + i * 108}" y="396" fill="#b4c1d1">${escapeXml(item.name)}</text>`,
+              `<rect x="${738 + i * 108}" y="388" width="8" height="8" rx="2" fill="${item.color}"/><text x="${752 + i * 108}" y="396" fill="${palette.light ? scene.theme.muted : '#b4c1d1'}">${escapeXml(item.name)}</text>`,
           )
           .join('')}</g>`
   }</svg>`;

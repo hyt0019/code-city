@@ -23,6 +23,41 @@ export const midnightTheme: CityTheme = {
     Config: '#8195aa',
   },
 };
+export type ThemeId = 'github-dark' | 'github-light';
+
+export const daylightTheme: CityTheme = {
+  ...midnightTheme,
+  name: 'Daylight Skyline',
+  background: '#f5f8fc',
+  text: '#24364b',
+  muted: '#61748b',
+};
+
+export function applyTheme(scene: CityScene, theme: ThemeId): CityScene {
+  return { ...scene, theme: theme === 'github-light' ? daylightTheme : midnightTheme };
+}
+
+export function cityPalette(scene: CityScene) {
+  const light = scene.theme.background === daylightTheme.background;
+  return {
+    light,
+    slab: light ? '#adbccd' : '#344052',
+    ground: light ? '#d9e2ec' : '#151d27',
+    road: light ? '#b8c8d9' : '#202936',
+    district: light ? '#c3d1df' : '#28313c',
+    border: light ? '#95a9bf' : '#414c5a',
+    pavement: light ? '#e7edf4' : '#1d2731',
+    park: light ? '#d1e2d2' : '#26372f',
+    block: light ? '#d9e5ef' : '#202c37',
+    blockBorder: light ? '#acbdcd' : '#465564',
+    label: light ? '#ffffff' : '#0c121b',
+    labelBorder: light ? '#b3c5d7' : '#394657',
+    labelText: light ? '#314a63' : '#dce8f5',
+    blockText: light ? '#4e657d' : '#c1d2e1',
+    blockOutline: light ? '#edf3f8' : '#0b1420',
+    highlight: light ? '#147ba9' : '#9be4ff',
+  };
+}
 export function languageColor(language: string): string {
   return (
     midnightTheme.languages[language] ??

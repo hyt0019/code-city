@@ -18,7 +18,7 @@ export const configSchema = z
       .default({ maxFileBytes: 2_000_000, maxFiles: 20_000 }),
     appearance: z
       .object({
-        theme: z.literal('github-dark').default('github-dark'),
+        theme: z.enum(['github-dark', 'github-light']).default('github-dark'),
         showLabels: z.boolean().default(true),
         showLegend: z.boolean().default(true),
       })

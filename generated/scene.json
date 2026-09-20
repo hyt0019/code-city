@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "1970-01-01T00:00:00.000Z",
+  "generatedAt": "2026-09-20T10:49:13+08:00",
   "owner": "local",
   "isFixture": false,
   "theme": {
@@ -9,14 +9,21 @@
     "text": "#edf3fb",
     "muted": "#8998aa",
     "languages": {
-      "Config": "#8195aa",
-      "JSON": "#96aa81",
-      "Text": "#a594c2",
-      "Markdown": "#a2b5ba",
       "TypeScript": "#459fd5",
+      "JavaScript": "#d1a352",
+      "Python": "#9573d4",
+      "Markdown": "#a2b5ba",
+      "Rust": "#bd8968",
+      "Go": "#63b9bf",
+      "Java": "#bf7863",
+      "CSS": "#8b7acf",
+      "SCSS": "#b97aa1",
       "HTML": "#c68b69",
-      "SVG": "#7aa69b",
-      "CSS": "#8b7acf"
+      "JSON": "#96aa81",
+      "YAML": "#849c72",
+      "TOML": "#9ba980",
+      "Shell": "#78b497",
+      "Config": "#8195aa"
     }
   },
   "camera": {
@@ -29,8 +36,9 @@
   "repositories": [
     {
       "name": "code-city",
-      "description": "Local directory · no Git commit",
-      "commitSha": "",
+      "description": "Local repository · 85eb8bc · uncommitted changes",
+      "url": "https://github.com/hyt0019/code-city",
+      "commitSha": "85eb8bc6c2dafa7bfae7d1b80d576a2f3980828b",
       "primaryLanguage": "TypeScript",
       "stars": 0,
       "bounds": {
@@ -48,15 +56,15 @@
           "lines": 6,
           "bytes": 69,
           "position": {
-            "x": 70.969503,
-            "y": 149.332505
+            "x": 69.546129,
+            "y": 150.77387
           },
-          "width": 18.070183,
-          "depth": 9.277767,
+          "width": 17.56181,
+          "depth": 8.131621,
           "height": 8.074342,
           "color": "#8195aa",
           "landmark": false,
-          "seed": 1097549814
+          "seed": 574211251
         },
         {
           "id": "b-code-city:.nvmrc",
@@ -66,15 +74,15 @@
           "lines": 1,
           "bytes": 8,
           "position": {
-            "x": 108.344756,
-            "y": 136.662067
+            "x": 105.869894,
+            "y": 139.668699
           },
-          "width": 6.131862,
-          "depth": 19.353055,
+          "width": 5.959353,
+          "depth": 16.962239,
           "height": 4.55,
           "color": "#8195aa",
           "landmark": false,
-          "seed": 1765431356
+          "seed": 2071204217
         },
         {
           "id": "b-code-city:.prettierignore",
@@ -84,15 +92,15 @@
           "lines": 9,
           "bytes": 127,
           "position": {
-            "x": 70.969503,
-            "y": 134.272339
+            "x": 69.546129,
+            "y": 137.57419
           },
-          "width": 18.070183,
-          "depth": 10.075288,
+          "width": 17.56181,
+          "depth": 8.830618,
           "height": 9.07776,
           "color": "#8195aa",
           "landmark": false,
-          "seed": 2297297849
+          "seed": 1405462416
         },
         {
           "id": "b-code-city:.prettierrc.json",
@@ -102,15 +110,15 @@
           "lines": 1,
           "bytes": 67,
           "position": {
-            "x": 95.916232,
-            "y": 136.662067
+            "x": 93.791025,
+            "y": 139.668699
           },
-          "width": 8.626999,
-          "depth": 19.353055,
+          "width": 8.384293,
+          "depth": 16.962239,
           "height": 4.55,
           "color": "#96aa81",
           "landmark": false,
-          "seed": 673982212
+          "seed": 3809319169
         },
         {
           "id": "b-code-city:LICENSE",
@@ -120,33 +128,33 @@
           "lines": 17,
           "bytes": 1079,
           "position": {
-            "x": 44.037704,
-            "y": 106.769612
+            "x": 43.372009,
+            "y": 113.469064
           },
-          "width": 17.714526,
-          "depth": 13.152315,
+          "width": 17.216158,
+          "depth": 11.52752,
           "height": 5.778421,
           "color": "#a594c2",
           "landmark": false,
-          "seed": 1982428009
+          "seed": 3775229280
         },
         {
           "id": "b-code-city:README.md",
           "path": "README.md",
           "category": "docs",
           "language": "Markdown",
-          "lines": 85,
-          "bytes": 8239,
+          "lines": 111,
+          "bytes": 11821,
           "position": {
-            "x": 12.520728,
-            "y": 127.880552
+            "x": 12.429382,
+            "y": 131.808748
           },
-          "width": 21.433415,
-          "depth": 13.134094,
-          "height": 8.147578,
+          "width": 21.078779,
+          "depth": 11.724221,
+          "height": 8.547723,
           "color": "#a2b5ba",
           "landmark": false,
-          "seed": 493495703
+          "seed": 2669876518
         },
         {
           "id": "b-code-city:code-city-project-brief.md",
@@ -156,15 +164,15 @@
           "lines": 473,
           "bytes": 16929,
           "position": {
-            "x": 12.520728,
-            "y": 106.971552
+            "x": 12.429382,
+            "y": 113.608987
           },
-          "width": 21.433415,
-          "depth": 13.936318,
+          "width": 21.078779,
+          "depth": 12.070752,
           "height": 10.73318,
           "color": "#a2b5ba",
           "landmark": false,
-          "seed": 740383273
+          "seed": 3658099616
         },
         {
           "id": "b-code-city:codecity.config.ts",
@@ -174,15 +182,15 @@
           "lines": 12,
           "bytes": 293,
           "position": {
-            "x": 86.775068,
-            "y": 108.192095
+            "x": 84.907031,
+            "y": 114.715817
           },
-          "width": 10.812281,
-          "depth": 18.674895,
+          "width": 10.508096,
+          "depth": 16.367857,
           "height": 9.815857,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1133654065
+          "seed": 545850824
         },
         {
           "id": "b-code-city:fixtures%2Fcity.ts",
@@ -192,15 +200,15 @@
           "lines": 107,
           "bytes": 3622,
           "position": {
-            "x": 126.415158,
-            "y": 145.684603
+            "x": 154.342432,
+            "y": 119.013877
           },
-          "width": 16.332222,
-          "depth": 12.351591,
+          "width": 6.175702,
+          "depth": 29.195257,
           "height": 15.772031,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2410992163
+          "seed": 3471424042
         },
         {
           "id": "b-code-city:index.html",
@@ -210,33 +218,33 @@
           "lines": 18,
           "bytes": 588,
           "position": {
-            "x": 44.037704,
-            "y": 145.487716
+            "x": 43.372009,
+            "y": 147.404055
           },
-          "width": 17.714526,
-          "depth": 12.335069,
+          "width": 17.216158,
+          "depth": 10.811233,
           "height": 10.883459,
           "color": "#c68b69",
           "landmark": false,
-          "seed": 1308284415
+          "seed": 3264615342
         },
         {
           "id": "b-code-city:package.json",
           "path": "package.json",
           "category": "config",
           "language": "JSON",
-          "lines": 44,
-          "bytes": 1167,
+          "lines": 46,
+          "bytes": 1222,
           "position": {
-            "x": 12.520728,
-            "y": 147.220067
+            "x": 12.429382,
+            "y": 149.008861
           },
-          "width": 21.433415,
-          "depth": 10.957537,
-          "height": 13.309114,
+          "width": 21.078779,
+          "depth": 9.535123,
+          "height": 13.431448,
           "color": "#96aa81",
           "landmark": false,
-          "seed": 2178134398
+          "seed": 1433053147
         },
         {
           "id": "b-code-city:playwright.config.ts",
@@ -246,15 +254,15 @@
           "lines": 22,
           "bytes": 685,
           "position": {
-            "x": 44.037704,
-            "y": 126.539791
+            "x": 43.372009,
+            "y": 130.796896
           },
-          "width": 17.714526,
-          "depth": 12.540565,
+          "width": 17.216158,
+          "depth": 10.991343,
           "height": 11.420946,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1004861958
+          "seed": 4134404771
         },
         {
           "id": "b-code-city:public%2Ffavicon.svg",
@@ -264,15 +272,15 @@
           "lines": 1,
           "bytes": 219,
           "position": {
-            "x": 153.756373,
-            "y": 145.136238
+            "x": 125.641126,
+            "y": 159.883645
           },
-          "width": 6.593756,
-          "depth": 13.448321,
+          "width": 29.451981,
+          "depth": 2.222989,
           "height": 4.55,
           "color": "#7aa69b",
           "landmark": false,
-          "seed": 3184540288
+          "seed": 2863138805
         },
         {
           "id": "b-code-city:scripts%2Fbuild-assets.ts",
@@ -282,15 +290,15 @@
           "lines": 12,
           "bytes": 441,
           "position": {
-            "x": 151.218384,
-            "y": 108.206403
+            "x": 124.452809,
+            "y": 144.310449
           },
-          "width": 7.778153,
-          "depth": 22.379879,
+          "width": 18.319181,
+          "depth": 8.198178,
           "height": 9.815857,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2904327394
+          "seed": 316911463
         },
         {
           "id": "b-code-city:scripts%2Fgenerate.ts",
@@ -300,51 +308,51 @@
           "lines": 47,
           "bytes": 2022,
           "position": {
-            "x": 126.980147,
-            "y": 105.413003
+            "x": 136.162435,
+            "y": 117.634063
           },
-          "width": 17.680662,
-          "depth": 11.534912,
+          "width": 9.007912,
+          "depth": 19.533402,
           "height": 13.490677,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1266892571
+          "seed": 1919566114
         },
         {
           "id": "b-code-city:scripts%2Fwrite-assets.ts",
           "path": "scripts/write-assets.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 21,
-          "bytes": 1086,
+          "lines": 58,
+          "bytes": 2869,
           "position": {
-            "x": 126.980147,
-            "y": 122.712429
+            "x": 122.132589,
+            "y": 117.634063
           },
-          "width": 17.680662,
-          "depth": 10.844967,
-          "height": 11.295892,
+          "width": 9.311269,
+          "depth": 19.533402,
+          "height": 14.071154,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3541231951
+          "seed": 3473805342
         },
         {
           "id": "b-code-city:src%2FApp.tsx",
           "path": "src/App.tsx",
           "category": "source",
           "language": "TypeScript",
-          "lines": 668,
-          "bytes": 24325,
+          "lines": 795,
+          "bytes": 29869,
           "position": {
-            "x": 12.764984,
-            "y": 34.481789
+            "x": 12.830798,
+            "y": 30.936805
           },
-          "width": 22.381703,
-          "depth": 15.310024,
-          "height": 40.196984,
+          "width": 22.637216,
+          "depth": 13.35629,
+          "height": 41.137342,
           "color": "#459fd5",
           "landmark": true,
-          "seed": 2571027557
+          "seed": 548101492
         },
         {
           "id": "b-code-city:src%2FCityLoader.tsx",
@@ -354,15 +362,15 @@
           "lines": 48,
           "bytes": 1551,
           "position": {
-            "x": 46.682787,
-            "y": 63.811318
+            "x": 78.276744,
+            "y": 43.907194
           },
-          "width": 22.405507,
-          "depth": 12.023963,
+          "width": 13.017505,
+          "depth": 17.973891,
           "height": 13.548684,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3464865212
+          "seed": 3544108793
         },
         {
           "id": "b-code-city:src%2Fcore%2Fconfig.ts",
@@ -370,17 +378,17 @@
           "category": "config",
           "language": "TypeScript",
           "lines": 94,
-          "bytes": 3038,
+          "bytes": 3053,
           "position": {
-            "x": 82.779983,
-            "y": 13.009176
+            "x": 81.121749,
+            "y": 12.487184
           },
-          "width": 12.314409,
-          "depth": 23.329741,
+          "width": 11.717757,
+          "depth": 21.303186,
           "height": 15.411218,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3861590812
+          "seed": 1275550169
         },
         {
           "id": "b-code-city:src%2Fcore%2Fmetrics.ts",
@@ -390,15 +398,15 @@
           "lines": 23,
           "bytes": 887,
           "position": {
-            "x": 98.996817,
-            "y": 47.1813
+            "x": 79.459866,
+            "y": 69.744044
           },
-          "width": 13.565163,
-          "depth": 18.764217,
+          "width": 17.610803,
+          "depth": 12.552891,
           "height": 11.540677,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 108720179
+          "seed": 3635670234
         },
         {
           "id": "b-code-city:src%2Fcore%2Fmodel.ts",
@@ -408,33 +416,51 @@
           "lines": 84,
           "bytes": 1684,
           "position": {
-            "x": 46.682787,
-            "y": 45.470337
+            "x": 47.015052,
+            "y": 74.698349
           },
-          "width": 22.405507,
-          "depth": 12.121655,
+          "width": 22.192459,
+          "depth": 10.628665,
           "height": 15.098312,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2964350595
+          "seed": 507610890
+        },
+        {
+          "id": "b-code-city:src%2Fcore%2Frepository-scene.ts",
+          "path": "src/core/repository-scene.ts",
+          "category": "source",
+          "language": "TypeScript",
+          "lines": 52,
+          "bytes": 2085,
+          "position": {
+            "x": 47.015052,
+            "y": 42.072529
+          },
+          "width": 22.192459,
+          "depth": 10.851073,
+          "height": 13.769445,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 3472904686
         },
         {
           "id": "b-code-city:src%2Fcore%2Ftheme.ts",
           "path": "src/core/theme.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 44,
-          "bytes": 1436,
+          "lines": 76,
+          "bytes": 2626,
           "position": {
-            "x": 46.682787,
-            "y": 82.005883
+            "x": 98.833824,
+            "y": 12.487184
           },
-          "width": 22.405507,
-          "depth": 11.932491,
-          "height": 13.309114,
+          "width": 11.5543,
+          "depth": 21.303186,
+          "height": 14.820234,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3400315175
+          "seed": 748576278
         },
         {
           "id": "b-code-city:src%2Flayout%2Fisometric.ts",
@@ -444,15 +470,15 @@
           "lines": 17,
           "bytes": 718,
           "position": {
-            "x": 78.562543,
-            "y": 75.238363
+            "x": 79.459866,
+            "y": 88.692187
           },
-          "width": 14.376875,
-          "depth": 17.313893,
+          "width": 17.610803,
+          "depth": 12.275735,
           "height": 10.731354,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 891448486
+          "seed": 1180913987
         },
         {
           "id": "b-code-city:src%2Flayout%2Ftreemap.ts",
@@ -462,15 +488,15 @@
           "lines": 180,
           "bytes": 6902,
           "position": {
-            "x": 12.764984,
-            "y": 79.642449
+            "x": 12.830798,
+            "y": 89.214845
           },
-          "width": 22.381703,
-          "depth": 13.811849,
+          "width": 22.637216,
+          "depth": 11.860128,
           "height": 17.224699,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1007065169
+          "seed": 1386744552
         },
         {
           "id": "b-code-city:src%2Fmain.tsx",
@@ -480,33 +506,69 @@
           "lines": 9,
           "bytes": 259,
           "position": {
-            "x": 99.942845,
-            "y": 75.238363
+            "x": 103.605551,
+            "y": 72.905976
           },
-          "width": 12.8129,
-          "depth": 17.313893,
+          "width": 7.759914,
+          "depth": 24.828626,
           "height": 9.07776,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1056683559
+          "seed": 1504871190
         },
         {
           "id": "b-code-city:src%2Frenderers%2Fsvg%2Fcity.ts",
           "path": "src/renderers/svg/city.ts",
           "category": "source",
           "language": "TypeScript",
-          "lines": 351,
-          "bytes": 15199,
+          "lines": 380,
+          "bytes": 16040,
           "position": {
-            "x": 12.764984,
-            "y": 57.534727
+            "x": 12.830798,
+            "y": 51.010054
           },
-          "width": 22.381703,
-          "depth": 14.750701,
-          "height": 19.095892,
+          "width": 22.637216,
+          "depth": 12.721315,
+          "height": 19.318612,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1460885727
+          "seed": 1866861198
+        },
+        {
+          "id": "b-code-city:src%2Frenderers%2Fthree%2FCity3D.tsx",
+          "path": "src/renderers/three/City3D.tsx",
+          "category": "source",
+          "language": "TypeScript",
+          "lines": 54,
+          "bytes": 1643,
+          "position": {
+            "x": 47.015052,
+            "y": 90.795776
+          },
+          "width": 22.192459,
+          "depth": 10.603002,
+          "height": 13.873651,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 3600206545
+        },
+        {
+          "id": "b-code-city:src%2Frenderers%2Fthree%2Fviewer.ts",
+          "path": "src/renderers/three/viewer.ts",
+          "category": "source",
+          "language": "TypeScript",
+          "lines": 466,
+          "bytes": 14816,
+          "position": {
+            "x": 12.830798,
+            "y": 70.263893
+          },
+          "width": 22.637216,
+          "depth": 12.640248,
+          "height": 19.891194,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 2292881097
         },
         {
           "id": "b-code-city:src%2Fscanner%2Fexclusions.ts",
@@ -516,15 +578,15 @@
           "lines": 55,
           "bytes": 925,
           "position": {
-            "x": 78.368778,
-            "y": 47.1813
+            "x": 97.829131,
+            "y": 43.907194
           },
-          "width": 13.624611,
-          "depth": 18.764217,
+          "width": 12.353212,
+          "depth": 17.973891,
           "height": 13.924342,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3156868180
+          "seed": 2801529073
         },
         {
           "id": "b-code-city:src%2Fscanner%2Fgit-metadata.ts",
@@ -534,15 +596,15 @@
           "lines": 50,
           "bytes": 1838,
           "position": {
-            "x": 101.290543,
-            "y": 13.009176
+            "x": 47.015052,
+            "y": 58.47973
           },
-          "width": 11.741236,
-          "depth": 23.329741,
+          "width": 22.192459,
+          "depth": 10.719778,
           "height": 13.661229,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3882996927
+          "seed": 3336914926
         },
         {
           "id": "b-code-city:src%2Fscanner%2Flanguages.ts",
@@ -552,15 +614,15 @@
           "lines": 169,
           "bytes": 4041,
           "position": {
-            "x": 63.712511,
-            "y": 13.009176
+            "x": 62.985023,
+            "y": 12.487184
           },
-          "width": 12.639858,
-          "depth": 23.329741,
+          "width": 12.021953,
+          "depth": 21.303186,
           "height": 17.048312,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 862051268
+          "seed": 865608769
         },
         {
           "id": "b-code-city:src%2Fscanner%2Fscan-local.ts",
@@ -570,33 +632,33 @@
           "lines": 135,
           "bytes": 5075,
           "position": {
-            "x": 44.234341,
-            "y": 13.009176
+            "x": 44.459053,
+            "y": 12.487184
           },
-          "width": 12.899778,
-          "depth": 23.329741,
+          "width": 12.269166,
+          "depth": 21.303186,
           "height": 16.420553,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 1355908510
+          "seed": 470892027
         },
         {
           "id": "b-code-city:src%2Fstyles.css",
           "path": "src/styles.css",
           "category": "source",
           "language": "CSS",
-          "lines": 1695,
-          "bytes": 29397,
+          "lines": 2002,
+          "bytes": 35328,
           "position": {
-            "x": 12.764984,
-            "y": 11.001511
+            "x": 12.830798,
+            "y": 10.484413
           },
-          "width": 22.381703,
-          "depth": 15.535277,
-          "height": 23.519445,
+          "width": 22.637216,
+          "depth": 13.527722,
+          "height": 23.987496,
           "color": "#8b7acf",
           "landmark": false,
-          "seed": 3691174774
+          "seed": 2321057843
         },
         {
           "id": "b-code-city:tests%2Fe2e%2Fcity.spec.ts",
@@ -606,15 +668,33 @@
           "lines": 78,
           "bytes": 4081,
           "position": {
-            "x": 145.349611,
-            "y": 12.259042
+            "x": 123.258299,
+            "y": 37.72855
           },
-          "width": 12.444888,
-          "depth": 20.417455,
+          "width": 13.681672,
+          "depth": 16.405462,
           "height": 14.892372,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3234905300
+          "seed": 1427636593
+        },
+        {
+          "id": "b-code-city:tests%2Fe2e%2Fexplorer.spec.ts",
+          "path": "tests/e2e/explorer.spec.ts",
+          "category": "test",
+          "language": "TypeScript",
+          "lines": 193,
+          "bytes": 8966,
+          "position": {
+            "x": 123.274019,
+            "y": 11.505493
+          },
+          "width": 13.742704,
+          "depth": 17.491914,
+          "height": 17.41983,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 3799156841
         },
         {
           "id": "b-code-city:tests%2Fe2e%2Flocal-city.spec.ts",
@@ -624,15 +704,33 @@
           "lines": 55,
           "bytes": 2701,
           "position": {
-            "x": 128.983611,
-            "y": 70.249431
+            "x": 123.343592,
+            "y": 86.83879
           },
-          "width": 25.458815,
-          "depth": 9.609127,
+          "width": 14.012811,
+          "depth": 15.421689,
           "height": 13.924342,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2889721206
+          "seed": 2174063155
+        },
+        {
+          "id": "b-code-city:tests%2Fexport.test.ts",
+          "path": "tests/export.test.ts",
+          "category": "test",
+          "language": "TypeScript",
+          "lines": 65,
+          "bytes": 3272,
+          "position": {
+            "x": 143.896289,
+            "y": 62.525831
+          },
+          "width": 13.600541,
+          "depth": 16.174538,
+          "height": 14.386569,
+          "color": "#459fd5",
+          "landmark": false,
+          "seed": 1009306652
         },
         {
           "id": "b-code-city:tests%2Fisometric.test.ts",
@@ -642,15 +740,15 @@
           "lines": 34,
           "bytes": 1479,
           "position": {
-            "x": 128.983611,
-            "y": 84.669139
+            "x": 144.371583,
+            "y": 86.83879
           },
-          "width": 25.458815,
-          "depth": 9.067247,
+          "width": 13.222596,
+          "depth": 15.421689,
           "height": 12.602102,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2229579986
+          "seed": 3732460983
         },
         {
           "id": "b-code-city:tests%2Flayout.test.ts",
@@ -660,33 +758,33 @@
           "lines": 86,
           "bytes": 3363,
           "position": {
-            "x": 145.057503,
-            "y": 43.008137
+            "x": 123.246243,
+            "y": 62.525831
           },
-          "width": 12.677166,
-          "depth": 19.693618,
+          "width": 13.634866,
+          "depth": 16.174538,
           "height": 15.16374,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 4226200221
+          "seed": 3205974220
         },
         {
           "id": "b-code-city:tests%2Fscanner.test.ts",
           "path": "tests/scanner.test.ts",
           "category": "test",
           "language": "TypeScript",
-          "lines": 141,
-          "bytes": 6776,
+          "lines": 153,
+          "bytes": 7224,
           "position": {
-            "x": 125.77811,
-            "y": 12.259042
+            "x": 144.031903,
+            "y": 11.505493
           },
-          "width": 13.013928,
-          "depth": 20.417455,
-          "height": 16.542007,
+          "width": 13.492703,
+          "depth": 17.491914,
+          "height": 16.770234,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2565011703
+          "seed": 1737597190
         },
         {
           "id": "b-code-city:tests%2Fscene.test.ts",
@@ -696,15 +794,15 @@
           "lines": 71,
           "bytes": 3679,
           "position": {
-            "x": 125.71828,
-            "y": 43.008137
+            "x": 143.955152,
+            "y": 37.72855
           },
-          "width": 12.781649,
-          "depth": 19.693618,
+          "width": 13.553735,
+          "depth": 16.405462,
           "height": 14.631354,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 2237538997
+          "seed": 2926483684
         },
         {
           "id": "b-code-city:tsconfig.json",
@@ -714,15 +812,15 @@
           "lines": 21,
           "bytes": 572,
           "position": {
-            "x": 69.319816,
-            "y": 108.192095
+            "x": 67.942853,
+            "y": 114.715817
           },
-          "width": 11.665516,
-          "depth": 18.674895,
+          "width": 11.337327,
+          "depth": 16.367857,
           "height": 11.295892,
           "color": "#96aa81",
           "landmark": false,
-          "seed": 1507179503
+          "seed": 3722572990
         },
         {
           "id": "b-code-city:vite.config.ts",
@@ -732,15 +830,15 @@
           "lines": 7,
           "bytes": 204,
           "position": {
-            "x": 103.03856,
-            "y": 108.192095
+            "x": 100.712979,
+            "y": 114.715817
           },
-          "width": 10.351247,
-          "depth": 18.674895,
+          "width": 10.060032,
+          "depth": 16.367857,
           "height": 8.45,
           "color": "#459fd5",
           "landmark": false,
-          "seed": 3028325097
+          "seed": 4048764128
         }
       ],
       "blocks": [
@@ -748,36 +846,36 @@
           "name": "(root)",
           "bounds": {
             "x": 5,
-            "y": 101.38189488373422,
-            "width": 113.0560373599933,
-            "depth": 61.61810511626578
+            "y": 108.49985402155052,
+            "width": 110.36423165374816,
+            "depth": 54.50014597844948
           }
         },
         {
           "name": "fixtures",
           "bounds": {
-            "x": 120.4260373599933,
-            "y": 140.72079625072737,
-            "width": 28.310464206953895,
-            "depth": 22.279203749272625
+            "x": 151.86056673055873,
+            "y": 110.60273241307176,
+            "width": 11.13943326944127,
+            "depth": 46.017546531996956
           }
         },
         {
           "name": "public",
           "bounds": {
-            "x": 151.1065015669472,
-            "y": 140.72079625072737,
-            "width": 11.893498433052798,
-            "depth": 22.27920374927291
+            "x": 117.73423165374817,
+            "y": 158.99027894506872,
+            "width": 45.26576834625169,
+            "depth": 4.009721054931276
           }
         },
         {
           "name": "scripts",
           "bounds": {
-            "x": 120.4260373599933,
-            "y": 100.44188885360667,
-            "width": 42.5739626400067,
-            "depth": 37.9089073971207
+            "x": 117.73423165374817,
+            "y": 110.60273241307176,
+            "width": 31.756335076810558,
+            "depth": 46.017546531996956
           }
         },
         {
@@ -785,17 +883,17 @@
           "bounds": {
             "x": 5,
             "y": 5,
-            "width": 113.0560373599933,
-            "depth": 94.01189488373421
+            "width": 110.36423165374816,
+            "depth": 101.12985402155051
           }
         },
         {
           "name": "tests",
           "bounds": {
-            "x": 120.4260373599933,
+            "x": 117.73423165374817,
             "y": 5,
-            "width": 42.5739626400067,
-            "depth": 93.07188885360667
+            "width": 45.26576834625183,
+            "depth": 103.23273241307176
           }
         }
       ]
@@ -807,5 +905,5 @@
     "width": 168,
     "depth": 168
   },
-  "snapshotHash": "bdaf6e79c2a189d6c3839019d876acfb570f4b443ff24e8103d65a73f6cfe0a3"
+  "snapshotHash": "a28719650763a7f1379a15bb228f827bea832417439028d695ff68e7fea789f7"
 }

@@ -17,14 +17,19 @@ import {
   Layers3,
   Maximize,
   Minus,
+  Moon,
   Plus,
   RotateCcw,
   Sparkles,
+  Sun,
   Tag,
   X,
 } from 'lucide-react';
 import type { CityScene } from './core/model';
-import { cityLegend } from './core/theme';
+import { applyTheme, cityLegend, daylightTheme } from './core/theme';
+import type { ThemeId } from './core/theme';
+import { repositoryScene, repositorySlug } from './core/repository-scene';
+import City3D from './renderers/three/City3D';
 import config from '../codecity.config';
 import { compactNumber, sceneStats } from './core/metrics';
 import { renderBanner, renderCitySvg } from './renderers/svg/city';
@@ -79,7 +84,14 @@ function Dialog({
   );
 }
 
-export default function App({ scene }: { scene: CityScene }) {
+export default function App({ scene: sourceScene }: { scene: CityScene }) {
+  const [theme, setTheme] = useState<ThemeId>(
+    sourceScene.theme.background === daylightTheme.background ? 'github-light' : 'github-dark',
+  );
+  const scene = useMemo(() => applyTheme(sourceScene, theme), [sourceScene, theme]);
+  const [dimension, setDimension] = useState<'2.5D' | '3D'>('2.5D');
+  const [reset, setReset] = useState(0);
+  const [threeError, setThreeError] = useState('');
   const stats = useMemo(() => sceneStats(scene), [scene]);
   const allBuildings = useMemo(
     () =>
@@ -89,12 +101,19 @@ export default function App({ scene }: { scene: CityScene }) {
     [scene],
   );
   const legend = useMemo(() => cityLegend(scene), [scene]);
-  const [repository, setRepository] = useState('');
+  const [repository, setRepository] = useState(() => {
+    const requested = new URLSearchParams(location.search).get('repo');
+    return scene.repositories.some((repo) => repo.name === requested) ? requested! : '';
+  });
   const [selectedId, setSelectedId] = useState(
-    allBuildings.find((building) => building.landmark)?.id ?? allBuildings[0]?.id ?? '',
+    allBuildings.find((building) =>
+      repository ? building.repository === repository : building.landmark,
+    )?.id ??
+      allBuildings[0]?.id ??
+      '',
   );
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [showLabels, setShowLabels] = useState(true);
+  const [showLabels, setShowLabels] = useState<boolean>(config.appearance.showLabels);
   const [zoom, setZoom] = useState(1);
   const [view, setView] = useState<'overview' | 'repositories'>('overview');
   const [dialog, setDialog] = useState<'export' | 'mapping' | null>(null);
@@ -102,6 +121,7 @@ export default function App({ scene }: { scene: CityScene }) {
   const [copied, setCopied] = useState(false);
   const [exportTitle, setExportTitle] = useState<string>(config.profile.title);
   const [exportSubtitle, setExportSubtitle] = useState<string>(config.profile.subtitle);
+  const [exportRepository, setExportRepository] = useState('');
   const active = allBuildings.find((building) => building.id === (hoveredId || selectedId));
   const visibleBuildings = allBuildings.filter(
     (building) => !repository || building.repository === repository,
@@ -117,10 +137,24 @@ export default function App({ scene }: { scene: CityScene }) {
     [scene, hoveredId, selectedId, repository, showLabels],
   );
   const banner = useMemo(
-    () => renderBanner(scene, { title: exportTitle, subtitle: exportSubtitle, showLabels }),
-    [scene, exportTitle, exportSubtitle, showLabels],
+    () =>
+      renderBanner(repositoryScene(scene, exportRepository), {
+        size: exportRepository ? 'repository' : 'profile',
+        title: exportTitle,
+        subtitle: exportSubtitle,
+        showLabels,
+        showLegend: config.appearance.showLegend,
+      }),
+    [scene, exportRepository, exportTitle, exportSubtitle, showLabels],
   );
-  const embed = '[![My Code City](./assets/profile.svg)](./)';
+  const assetName = exportRepository ? `repos/${repositorySlug(exportRepository)}` : 'profile';
+  const assetTheme = theme === 'github-light' ? 'light' : 'dark';
+  const exportDimensions = exportRepository ? '900 × 315' : '1200 × 420';
+  const embed = `[![Code City](./assets/${assetName}.${assetTheme}.svg)](./${exportRepository ? `?repo=${encodeURIComponent(exportRepository)}` : ''})`;
+
+  function toggleTheme() {
+    setTheme(theme === 'github-dark' ? 'github-light' : 'github-dark');
+  }
 
   useEffect(() => {
     if (!notice) return;
@@ -139,7 +173,9 @@ export default function App({ scene }: { scene: CityScene }) {
     const url = URL.createObjectURL(new Blob([banner], { type: 'image/svg+xml;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'code-city-profile.svg';
+    link.download = exportRepository
+      ? `code-city-${repositorySlug(exportRepository)}${theme === 'github-light' ? '-light' : ''}.svg`
+      : `code-city-profile${theme === 'github-light' ? '-light' : ''}.svg`;
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -162,7 +198,7 @@ export default function App({ scene }: { scene: CityScene }) {
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-theme={theme === 'github-light' ? 'light' : 'dark'}>
       <aside className="sidebar">
         <a
           className="logo-link"
@@ -232,13 +268,14 @@ export default function App({ scene }: { scene: CityScene }) {
           ))}
         </div>
         <div className="sidebar-bottom">
-          <div className="theme-card">
+          <button className="theme-card" onClick={toggleTheme} aria-label="Change city theme">
             <span className="theme-moon">◐</span>
             <div>
-              Midnight Skyline<span>City theme</span>
+              {scene.theme.name}
+              <span>Switch city theme</span>
             </div>
             <span className="theme-swatch" />
-          </div>
+          </button>
           <button className="mapping-link" onClick={() => setDialog('mapping')}>
             <Info size={15} />
             How the city works
@@ -247,7 +284,7 @@ export default function App({ scene }: { scene: CityScene }) {
           <div className="version">
             <span className="status-dot" />
             {scene.isFixture ? 'Local demo' : 'Local repository'}
-            <span>v0.2.0</span>
+            <span>v0.3.0</span>
           </div>
         </div>
       </aside>
@@ -260,6 +297,15 @@ export default function App({ scene }: { scene: CityScene }) {
             <span>{view === 'overview' ? 'Overview' : 'Repositories'}</span>
           </div>
           <div className="topbar-right">
+            <button
+              className="icon-button theme-toggle"
+              aria-label={
+                theme === 'github-dark' ? 'Switch to light theme' : 'Switch to dark theme'
+              }
+              onClick={toggleTheme}
+            >
+              {theme === 'github-dark' ? <Sun size={17} /> : <Moon size={17} />}
+            </button>
             <span className="fixture-badge">
               <span />
               {scene.isFixture ? 'Demo data' : 'Local scan'}
@@ -335,7 +381,22 @@ export default function App({ scene }: { scene: CityScene }) {
               <div className="canvas-title">
                 <Layers3 size={16} />
                 <span>City explorer</span>
-                <span className="tiny-badge">2.5D</span>
+                <div className="dimension-switch" role="group" aria-label="City view mode">
+                  {(['2.5D', '3D'] as const).map((mode) => (
+                    <button
+                      key={mode}
+                      aria-pressed={dimension === mode}
+                      aria-label={`${mode} view`}
+                      onClick={() => {
+                        setDimension(mode);
+                        setHoveredId(null);
+                        setThreeError('');
+                      }}
+                    >
+                      {mode}
+                    </button>
+                  ))}
+                </div>
               </div>
               <div className="canvas-filters">
                 <div className="select-wrap">
@@ -386,32 +447,61 @@ export default function App({ scene }: { scene: CityScene }) {
                     : `Built from ${stats.repositories} ${scene.isFixture ? 'demo' : 'local'} repositories`}
                 </span>
               </div>
-              <div
-                className="city-art"
-                style={{ '--city-zoom': zoom } as CSSProperties}
-                onClick={(event) => {
-                  const id = buildingId(event);
-                  if (id) setSelectedId(id);
-                }}
-                onMouseOver={(event) => {
-                  const id = buildingId(event);
-                  setHoveredId(id || null);
-                }}
-                onMouseLeave={() => setHoveredId(null)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
+              {dimension === '3D' ? (
+                <City3D
+                  scene={scene}
+                  state={{
+                    selectedId: hoveredId || selectedId,
+                    repository,
+                    showLabels,
+                    zoom,
+                    reset,
+                  }}
+                  events={{
+                    hover: setHoveredId,
+                    select: setSelectedId,
+                    zoom: setZoom,
+                    failed: () => {
+                      setDimension('2.5D');
+                      setThreeError(
+                        '3D is unavailable in this browser. You can still explore and export the SVG city.',
+                      );
+                    },
+                  }}
+                />
+              ) : (
+                <div
+                  className="city-art"
+                  style={{ '--city-zoom': zoom } as CSSProperties}
+                  onClick={(event) => {
                     const id = buildingId(event);
-                    if (id) {
-                      event.preventDefault();
-                      setSelectedId(id);
+                    if (id) setSelectedId(id);
+                  }}
+                  onMouseOver={(event) => {
+                    const id = buildingId(event);
+                    setHoveredId(id || null);
+                  }}
+                  onMouseLeave={() => setHoveredId(null)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      const id = buildingId(event);
+                      if (id) {
+                        event.preventDefault();
+                        setSelectedId(id);
+                      }
                     }
-                  }
-                }}
-                dangerouslySetInnerHTML={{ __html: city }}
-              />
+                  }}
+                  dangerouslySetInnerHTML={{ __html: city }}
+                />
+              )}
+              {threeError && (
+                <div className="three-error" role="status">
+                  {threeError}
+                </div>
+              )}
               <div className="compass">
                 <Compass size={30} strokeWidth={1} />
-                <span>ISOMETRIC VIEW</span>
+                <span>{dimension === '3D' ? 'DRAG TO ROTATE' : 'ISOMETRIC VIEW'}</span>
               </div>
               {active && (
                 <aside className="file-inspector" aria-label="File details">
@@ -423,6 +513,23 @@ export default function App({ scene }: { scene: CityScene }) {
                     <span className="inspector-indicator" />
                   </div>
                   <h3 title={active.path}>{active.path}</h3>
+                  {dimension === '3D' && (
+                    <select
+                      className="inspect-file"
+                      aria-label="Inspect file"
+                      value={selectedId}
+                      onChange={(event) => {
+                        setSelectedId(event.target.value);
+                        setHoveredId(null);
+                      }}
+                    >
+                      {visibleBuildings.map((building) => (
+                        <option key={building.id} value={building.id}>
+                          {building.repository}/{building.path}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                   <span className="inspector-repo">
                     {active.repository} <ChevronRight size={11} /> {active.category}
                   </span>
@@ -478,6 +585,7 @@ export default function App({ scene }: { scene: CityScene }) {
                   aria-label="Reset view"
                   onClick={() => {
                     setZoom(1);
+                    setReset((value) => value + 1);
                     filterRepository('');
                   }}
                 >
@@ -496,7 +604,9 @@ export default function App({ scene }: { scene: CityScene }) {
                 ))}
               </div>
               <span className="interaction-hint">
-                Hover to discover <span>·</span> Click to inspect
+                {dimension === '3D'
+                  ? 'Drag to rotate · Right-drag to pan · Click to inspect'
+                  : 'Hover to discover · Click to inspect'}
               </span>
             </div>
           </section>
@@ -550,10 +660,10 @@ export default function App({ scene }: { scene: CityScene }) {
               <div className="banner-frame-header">
                 <span>
                   <span />
-                  profile.svg
+                  {assetName}.{assetTheme}.svg
                 </span>
                 <span>
-                  1200 × 420 <span className="filetype">SVG</span>
+                  {exportDimensions} <span className="filetype">SVG</span>
                 </span>
               </div>
               <div className="banner-preview" dangerouslySetInnerHTML={{ __html: banner }} />
@@ -565,7 +675,7 @@ export default function App({ scene }: { scene: CityScene }) {
               Built from code. Made to explore.
             </span>
             <span>
-              Midnight Skyline <span className="footer-separator">/</span>{' '}
+              {scene.theme.name} <span className="footer-separator">/</span>{' '}
               {scene.isFixture ? 'Demo city' : 'Built from your code'}
             </span>
           </footer>
@@ -579,6 +689,23 @@ export default function App({ scene }: { scene: CityScene }) {
           </p>
           <div className="export-preview" dangerouslySetInnerHTML={{ __html: banner }} />
           <div className="export-fields">
+            <label className="export-scope">
+              Export scope
+              <select
+                value={exportRepository}
+                onChange={(event) => {
+                  setExportRepository(event.target.value);
+                  setCopied(false);
+                }}
+              >
+                <option value="">All repositories</option>
+                {scene.repositories.map((repo) => (
+                  <option key={repo.name} value={repo.name}>
+                    {repo.name}
+                  </option>
+                ))}
+              </select>
+            </label>
             <label>
               City title
               <input
@@ -599,7 +726,7 @@ export default function App({ scene }: { scene: CityScene }) {
           <div className="export-meta">
             <span>
               <Check size={14} />
-              1200 × 420
+              {exportDimensions}
             </span>
             <span>
               <Check size={14} />
@@ -664,8 +791,9 @@ export default function App({ scene }: { scene: CityScene }) {
             {scene.isFixture
               ? 'This demo uses 30 fixed example files in 4 fictional repositories.'
               : `This city contains ${stats.files} files scanned from ${stats.repositories} local repositories. Each neighborhood is divided into directory blocks.`}{' '}
-            Building positions and window lights are deterministic. 3D navigation is planned for the
-            next stage.
+            Building positions and window lights are deterministic. The 2.5D and 3D views share the
+            same scene. In 3D, drag to rotate, right-drag to pan and scroll to zoom. Arrow keys
+            rotate the focused canvas; Home resets the camera.
           </p>
           <button className="primary-button" onClick={() => setDialog(null)}>
             Back to the city

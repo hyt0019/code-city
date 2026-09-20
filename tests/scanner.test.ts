@@ -1,17 +1,30 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { mkdir, mkdtemp, rename, writeFile } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { mkdir, mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
+import { basename, dirname, join, resolve } from 'node:path';
+import { tmpdir } from 'node:os';
+import { afterAll, describe, expect, it } from 'vitest';
 import { scanLocal } from '../src/scanner/scan-local';
 import { classify, countLines } from '../src/scanner/languages';
 import { normalizeGitHubUrl } from '../src/scanner/git-metadata';
 import { configSchema } from '../src/core/config';
 import { layoutCity } from '../src/layout/treemap';
 const exec = promisify(execFile);
+const fixtureRoots: string[] = [];
+afterAll(async () => {
+  for (const root of fixtureRoots) {
+    if (
+      dirname(resolve(root)) !== resolve(tmpdir()) ||
+      !basename(root).startsWith('code-city-test-')
+    )
+      throw new Error('Unsafe fixture cleanup path');
+    await rm(root, { recursive: true, force: true });
+  }
+}, 30000);
 async function fixture(files: Record<string, string | Buffer>) {
-  await mkdir('.cache/test-repositories', { recursive: true });
-  const root = await mkdtemp(resolve('.cache/test-repositories/repo-'));
+  // Outside this checkout so Git cannot discover the project's own parent repository.
+  const root = await mkdtemp(join(tmpdir(), 'code-city-test-'));
+  fixtureRoots.push(root);
   for (const [path, content] of Object.entries(files)) {
     const full = join(root, path);
     await mkdir(resolve(full, '..'), { recursive: true });
