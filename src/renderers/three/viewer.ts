@@ -4,6 +4,7 @@ import type { Building, CityScene } from '../../core/model';
 import { cityPalette } from '../../core/theme';
 import { stableHash } from '../../core/metrics';
 import { canvasToPng } from '../../core/image-export';
+import { windowColor } from '../../core/activity';
 
 export interface ViewerState {
   selectedId: string;
@@ -245,7 +246,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
               w: 1.35 * unit,
               h: 2.1,
               d: 0.08,
-              color,
+              color: windowColor(b, color),
               repo,
             });
             windows.push({
@@ -255,7 +256,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
               w: 0.08,
               h: 2.1,
               d: 1.35 * unit,
-              color,
+              color: windowColor(b, color),
               repo,
             });
           }

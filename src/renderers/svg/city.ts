@@ -3,6 +3,7 @@ import { compactNumber, sceneStats, stableHash } from '../../core/metrics';
 import { project } from '../../layout/isometric';
 import { cityLegend, cityPalette, languageColor } from '../../core/theme';
 import { sceneSource } from '../../core/source-label';
+import { windowColor as activityWindowColor } from '../../core/activity';
 
 export interface RenderOptions {
   selectedId?: string;
@@ -137,7 +138,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
             p(xx + 1.35 * unit, y + d + 0.03, z + 2.1),
             p(xx, y + d + 0.03, z + 2.1),
           ],
-          windowColor,
+          activityWindowColor(b, windowColor),
           'opacity="0.86"',
         );
         output += polygon(
@@ -147,7 +148,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
             p(x + w + 0.03, yy + 1.35 * unit, z + 2.1),
             p(x + w + 0.03, yy, z + 2.1),
           ],
-          windowColor,
+          activityWindowColor(b, windowColor),
           'opacity="0.58"',
         );
       }

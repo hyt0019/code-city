@@ -635,6 +635,12 @@ export default function App({
                       <dt>File size</dt>
                       <dd>{(active.bytes / 1024).toFixed(1)} KB</dd>
                     </div>
+                    <div>
+                      <dt>Last committed change</dt>
+                      <dd title={active.modifiedAt ?? 'No date found in the available Git history'}>
+                        {active.modifiedAt?.slice(0, 10) ?? 'Unknown'}
+                      </dd>
+                    </div>
                   </dl>
                   <div className="inspector-foot">
                     <span />
@@ -875,6 +881,10 @@ export default function App({
                 'Switch between lines of code and file size; logarithmically scaled',
               ],
               ['Language', 'The color of its buildings'],
+              [
+                'Window lights',
+                'Recent committed changes glow brighter; unknown dates keep default lighting',
+              ],
               ['Test file', 'A green roof'],
               ['Documentation', 'A library and a shared plaza'],
             ].map(([label, value]) => (

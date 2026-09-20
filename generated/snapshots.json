@@ -3,19 +3,38 @@
     "schemaVersion": 1,
     "name": "code-city",
     "source": "github",
-    "commitSha": "a9d032b382c9a52c0477218f1f02e6085d52f865",
-    "committedAt": "2026-09-20T16:25:01+08:00",
+    "commitSha": "b4e812e57a04ac6b59ac03d02946b15d47ac7d1f",
+    "committedAt": "2026-09-20T21:48:36+08:00",
     "url": "https://github.com/hyt0019/code-city",
     "dirty": false,
-    "snapshotHash": "c6012d1e410b8ed7e09539a2d335b53b74ea41f1bb366e426e10e51ee43d604f",
+    "snapshotHash": "5ec8bb0950428c0001ced3f64a8c87852a5eb965ce912e2a3a01393944f09cb3",
     "files": [
+      {
+        "path": ".github/workflows/deploy-pages.yml",
+        "language": "YAML",
+        "category": "config",
+        "lines": 46,
+        "bytes": 1060,
+        "contentHash": "81cea5aed91236c2f59272395e80fe93acc0bec8a6bef093ba27638ede0b6fc2",
+        "modifiedAt": "2026-09-20T08:35:05.000Z"
+      },
+      {
+        "path": ".github/workflows/test.yml",
+        "language": "YAML",
+        "category": "config",
+        "lines": 45,
+        "bytes": 1467,
+        "contentHash": "3cc1c620871cb791b8e3266640c30e937b73a7c1acbdcf63b3fa33db5b03eb64",
+        "modifiedAt": "2026-09-20T08:35:05.000Z"
+      },
       {
         "path": ".gitignore",
         "language": "Config",
         "category": "config",
         "lines": 6,
         "bytes": 69,
-        "contentHash": "8584fd06da84adabb8e0bb8888ff04a7e93c447608b7cc05c36aba5a00b12fe7"
+        "contentHash": "8584fd06da84adabb8e0bb8888ff04a7e93c447608b7cc05c36aba5a00b12fe7",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": ".nvmrc",
@@ -23,7 +42,8 @@
         "category": "config",
         "lines": 1,
         "bytes": 8,
-        "contentHash": "55075b5ec4e8b31936cbbc282b8829116d1fd48f2f2f1856dee592a6650700ce"
+        "contentHash": "55075b5ec4e8b31936cbbc282b8829116d1fd48f2f2f1856dee592a6650700ce",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": ".prettierignore",
@@ -31,7 +51,8 @@
         "category": "config",
         "lines": 9,
         "bytes": 127,
-        "contentHash": "feeddec8c7b4c6b45290f59eb3bb218dba04121d6fe51e146dfc765fa6421e76"
+        "contentHash": "feeddec8c7b4c6b45290f59eb3bb218dba04121d6fe51e146dfc765fa6421e76",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": ".prettierrc.json",
@@ -39,7 +60,8 @@
         "category": "config",
         "lines": 1,
         "bytes": 67,
-        "contentHash": "f583ff6d8ba542b76af46c4c024a0941b77aee51133bb0f69ec6eb1fa613de7e"
+        "contentHash": "f583ff6d8ba542b76af46c4c024a0941b77aee51133bb0f69ec6eb1fa613de7e",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "LICENSE",
@@ -47,15 +69,17 @@
         "category": "docs",
         "lines": 17,
         "bytes": 1079,
-        "contentHash": "460eda1cce140b8c7873460623dc9f595f83f7ab1723b39bfca3b64a479f4049"
+        "contentHash": "460eda1cce140b8c7873460623dc9f595f83f7ab1723b39bfca3b64a479f4049",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "README.md",
         "language": "Markdown",
         "category": "docs",
-        "lines": 125,
-        "bytes": 13376,
-        "contentHash": "c04992730dda52ca8e35c8fd77ab33bf4da501b90706290b7199f4803255416e"
+        "lines": 139,
+        "bytes": 16324,
+        "contentHash": "ea5bb818748b32cf60a0d2eca500c559adba6e3f5af2a720ee82d31d1a8baf0b",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
       },
       {
         "path": "code-city-project-brief.md",
@@ -63,7 +87,8 @@
         "category": "docs",
         "lines": 473,
         "bytes": 16929,
-        "contentHash": "39cb21450282b60facc9ae4b559090b3110d9f3b848c67ac24fe83835f9b9e1b"
+        "contentHash": "39cb21450282b60facc9ae4b559090b3110d9f3b848c67ac24fe83835f9b9e1b",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "codecity.config.ts",
@@ -71,7 +96,8 @@
         "category": "config",
         "lines": 12,
         "bytes": 327,
-        "contentHash": "69465221cda752be211940c8e78b113cad418cbef64e941f12ed3b8883631e62"
+        "contentHash": "69465221cda752be211940c8e78b113cad418cbef64e941f12ed3b8883631e62",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
       },
       {
         "path": "fixtures/city.ts",
@@ -79,15 +105,17 @@
         "category": "source",
         "lines": 107,
         "bytes": 3622,
-        "contentHash": "7dc88df066225f8c5a742b800159ad7d0b69211699c150b725df9c4f5574a945"
+        "contentHash": "7dc88df066225f8c5a742b800159ad7d0b69211699c150b725df9c4f5574a945",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "index.html",
         "language": "HTML",
         "category": "source",
-        "lines": 18,
-        "bytes": 588,
-        "contentHash": "5c4f5a1758d05003d27ac0b52295d5b1231d777d02fff501f6d23fe77abd964e"
+        "lines": 26,
+        "bytes": 843,
+        "contentHash": "83599d6247138cae118e25da3762afbfd9d8ddc833ca3d7ad27a640d72a7cfd5",
+        "modifiedAt": "2026-09-20T08:35:05.000Z"
       },
       {
         "path": "package.json",
@@ -95,7 +123,8 @@
         "category": "config",
         "lines": 47,
         "bytes": 1325,
-        "contentHash": "4d5776100c4a10d0bfaac1c844309c42b4ebfefb01968aa4aea3fa70a05e5050"
+        "contentHash": "4d5776100c4a10d0bfaac1c844309c42b4ebfefb01968aa4aea3fa70a05e5050",
+        "modifiedAt": "2026-09-20T03:30:58.000Z"
       },
       {
         "path": "playwright.config.ts",
@@ -103,7 +132,8 @@
         "category": "config",
         "lines": 22,
         "bytes": 685,
-        "contentHash": "528e2adf98a162c464931b58179103b8943038aeaba32062aae5e49c365101d5"
+        "contentHash": "528e2adf98a162c464931b58179103b8943038aeaba32062aae5e49c365101d5",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "playwright.pages.config.ts",
@@ -111,7 +141,8 @@
         "category": "config",
         "lines": 12,
         "bytes": 435,
-        "contentHash": "8c387451f6fc9cacf302875e28b77ae4fd91b905ee32f5df99eca8b8112cda1d"
+        "contentHash": "8c387451f6fc9cacf302875e28b77ae4fd91b905ee32f5df99eca8b8112cda1d",
+        "modifiedAt": "2026-09-20T03:30:58.000Z"
       },
       {
         "path": "public/favicon.svg",
@@ -119,7 +150,8 @@
         "category": "asset",
         "lines": 1,
         "bytes": 219,
-        "contentHash": "56ebd437e62fa5b1587bd6fef42c0664e5b0728927640b4d0641d20bc1f83d22"
+        "contentHash": "56ebd437e62fa5b1587bd6fef42c0664e5b0728927640b4d0641d20bc1f83d22",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "scripts/build-assets.ts",
@@ -127,7 +159,8 @@
         "category": "source",
         "lines": 12,
         "bytes": 441,
-        "contentHash": "48aae822fca765e80fa9dfed1b4018a8ecf7ba3f666b3b857753224f55d96a20"
+        "contentHash": "48aae822fca765e80fa9dfed1b4018a8ecf7ba3f666b3b857753224f55d96a20",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "scripts/build-pages.ts",
@@ -135,7 +168,8 @@
         "category": "source",
         "lines": 13,
         "bytes": 747,
-        "contentHash": "ca8a1cb171cbb37e47eeb3ffabf67aa01f2435b7862156edd670bf71405270f4"
+        "contentHash": "ca8a1cb171cbb37e47eeb3ffabf67aa01f2435b7862156edd670bf71405270f4",
+        "modifiedAt": "2026-09-20T03:30:58.000Z"
       },
       {
         "path": "scripts/generate.ts",
@@ -143,31 +177,35 @@
         "category": "source",
         "lines": 59,
         "bytes": 2665,
-        "contentHash": "ba9700e1d4bbb6d534cb79b676acc2dd5a6dc163377f99a684ba5e2c4a3b6c50"
+        "contentHash": "ba9700e1d4bbb6d534cb79b676acc2dd5a6dc163377f99a684ba5e2c4a3b6c50",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
       },
       {
         "path": "scripts/repository-page.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 12,
-        "bytes": 651,
-        "contentHash": "5a65a6a18ceb9f2b52d946fdec399191cabaa8ba8039586999f85bb7ea7c7ca2"
+        "lines": 13,
+        "bytes": 703,
+        "contentHash": "9d2d9d2cdc6d8026b64efa740960a377fcf9a6c7feeaf1ae160afb58c19beb08",
+        "modifiedAt": "2026-09-20T08:35:05.000Z"
       },
       {
         "path": "scripts/write-assets.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 58,
-        "bytes": 2869,
-        "contentHash": "dfa550506827405b68acf7dc0ad982be68d7a9d7b97cdfc5d3ca7e938cb8ed61"
+        "lines": 59,
+        "bytes": 2956,
+        "contentHash": "04bf7e7d6c712dac6e95ec69ebd080339493edd21a3df28d38ce0aaeae0d272f",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
       },
       {
         "path": "src/App.tsx",
         "language": "TypeScript",
         "category": "source",
-        "lines": 813,
-        "bytes": 30655,
-        "contentHash": "d89cd0cc53743db3d229caa6fbda2ab7c930297f2825842bdca37fca012057e3"
+        "lines": 891,
+        "bytes": 33541,
+        "contentHash": "5df28bea73e94e51abf829f7b62a5f7ba7461a62272cc21b32eceb2e752de17a",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
       },
       {
         "path": "src/CityLoader.tsx",
@@ -175,31 +213,44 @@
         "category": "source",
         "lines": 73,
         "bytes": 2462,
-        "contentHash": "a3f6bc08cadfdb29d6aaad385f402430e2d14988c06edacf3bb62d4d0be330b4"
+        "contentHash": "a3f6bc08cadfdb29d6aaad385f402430e2d14988c06edacf3bb62d4d0be330b4",
+        "modifiedAt": "2026-09-20T03:30:58.000Z"
       },
       {
         "path": "src/core/config.ts",
         "language": "TypeScript",
         "category": "config",
-        "lines": 114,
-        "bytes": 3840,
-        "contentHash": "be39c2f3bb711243fcfe3c34b29532ee1e9c4657fe6a3dab5f41e1bff8b8afb3"
+        "lines": 117,
+        "bytes": 4020,
+        "contentHash": "bfb8f253d4b2bf0f668d8de839dce28391bcdbf3bfaeddcde38b08fce63af34c",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
+      },
+      {
+        "path": "src/core/image-export.ts",
+        "language": "TypeScript",
+        "category": "source",
+        "lines": 48,
+        "bytes": 1676,
+        "contentHash": "2c5c641dc31cfa710cca08bd7b4e947cdb899c9a7728843f9b0ce1d0b6458207",
+        "modifiedAt": "2026-09-20T08:51:41.000Z"
       },
       {
         "path": "src/core/metrics.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 23,
-        "bytes": 887,
-        "contentHash": "ea1a37a27c4a8c23d9d6904dcb522f5fff609a4bd8edaa6e550524700be07567"
+        "lines": 45,
+        "bytes": 1729,
+        "contentHash": "38fde17f4fda6af6918bcf7198fa8fb38b705dc1f938e2331e45c3f47ea1d3a4",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
       },
       {
         "path": "src/core/model.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 87,
-        "bytes": 1768,
-        "contentHash": "13ed58284c3c516ce8546e998a7e2be780f0b243921ecd1e08370bbccefe217e"
+        "lines": 90,
+        "bytes": 1868,
+        "contentHash": "3a951b239f15f9b3f083b87f53db231a83edeba2e1c2527942f8b5f9c54e07ff",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
       },
       {
         "path": "src/core/repository-scene.ts",
@@ -207,15 +258,17 @@
         "category": "source",
         "lines": 52,
         "bytes": 2085,
-        "contentHash": "6d15b04768c99f529bc554096ab3007cee6ddd68c51286a80805bdcde8c57580"
+        "contentHash": "6d15b04768c99f529bc554096ab3007cee6ddd68c51286a80805bdcde8c57580",
+        "modifiedAt": "2026-09-20T03:20:53.000Z"
       },
       {
         "path": "src/core/site-paths.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 8,
-        "bytes": 383,
-        "contentHash": "78f10834b2b86dfbc7713bdf08aba695034afb5815d4500eae45b0ee5d4bbc73"
+        "lines": 11,
+        "bytes": 490,
+        "contentHash": "0f063de05d24570dc039d5721c31a5c3b54d6b66bf1c8f1574595c883a1da680",
+        "modifiedAt": "2026-09-20T08:40:16.000Z"
       },
       {
         "path": "src/core/source-label.ts",
@@ -223,7 +276,8 @@
         "category": "source",
         "lines": 6,
         "bytes": 354,
-        "contentHash": "941ba4a9012a107488e0c0bd863a8fa9eb407ffab49ac73427f2259f384e50b0"
+        "contentHash": "941ba4a9012a107488e0c0bd863a8fa9eb407ffab49ac73427f2259f384e50b0",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
       },
       {
         "path": "src/core/theme.ts",
@@ -231,7 +285,8 @@
         "category": "source",
         "lines": 76,
         "bytes": 2626,
-        "contentHash": "672f545613b940c9ab363b7ae0a56e4f8039f1b5aaeb3b6d9ee10586c9b24cc4"
+        "contentHash": "672f545613b940c9ab363b7ae0a56e4f8039f1b5aaeb3b6d9ee10586c9b24cc4",
+        "modifiedAt": "2026-09-20T03:20:53.000Z"
       },
       {
         "path": "src/layout/isometric.ts",
@@ -239,7 +294,8 @@
         "category": "source",
         "lines": 17,
         "bytes": 718,
-        "contentHash": "13db350e80d281a8359fe5e539e0c30e30b825b3c7f4a7eb72704b1f36e16cfd"
+        "contentHash": "13db350e80d281a8359fe5e539e0c30e30b825b3c7f4a7eb72704b1f36e16cfd",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "src/layout/treemap.ts",
@@ -247,7 +303,8 @@
         "category": "source",
         "lines": 183,
         "bytes": 6997,
-        "contentHash": "d87de3e94417f0dc7778e0926cd35967cfff1a45f78f1f976ea9a5a29a4f9983"
+        "contentHash": "d87de3e94417f0dc7778e0926cd35967cfff1a45f78f1f976ea9a5a29a4f9983",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
       },
       {
         "path": "src/main.tsx",
@@ -255,31 +312,35 @@
         "category": "source",
         "lines": 9,
         "bytes": 259,
-        "contentHash": "7905c265df5c85e51a7a68128f31ef7bf782ef774df1101f82a3682f49b81bec"
+        "contentHash": "7905c265df5c85e51a7a68128f31ef7bf782ef774df1101f82a3682f49b81bec",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "src/renderers/svg/city.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 381,
-        "bytes": 16072,
-        "contentHash": "7a584f17a03f369dac07af35c3436b56bd386f278b7cd099dc1494b620bedd58"
+        "lines": 382,
+        "bytes": 16151,
+        "contentHash": "21c950ad44925cc0614e3e29112008617fe26d43a8bcfd18c5e3d9aff0d80e74",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
       },
       {
         "path": "src/renderers/three/City3D.tsx",
         "language": "TypeScript",
         "category": "source",
-        "lines": 54,
-        "bytes": 1643,
-        "contentHash": "dac92df134a0e00060d8995003cad5631e4bd03d7002876c6b095683d8ad3caa"
+        "lines": 70,
+        "bytes": 2033,
+        "contentHash": "d1e96cb454d52def3456f7cf647ca02455e350966417dd2110d71b1dc4a0b4cf",
+        "modifiedAt": "2026-09-20T08:51:41.000Z"
       },
       {
         "path": "src/renderers/three/viewer.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 466,
-        "bytes": 14816,
-        "contentHash": "ca6ef4abe4ce0e4fa95f37bcd85bd85e139519e9c6b7f9c8a6968dde12423b78"
+        "lines": 496,
+        "bytes": 16296,
+        "contentHash": "5216a5270bd9e2e20b0d905553a85327ecc84b1d336663cbfb68fac2ea94d007",
+        "modifiedAt": "2026-09-20T08:51:41.000Z"
       },
       {
         "path": "src/scanner/exclusions.ts",
@@ -287,7 +348,8 @@
         "category": "source",
         "lines": 55,
         "bytes": 925,
-        "contentHash": "72c41d174007e8a59cd52e34254a048b9bb53cabd5f5add426026618224a3d27"
+        "contentHash": "72c41d174007e8a59cd52e34254a048b9bb53cabd5f5add426026618224a3d27",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "src/scanner/git-metadata.ts",
@@ -295,7 +357,8 @@
         "category": "source",
         "lines": 53,
         "bytes": 1895,
-        "contentHash": "c4a08364fea94c724aea70f48f592dd8f0b1b4696704e17271545a0e646a71b8"
+        "contentHash": "c4a08364fea94c724aea70f48f592dd8f0b1b4696704e17271545a0e646a71b8",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
       },
       {
         "path": "src/scanner/github.ts",
@@ -303,7 +366,8 @@
         "category": "source",
         "lines": 213,
         "bytes": 8083,
-        "contentHash": "3d1636aaa21faf74d57fe607e9c56494f9dab00fe35637a1c12de74166410416"
+        "contentHash": "3d1636aaa21faf74d57fe607e9c56494f9dab00fe35637a1c12de74166410416",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
       },
       {
         "path": "src/scanner/languages.ts",
@@ -311,7 +375,8 @@
         "category": "source",
         "lines": 169,
         "bytes": 4041,
-        "contentHash": "400b6e16327334ec68fd6666d103604b695f5cbcaf82398b22fc58ac9fd086d5"
+        "contentHash": "400b6e16327334ec68fd6666d103604b695f5cbcaf82398b22fc58ac9fd086d5",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "src/scanner/scan-local.ts",
@@ -319,15 +384,17 @@
         "category": "source",
         "lines": 136,
         "bytes": 5137,
-        "contentHash": "92ee783c5c15e96aeb90d5b32dc38da43632387e0e8ffff024749f5ffc533e65"
+        "contentHash": "92ee783c5c15e96aeb90d5b32dc38da43632387e0e8ffff024749f5ffc533e65",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
       },
       {
         "path": "src/styles.css",
         "language": "CSS",
         "category": "source",
-        "lines": 2003,
-        "bytes": 35355,
-        "contentHash": "2ed802a81e7c447c6bc6014214d6fe3718bc3622574cffc68f756cfcb441c8ef"
+        "lines": 2004,
+        "bytes": 35374,
+        "contentHash": "6f0edbff229b9d635ae18a8a2b5fd89b1757b15a14a61cc2545d6d7f77f9db8a",
+        "modifiedAt": "2026-09-20T08:51:41.000Z"
       },
       {
         "path": "tests/e2e/city.spec.ts",
@@ -335,7 +402,8 @@
         "category": "test",
         "lines": 78,
         "bytes": 4081,
-        "contentHash": "f91dc698e01b07287590347af0ba9d0f00c64d54910075692ff92dce318fb4ef"
+        "contentHash": "f91dc698e01b07287590347af0ba9d0f00c64d54910075692ff92dce318fb4ef",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "tests/e2e/explorer.spec.ts",
@@ -343,7 +411,8 @@
         "category": "test",
         "lines": 193,
         "bytes": 8966,
-        "contentHash": "57e701d4bf843e446fc4a75c0b179a75106b5fea3032fe0e610ac3e06a9d31de"
+        "contentHash": "57e701d4bf843e446fc4a75c0b179a75106b5fea3032fe0e610ac3e06a9d31de",
+        "modifiedAt": "2026-09-20T03:20:53.000Z"
       },
       {
         "path": "tests/e2e/local-city.spec.ts",
@@ -351,7 +420,26 @@
         "category": "test",
         "lines": 58,
         "bytes": 2829,
-        "contentHash": "951876a33d2dd43c9315586fa9ec85620e9e889631371daf494c936d525030e9"
+        "contentHash": "951876a33d2dd43c9315586fa9ec85620e9e889631371daf494c936d525030e9",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
+      },
+      {
+        "path": "tests/e2e/metrics.spec.ts",
+        "language": "TypeScript",
+        "category": "test",
+        "lines": 30,
+        "bytes": 1660,
+        "contentHash": "525ff1f55b6573d51b0e2080be26d23e2794226621c23048eaecf173b0855e2f",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
+      },
+      {
+        "path": "tests/e2e/png.spec.ts",
+        "language": "TypeScript",
+        "category": "test",
+        "lines": 64,
+        "bytes": 3249,
+        "contentHash": "3eb9fc32157f19313216e9c2832306496d2aa13061b107f5d6e579190d08b2a6",
+        "modifiedAt": "2026-09-20T08:51:41.000Z"
       },
       {
         "path": "tests/export.test.ts",
@@ -359,7 +447,8 @@
         "category": "test",
         "lines": 65,
         "bytes": 3272,
-        "contentHash": "c0a54c6f8c8bb0cbf42fa461983744fd8227780854a2f19fb56370a32c017173"
+        "contentHash": "c0a54c6f8c8bb0cbf42fa461983744fd8227780854a2f19fb56370a32c017173",
+        "modifiedAt": "2026-09-20T03:20:53.000Z"
       },
       {
         "path": "tests/github.test.ts",
@@ -367,7 +456,8 @@
         "category": "test",
         "lines": 178,
         "bytes": 7235,
-        "contentHash": "bd1427b767e65bb6919c357bd3b1fc757988e3d6e99806f7238c57422e48ec76"
+        "contentHash": "bd1427b767e65bb6919c357bd3b1fc757988e3d6e99806f7238c57422e48ec76",
+        "modifiedAt": "2026-09-20T08:25:01.000Z"
       },
       {
         "path": "tests/isometric.test.ts",
@@ -375,7 +465,8 @@
         "category": "test",
         "lines": 34,
         "bytes": 1479,
-        "contentHash": "dc63ee7ad2c29da67590d653b64b36fcc04ca7f82c78cc258ef70bedf95567f7"
+        "contentHash": "dc63ee7ad2c29da67590d653b64b36fcc04ca7f82c78cc258ef70bedf95567f7",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "tests/layout.test.ts",
@@ -383,7 +474,17 @@
         "category": "test",
         "lines": 86,
         "bytes": 3363,
-        "contentHash": "078f9bd497421229df6388a4d14921bbad81b877bc3046e6a91a25971648f174"
+        "contentHash": "078f9bd497421229df6388a4d14921bbad81b877bc3046e6a91a25971648f174",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
+      },
+      {
+        "path": "tests/metrics.test.ts",
+        "language": "TypeScript",
+        "category": "test",
+        "lines": 28,
+        "bytes": 1279,
+        "contentHash": "5e7665c0c8aa766d2e710d07c62a8ede78e724c51c6552f530c4329c94e46456",
+        "modifiedAt": "2026-09-20T13:48:36.000Z"
       },
       {
         "path": "tests/pages.test.ts",
@@ -391,15 +492,17 @@
         "category": "test",
         "lines": 25,
         "bytes": 1228,
-        "contentHash": "7e9e5e03b61936bc287d5f21fb4c51620e636ff64b968dbe93a8b8f3b1c290c2"
+        "contentHash": "7e9e5e03b61936bc287d5f21fb4c51620e636ff64b968dbe93a8b8f3b1c290c2",
+        "modifiedAt": "2026-09-20T03:30:58.000Z"
       },
       {
         "path": "tests/pages/repository.spec.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 43,
-        "bytes": 2565,
-        "contentHash": "ee3c60f291d6d4e805f1fcfe3c85d0e24c7201ce48fa9583ed1c5193980ab6e7"
+        "lines": 53,
+        "bytes": 3212,
+        "contentHash": "6189be12451ee23ecc7bf08e42df671525ef3f07491ca0bfe99b4d8ffc35a93a",
+        "modifiedAt": "2026-09-20T08:40:16.000Z"
       },
       {
         "path": "tests/scanner.test.ts",
@@ -407,7 +510,8 @@
         "category": "test",
         "lines": 153,
         "bytes": 7224,
-        "contentHash": "0077314ee05a5f41290b7e4df5f2ebfde563232d9db4e5fed827ee0cd4f29907"
+        "contentHash": "0077314ee05a5f41290b7e4df5f2ebfde563232d9db4e5fed827ee0cd4f29907",
+        "modifiedAt": "2026-09-20T03:20:53.000Z"
       },
       {
         "path": "tests/scene.test.ts",
@@ -415,7 +519,8 @@
         "category": "test",
         "lines": 71,
         "bytes": 3679,
-        "contentHash": "1463a62004357e6fee028a60f696318223fa344007d8242e8d1fcfefc8289e4d"
+        "contentHash": "1463a62004357e6fee028a60f696318223fa344007d8242e8d1fcfefc8289e4d",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "tsconfig.json",
@@ -423,7 +528,8 @@
         "category": "config",
         "lines": 21,
         "bytes": 572,
-        "contentHash": "4c71773b1c65f0d1907efa28845b33fdf21991033e96b6aa506a947be7c8ad08"
+        "contentHash": "4c71773b1c65f0d1907efa28845b33fdf21991033e96b6aa506a947be7c8ad08",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       },
       {
         "path": "vite.config.ts",
@@ -431,7 +537,8 @@
         "category": "config",
         "lines": 7,
         "bytes": 204,
-        "contentHash": "b191bf170b51a3c8336b98bc2f879351a15f56624afe1877aea2faf6ae92f5b0"
+        "contentHash": "b191bf170b51a3c8336b98bc2f879351a15f56624afe1877aea2faf6ae92f5b0",
+        "modifiedAt": "2026-09-20T02:49:13.000Z"
       }
     ],
     "skipped": [],

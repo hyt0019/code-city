@@ -3,6 +3,7 @@ import { promisify } from 'node:util';
 import { mkdir, mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
 import { basename, dirname, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
+import { pathToFileURL } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
 import { scanLocal } from '../src/scanner/scan-local';
 import { classify, countLines } from '../src/scanner/languages';
@@ -34,6 +35,78 @@ async function fixture(files: Record<string, string | Buffer>) {
 }
 
 describe('local repository scanner', () => {
+  it('reads real per-file commit dates, subdirectory paths and renames without guessing shallow boundary dates', async () => {
+    const root = await fixture({
+      'src/中文 & file.ts': 'export const a = 1;',
+      'src/old.ts': 'export const b = 1;',
+    });
+    const git = (args: string[], date = '2025-01-01T12:00:00Z') =>
+      exec('git', args, {
+        cwd: root,
+        windowsHide: true,
+        env: { ...process.env, GIT_AUTHOR_DATE: date, GIT_COMMITTER_DATE: date },
+      });
+    await git(['init', '-b', 'main']);
+    await git(['config', 'user.name', 'Test']);
+    await git(['config', 'user.email', 'test@example.invalid']);
+    await git(['add', '.']);
+    await git(['-c', 'commit.gpgsign=false', 'commit', '-m', 'initial']);
+    await writeFile(join(root, 'src/中文 & file.ts'), 'export const a = 2;');
+    await git(['add', '.']);
+    await git(['-c', 'commit.gpgsign=false', 'commit', '-m', 'recent'], '2026-09-01T12:00:00Z');
+    const scanned = await scanLocal(join(root, 'src'));
+    expect(scanned.files.find((file) => file.path === '中文 & file.ts')?.modifiedAt).toBe(
+      '2026-09-01T12:00:00.000Z',
+    );
+    expect(scanned.files.find((file) => file.path === 'old.ts')?.modifiedAt).toBe(
+      '2025-01-01T12:00:00.000Z',
+    );
+    const buildings = layoutCity([scanned]).repositories[0].buildings;
+    expect(
+      buildings.find((file) => file.path === '中文 & file.ts')!.windowBrightness,
+    ).toBeGreaterThan(buildings.find((file) => file.path === 'old.ts')!.windowBrightness!);
+    const cloneRoot = await fixture({});
+    const clone = join(cloneRoot, 'checkout');
+    await git([
+      '-c',
+      'protocol.file.allow=always',
+      'clone',
+      '--depth=1',
+      pathToFileURL(root).href,
+      clone,
+    ]);
+    expect((await scanLocal(clone)).files.every((file) => file.modifiedAt === undefined)).toBe(
+      true,
+    );
+    await exec('git', ['-c', 'protocol.file.allow=always', 'fetch', '--depth=2', 'origin'], {
+      cwd: clone,
+      windowsHide: true,
+    });
+    const partial = await scanLocal(clone);
+    expect(partial.files.find((file) => file.path === 'src/中文 & file.ts')?.modifiedAt).toBe(
+      '2026-09-01T12:00:00.000Z',
+    );
+    await git(['mv', 'src/中文 & file.ts', 'src/renamed.ts']);
+    await git(['-c', 'commit.gpgsign=false', 'commit', '-m', 'rename'], '2026-09-02T12:00:00Z');
+    expect(
+      (await scanLocal(root)).files.find((file) => file.path === 'src/renamed.ts')?.modifiedAt,
+    ).toBe('2026-09-02T12:00:00.000Z');
+    await git(['checkout', '-b', 'feature']);
+    await writeFile(join(root, 'src/renamed.ts'), 'export const a = 3;');
+    await git(['add', '.']);
+    await git(
+      ['-c', 'commit.gpgsign=false', 'commit', '-m', 'branch change'],
+      '2026-09-03T12:00:00Z',
+    );
+    await git(['checkout', 'main']);
+    await git(
+      ['-c', 'commit.gpgsign=false', 'merge', '--no-ff', 'feature', '-m', 'integration'],
+      '2026-09-04T12:00:00Z',
+    );
+    expect(
+      (await scanLocal(root)).files.find((file) => file.path === 'src/renamed.ts')?.modifiedAt,
+    ).toBe('2026-09-04T12:00:00.000Z');
+  });
   it('scans more than 5,000 small files without dropping entries', async () => {
     const root = await fixture({});
     for (let offset = 0; offset < 5001; offset += 100) {

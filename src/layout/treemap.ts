@@ -10,6 +10,7 @@ import type {
 } from '../core/model';
 import { heightFromLines, stableHash } from '../core/metrics';
 import { languageColor, midnightTheme } from '../core/theme';
+import { activityBrightness } from '../core/activity';
 interface Parcel {
   key: string;
   value: number;
@@ -113,6 +114,12 @@ export function layoutCity(input: RepositorySnapshot[], owner = 'local'): CitySc
           language: file.language,
           lines: file.lines,
           bytes: file.bytes,
+          ...(file.modifiedAt
+            ? {
+                modifiedAt: file.modifiedAt,
+                windowBrightness: activityBrightness(file.modifiedAt, snapshot.committedAt),
+              }
+            : {}),
           position: { x: round(footprint.x), y: round(footprint.y) },
           width: round(footprint.width),
           depth: round(footprint.depth),

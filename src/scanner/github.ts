@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { githubRef, githubRepository } from '../core/config';
 import { scanLocal } from './scan-local';
 import type { ScanOptions } from './scan-local';
+import { HISTORY_LIMIT } from './file-history';
 
 const execute = promisify(execFile);
 const metadataSchema = z.object({
@@ -186,7 +187,7 @@ export async function collectGitHub(
       throw new Error('Cached checkout has local changes. Use a fresh cache directory.');
   }
   try {
-    await git(['fetch', '--depth=1', '--no-tags', 'origin', ref]);
+    await git(['fetch', `--depth=${HISTORY_LIMIT + 1}`, '--no-tags', 'origin', ref]);
   } catch (error) {
     // An accessible repository with no refs is an empty city, not a network failure.
     if (ref !== 'HEAD' || (await git(['ls-remote', 'origin']))) throw error;

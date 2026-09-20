@@ -8,6 +8,7 @@ import type { FileSnapshot, RepositorySnapshot } from '../core/model';
 import { DEFAULT_EXCLUDES } from './exclusions';
 import { classify, countLines } from './languages';
 import { readGitMetadata } from './git-metadata';
+import { fileHistory } from './file-history';
 
 export interface ScanOptions {
   gitEnvironment?: NodeJS.ProcessEnv;
@@ -26,6 +27,9 @@ export async function scanLocal(
   const root = await realpath(resolve(directory));
   if (!(await lstat(root)).isDirectory()) throw new Error('Repository input must be a directory.');
   const metadata = await readGitMetadata(root, options.gitEnvironment);
+  const dates = metadata.commitSha
+    ? await fileHistory(root, options.gitEnvironment)
+    : new Map<string, string>();
   const names = (
     await fg('**/*', {
       cwd: root,
@@ -119,6 +123,7 @@ export async function scanLocal(
         lines: countLines(content, kind.language),
         bytes: data.byteLength,
         contentHash: hash(data),
+        ...(dates.has(path) ? { modifiedAt: dates.get(path) } : {}),
       });
       if (files.length > (options.maxFiles ?? 20_000)) throw new Error('SCAN_LIMIT');
     } catch (error) {

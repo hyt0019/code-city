@@ -27,6 +27,7 @@ export interface Building {
   lines: number;
   bytes: number;
   modifiedAt?: string;
+  windowBrightness?: number;
   position: Point;
   width: number;
   depth: number;
@@ -67,6 +68,7 @@ export interface CityScene {
 }
 
 export interface FileSnapshot {
+  modifiedAt?: string;
   path: string;
   language: string;
   category: Category;
