@@ -1,0 +1,686 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { CSSProperties, KeyboardEvent, MouseEvent, ReactNode } from 'react';
+import {
+  ArrowDownToLine,
+  ArrowRight,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Code2,
+  Compass,
+  Copy,
+  ExternalLink,
+  FileCode2,
+  FolderGit2,
+  House,
+  Info,
+  Layers3,
+  Maximize,
+  Minus,
+  Plus,
+  RotateCcw,
+  Sparkles,
+  Tag,
+  X,
+} from 'lucide-react';
+import type { CityScene } from './core/model';
+import { cityLegend } from './core/theme';
+import config from '../codecity.config';
+import { compactNumber, sceneStats } from './core/metrics';
+import { renderBanner, renderCitySvg } from './renderers/svg/city';
+
+function Logo({ small = false }: { small?: boolean }) {
+  return (
+    <span className={`brand ${small ? 'brand-small' : ''}`}>
+      <svg width="29" height="34" viewBox="0 0 40 44" aria-hidden="true">
+        <path fill="#90dcff" d="M20 1 39 12 20 23 1 12Z" />
+        <path fill="#439fd1" d="M1 12 20 23 20 44 1 33Z" />
+        <path fill="#256489" d="M20 23 39 12 39 33 20 44Z" />
+      </svg>
+      {!small && (
+        <span>
+          CODE CITY<span className="brand-dot">.</span>
+        </span>
+      )}
+    </span>
+  );
+}
+
+function Dialog({
+  title,
+  children,
+  onClose,
+}: {
+  title: string;
+  children: ReactNode;
+  onClose: () => void;
+}) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    dialog.current?.showModal();
+  }, []);
+  return (
+    <dialog
+      ref={dialog}
+      onCancel={onClose}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+      aria-label={title}
+    >
+      <div className="dialog-header">
+        <h2>{title}</h2>
+        <button className="icon-button" aria-label="Close dialog" onClick={onClose}>
+          <X size={18} />
+        </button>
+      </div>
+      {children}
+    </dialog>
+  );
+}
+
+export default function App({ scene }: { scene: CityScene }) {
+  const stats = useMemo(() => sceneStats(scene), [scene]);
+  const allBuildings = useMemo(
+    () =>
+      scene.repositories.flatMap((repository) =>
+        repository.buildings.map((building) => ({ ...building, repository: repository.name })),
+      ),
+    [scene],
+  );
+  const legend = useMemo(() => cityLegend(scene), [scene]);
+  const [repository, setRepository] = useState('');
+  const [selectedId, setSelectedId] = useState(
+    allBuildings.find((building) => building.landmark)?.id ?? allBuildings[0]?.id ?? '',
+  );
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [showLabels, setShowLabels] = useState(true);
+  const [zoom, setZoom] = useState(1);
+  const [view, setView] = useState<'overview' | 'repositories'>('overview');
+  const [dialog, setDialog] = useState<'export' | 'mapping' | null>(null);
+  const [notice, setNotice] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [exportTitle, setExportTitle] = useState<string>(config.profile.title);
+  const [exportSubtitle, setExportSubtitle] = useState<string>(config.profile.subtitle);
+  const active = allBuildings.find((building) => building.id === (hoveredId || selectedId));
+  const visibleBuildings = allBuildings.filter(
+    (building) => !repository || building.repository === repository,
+  );
+  const city = useMemo(
+    () =>
+      renderCitySvg(scene, {
+        selectedId: hoveredId || selectedId,
+        repository,
+        showLabels,
+        interactive: true,
+      }),
+    [scene, hoveredId, selectedId, repository, showLabels],
+  );
+  const banner = useMemo(
+    () => renderBanner(scene, { title: exportTitle, subtitle: exportSubtitle, showLabels }),
+    [scene, exportTitle, exportSubtitle, showLabels],
+  );
+  const embed = '[![My Code City](./assets/profile.svg)](./)';
+
+  useEffect(() => {
+    if (!notice) return;
+    const timer = setTimeout(() => setNotice(''), 3500);
+    return () => clearTimeout(timer);
+  }, [notice]);
+
+  function filterRepository(name: string) {
+    setRepository(name);
+    setHoveredId(null);
+    if (name)
+      setSelectedId(allBuildings.find((building) => building.repository === name)?.id ?? '');
+  }
+
+  function download() {
+    const url = URL.createObjectURL(new Blob([banner], { type: 'image/svg+xml;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'code-city-profile.svg';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setNotice('Your skyline is ready. SVG downloaded.');
+  }
+
+  async function copyEmbed() {
+    try {
+      await navigator.clipboard.writeText(embed);
+      setCopied(true);
+      setNotice('README snippet copied. Update the image URL after hosting.');
+    } catch {
+      setNotice('Clipboard unavailable. Select and copy the snippet below.');
+    }
+  }
+
+  function buildingId(event: MouseEvent | KeyboardEvent) {
+    return (event.target as Element).closest('[data-building]')?.getAttribute('data-building');
+  }
+
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <a
+          className="logo-link"
+          href="#"
+          aria-label="Code City home"
+          onClick={() => {
+            setView('overview');
+            filterRepository('');
+          }}
+        >
+          <Logo />
+        </a>
+        <div className="workspace">
+          <span className="workspace-avatar">
+            <Code2 size={19} />
+          </span>
+          <div>
+            Personal workspace<span>Your code, reimagined</span>
+          </div>
+          <span className="workspace-dot" />
+        </div>
+        <div className="nav-caption">WORKSPACE</div>
+        <nav aria-label="Main navigation">
+          <button
+            className={`nav-item ${view === 'overview' ? 'active' : ''}`}
+            onClick={() => {
+              setView('overview');
+              filterRepository('');
+            }}
+          >
+            <House size={17} />
+            Overview{view === 'overview' && <span className="active-dot" />}
+          </button>
+          <button
+            className={`nav-item ${view === 'repositories' ? 'active' : ''}`}
+            onClick={() => setView('repositories')}
+          >
+            <FolderGit2 size={17} />
+            Repositories<span className="count">{stats.repositories}</span>
+          </button>
+          <button className="nav-item" onClick={() => setDialog('export')}>
+            <ArrowDownToLine size={17} />
+            Export city
+            <ChevronRight className="nav-chevron" size={14} />
+          </button>
+        </nav>
+        <div className="nav-caption repo-caption">
+          YOUR DISTRICTS <span>{String(stats.repositories).padStart(2, '0')}</span>
+        </div>
+        <div className="district-nav">
+          {scene.repositories.map((repo) => (
+            <button
+              key={repo.name}
+              className={`district-link ${repository === repo.name ? 'chosen' : ''}`}
+              onClick={() => {
+                filterRepository(repository === repo.name ? '' : repo.name);
+                setView('overview');
+              }}
+            >
+              <span
+                className="color-dot"
+                style={{ background: scene.theme.languages[repo.primaryLanguage] }}
+              />
+              <span>{repo.name}</span>
+              <span className="file-count">{repo.buildings.length} files</span>
+            </button>
+          ))}
+        </div>
+        <div className="sidebar-bottom">
+          <div className="theme-card">
+            <span className="theme-moon">◐</span>
+            <div>
+              Midnight Skyline<span>City theme</span>
+            </div>
+            <span className="theme-swatch" />
+          </div>
+          <button className="mapping-link" onClick={() => setDialog('mapping')}>
+            <Info size={15} />
+            How the city works
+            <ExternalLink size={13} />
+          </button>
+          <div className="version">
+            <span className="status-dot" />
+            {scene.isFixture ? 'Local demo' : 'Local repository'}
+            <span>v0.2.0</span>
+          </div>
+        </div>
+      </aside>
+
+      <div className="main-shell">
+        <header className="topbar">
+          <div className="breadcrumb">
+            <span>Workspace</span>
+            <ChevronRight size={13} />
+            <span>{view === 'overview' ? 'Overview' : 'Repositories'}</span>
+          </div>
+          <div className="topbar-right">
+            <span className="fixture-badge">
+              <span />
+              {scene.isFixture ? 'Demo data' : 'Local scan'}
+            </span>
+            <span className="topbar-divider" />
+            <button
+              onClick={() => setDialog('mapping')}
+              aria-label="About this city"
+              className="icon-button"
+            >
+              <Info size={18} />
+            </button>
+            <span className="avatar">CC</span>
+          </div>
+        </header>
+
+        <main>
+          <section className="page-heading">
+            <div>
+              <div className="eyebrow">
+                <span /> A DIFFERENT VIEW OF YOUR CODE
+              </div>
+              <h1>
+                {view === 'overview' ? 'My Code City' : 'Your repositories'}
+                <span className="heading-dot">.</span>
+              </h1>
+              <p>
+                {view === 'overview'
+                  ? 'Every file, a building. Every repository, a neighborhood.'
+                  : `${stats.repositories} neighborhoods. One connected city.`}
+              </p>
+            </div>
+            <button className="primary-button" onClick={() => setDialog('export')}>
+              <ArrowDownToLine size={16} />
+              Export SVG
+              <ArrowRight size={15} />
+            </button>
+          </section>
+
+          {view === 'repositories' && (
+            <section className="repo-grid" aria-label="Repository list">
+              {scene.repositories.map((repo) => (
+                <button
+                  className="repository-card"
+                  key={repo.name}
+                  onClick={() => {
+                    filterRepository(repo.name);
+                    setView('overview');
+                  }}
+                >
+                  <span
+                    className="repo-card-icon"
+                    style={{ color: scene.theme.languages[repo.primaryLanguage] }}
+                  >
+                    <FolderGit2 size={23} />
+                  </span>
+                  <h2>
+                    {repo.name}
+                    <ArrowRight size={16} />
+                  </h2>
+                  <p>{repo.description}</p>
+                  <div>
+                    <span>{repo.primaryLanguage}</span>
+                    <span>{repo.buildings.length} files</span>
+                  </div>
+                </button>
+              ))}
+            </section>
+          )}
+
+          <section className="city-panel" aria-label="City explorer">
+            <div className="canvas-toolbar">
+              <div className="canvas-title">
+                <Layers3 size={16} />
+                <span>City explorer</span>
+                <span className="tiny-badge">2.5D</span>
+              </div>
+              <div className="canvas-filters">
+                <div className="select-wrap">
+                  <select
+                    aria-label="Filter repository"
+                    value={repository}
+                    onChange={(event) => filterRepository(event.target.value)}
+                  >
+                    <option value="">All repositories</option>
+                    {scene.repositories.map((repo) => (
+                      <option key={repo.name} value={repo.name}>
+                        {repo.name}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={13} />
+                </div>
+                <span className="metric-label">
+                  Height <span>Lines of code</span>
+                </span>
+                <button
+                  className={`icon-button labels-button ${showLabels ? 'toggled' : ''}`}
+                  aria-label="Toggle district labels"
+                  aria-pressed={showLabels}
+                  onClick={() => setShowLabels(!showLabels)}
+                >
+                  <Tag size={16} />
+                </button>
+              </div>
+            </div>
+
+            <div className="city-stage">
+              {stats.files === 0 && (
+                <div className="empty-city" role="status">
+                  <h2>No source files to display</h2>
+                  <p>This directory is empty or its files were excluded.</p>
+                </div>
+              )}
+              <div className="city-caption">
+                <span className="status-dot" />{' '}
+                {repository
+                  ? `${repository.toUpperCase()} DISTRICT`
+                  : 'YOUR NEIGHBORHOOD, AT A GLANCE'}
+                <span>
+                  {visibleBuildings.length} buildings ·{' '}
+                  {repository
+                    ? 'District highlighted'
+                    : `Built from ${stats.repositories} ${scene.isFixture ? 'demo' : 'local'} repositories`}
+                </span>
+              </div>
+              <div
+                className="city-art"
+                style={{ '--city-zoom': zoom } as CSSProperties}
+                onClick={(event) => {
+                  const id = buildingId(event);
+                  if (id) setSelectedId(id);
+                }}
+                onMouseOver={(event) => {
+                  const id = buildingId(event);
+                  setHoveredId(id || null);
+                }}
+                onMouseLeave={() => setHoveredId(null)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    const id = buildingId(event);
+                    if (id) {
+                      event.preventDefault();
+                      setSelectedId(id);
+                    }
+                  }
+                }}
+                dangerouslySetInnerHTML={{ __html: city }}
+              />
+              <div className="compass">
+                <Compass size={30} strokeWidth={1} />
+                <span>ISOMETRIC VIEW</span>
+              </div>
+              {active && (
+                <aside className="file-inspector" aria-label="File details">
+                  <div className="inspector-top">
+                    <span className="inspector-file-icon" style={{ color: active.color }}>
+                      <FileCode2 size={21} />
+                    </span>
+                    <span>FILE INSPECTOR</span>
+                    <span className="inspector-indicator" />
+                  </div>
+                  <h3 title={active.path}>{active.path}</h3>
+                  <span className="inspector-repo">
+                    {active.repository} <ChevronRight size={11} /> {active.category}
+                  </span>
+                  <dl>
+                    <div>
+                      <dt>Language</dt>
+                      <dd>
+                        <i style={{ background: active.color }} />
+                        {active.language}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Lines of code</dt>
+                      <dd>{active.lines.toLocaleString('en-US')}</dd>
+                    </div>
+                    <div>
+                      <dt>File size</dt>
+                      <dd>{(active.bytes / 1024).toFixed(1)} KB</dd>
+                    </div>
+                  </dl>
+                  <div className="inspector-foot">
+                    <span />
+                    {scene.isFixture ? (
+                      'Fixture file · preview only'
+                    ) : active.githubUrl ? (
+                      <a href={active.githubUrl} target="_blank" rel="noreferrer">
+                        View committed source ↗
+                      </a>
+                    ) : (
+                      'Local file · scanned from disk'
+                    )}
+                  </div>
+                </aside>
+              )}
+              <div className="zoom-controls">
+                <button
+                  aria-label="Zoom out"
+                  disabled={zoom <= 0.8}
+                  onClick={() => setZoom(Math.max(0.8, +(zoom - 0.1).toFixed(1)))}
+                >
+                  <Minus size={16} />
+                </button>
+                <span aria-live="polite">{Math.round(zoom * 100)}%</span>
+                <button
+                  aria-label="Zoom in"
+                  disabled={zoom >= 1.5}
+                  onClick={() => setZoom(Math.min(1.5, +(zoom + 0.1).toFixed(1)))}
+                >
+                  <Plus size={16} />
+                </button>
+                <span className="zoom-divider" />
+                <button
+                  aria-label="Reset view"
+                  onClick={() => {
+                    setZoom(1);
+                    filterRepository('');
+                  }}
+                >
+                  <Maximize size={15} />
+                </button>
+              </div>
+            </div>
+
+            <div className="canvas-footer">
+              <div className="legend">
+                {legend.map((item) => (
+                  <span key={item.name}>
+                    <i style={{ background: item.color }} />
+                    {item.name}
+                  </span>
+                ))}
+              </div>
+              <span className="interaction-hint">
+                Hover to discover <span>·</span> Click to inspect
+              </span>
+            </div>
+          </section>
+
+          <section className="stats-strip" aria-label="City statistics">
+            <div>
+              <FolderGit2 size={19} />
+              <span>
+                <strong>{stats.repositories.toString().padStart(2, '0')}</strong>Repositories
+              </span>
+            </div>
+            <div>
+              <Layers3 size={19} />
+              <span>
+                <strong>{stats.files}</strong>Buildings / files
+              </span>
+            </div>
+            <div>
+              <Code2 size={21} />
+              <span>
+                <strong>{compactNumber(stats.lines)}</strong>Lines of code
+              </span>
+            </div>
+            <div>
+              <Sparkles size={19} />
+              <span>
+                <strong>{stats.languages.length.toString().padStart(2, '0')}</strong>Languages
+              </span>
+            </div>
+            <span className="stats-note">
+              <span className="status-dot" />
+              Same code. Same city.
+            </span>
+          </section>
+
+          <section className="readme-section">
+            <div className="readme-heading">
+              <div>
+                <span className="eyebrow">TAKE YOUR SKYLINE WITH YOU</span>
+                <h2>
+                  Made for your README<span>.</span>
+                </h2>
+                <p>A little piece of your code, wherever you share it.</p>
+              </div>
+              <button className="secondary-button" onClick={() => setDialog('export')}>
+                Customize & export
+                <ArrowRight size={15} />
+              </button>
+            </div>
+            <div className="banner-frame">
+              <div className="banner-frame-header">
+                <span>
+                  <span />
+                  profile.svg
+                </span>
+                <span>
+                  1200 × 420 <span className="filetype">SVG</span>
+                </span>
+              </div>
+              <div className="banner-preview" dangerouslySetInnerHTML={{ __html: banner }} />
+            </div>
+          </section>
+          <footer className="page-footer">
+            <span>
+              <Logo small />
+              Built from code. Made to explore.
+            </span>
+            <span>
+              Midnight Skyline <span className="footer-separator">/</span>{' '}
+              {scene.isFixture ? 'Demo city' : 'Built from your code'}
+            </span>
+          </footer>
+        </main>
+      </div>
+
+      {dialog === 'export' && (
+        <Dialog title="Take your skyline with you" onClose={() => setDialog(null)}>
+          <p className="dialog-description">
+            A self-contained SVG for your GitHub profile or project README.
+          </p>
+          <div className="export-preview" dangerouslySetInnerHTML={{ __html: banner }} />
+          <div className="export-fields">
+            <label>
+              City title
+              <input
+                value={exportTitle}
+                maxLength={28}
+                onChange={(event) => setExportTitle(event.target.value)}
+              />
+            </label>
+            <label>
+              Subtitle
+              <input
+                value={exportSubtitle}
+                maxLength={48}
+                onChange={(event) => setExportSubtitle(event.target.value)}
+              />
+            </label>
+          </div>
+          <div className="export-meta">
+            <span>
+              <Check size={14} />
+              1200 × 420
+            </span>
+            <span>
+              <Check size={14} />
+              No external assets
+            </span>
+            <span>
+              <Check size={14} />
+              {(new Blob([banner]).size / 1024).toFixed(0)} KB
+            </span>
+          </div>
+          <div className="embed-section">
+            <span>
+              README snippet <small>Update the image path after hosting</small>
+            </span>
+            <div>
+              <code>{embed}</code>
+              <button aria-label="Copy README snippet" className="icon-button" onClick={copyEmbed}>
+                {copied ? <Check size={16} /> : <Copy size={16} />}
+              </button>
+            </div>
+          </div>
+          <div className="dialog-actions">
+            <button
+              className="secondary-button"
+              onClick={() => {
+                setExportTitle(config.profile.title);
+                setExportSubtitle(config.profile.subtitle);
+              }}
+            >
+              <RotateCcw size={14} />
+              Reset text
+            </button>
+            <button className="primary-button" onClick={download}>
+              <ArrowDownToLine size={16} />
+              Download SVG
+            </button>
+          </div>
+        </Dialog>
+      )}
+      {dialog === 'mapping' && (
+        <Dialog title="A city with a story" onClose={() => setDialog(null)}>
+          <p className="dialog-description">
+            Every part of the skyline represents a part of the code.
+          </p>
+          <div className="mapping-list">
+            {[
+              ['Repository', 'A distinct neighborhood'],
+              ['File', 'One building in the city'],
+              ['Lines of code', 'Building height, logarithmically scaled'],
+              ['Language', 'The color of its buildings'],
+              ['Test file', 'A green roof'],
+              ['Documentation', 'A library and a shared plaza'],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <span>{label}</span>
+                <ArrowRight size={14} />
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <p className="fixture-note">
+            {scene.isFixture
+              ? 'This demo uses 30 fixed example files in 4 fictional repositories.'
+              : `This city contains ${stats.files} files scanned from ${stats.repositories} local repositories. Each neighborhood is divided into directory blocks.`}{' '}
+            Building positions and window lights are deterministic. 3D navigation is planned for the
+            next stage.
+          </p>
+          <button className="primary-button" onClick={() => setDialog(null)}>
+            Back to the city
+            <ArrowRight size={15} />
+          </button>
+        </Dialog>
+      )}
+      <div className={`toast ${notice ? 'visible' : ''}`} role="status">
+        {notice && (
+          <>
+            <Check size={16} />
+            {notice}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

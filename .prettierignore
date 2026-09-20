@@ -1,0 +1,9 @@
+node_modules
+dist
+generated
+public/assets
+previews
+code-city-project-brief.md
+package-lock.json
+test-results
+playwright-report
