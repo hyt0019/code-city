@@ -1,14 +1,34 @@
 import { z } from 'zod';
 
+const repositoryName = z.string().trim().min(1).max(100).optional();
+export const githubRepository = z
+  .string()
+  .regex(/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})\/[A-Za-z0-9_.-]{1,100}$/)
+  .refine((value) => !['.', '..'].includes(value.split('/')[1]), 'Invalid GitHub repository');
+export const githubRef = z
+  .string()
+  .min(1)
+  .max(200)
+  .refine(
+    (value) =>
+      !value.startsWith('-') &&
+      !value.startsWith('/') &&
+      !value.endsWith('/') &&
+      !value.endsWith('.') &&
+      !value.includes('..') &&
+      !value.includes('@{') &&
+      !/[\s~^:?*\[\\\x00-\x1f]/.test(value),
+    'Invalid Git ref',
+  );
+export const repositoryInput = z.union([
+  z.object({ path: z.string().min(1), name: repositoryName }).strict(),
+  z.object({ github: githubRepository, ref: githubRef.optional(), name: repositoryName }).strict(),
+]);
+
 export const configSchema = z
   .object({
     owner: z.string().trim().min(1).max(100).default('local'),
-    repositories: z
-      .array(
-        z.object({ path: z.string().min(1), name: z.string().trim().min(1).max(100).optional() }),
-      )
-      .max(8)
-      .default([]),
+    repositories: z.array(repositoryInput).max(8).default([]),
     exclude: z.array(z.string()).default([]),
     scanner: z
       .object({
@@ -81,6 +101,7 @@ export const sceneSchema = z.object({
   camera: z.object({ origin: point, scale: positive }),
   repositories: z.array(
     z.object({
+      source: z.enum(['local', 'github']).optional(),
       name: z.string().min(1),
       description: z.string(),
       url: githubUrl.optional(),

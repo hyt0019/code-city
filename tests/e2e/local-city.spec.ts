@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 import { createFixture } from '../../fixtures/city';
+import { sceneSource } from '../../src/core/source-label';
 
 test('loads the generated scene and exports the same real city', async ({ page }, testInfo) => {
   const scene = JSON.parse(await readFile('generated/scene.json', 'utf8'));
@@ -13,7 +14,9 @@ test('loads the generated scene and exports the same real city', async ({ page }
   await page.goto('/');
   await expect(page.locator('.city-art [data-building]')).toHaveCount(count);
   await expect(page.locator('.fixture-badge')).toContainText(
-    scene.isFixture ? 'Demo data' : 'Local scan',
+    scene.isFixture
+      ? 'Demo data'
+      : `${sceneSource(scene) === 'local' ? 'Local' : sceneSource(scene)} scan`,
   );
   await expect(page.locator('.stats-strip')).toContainText(String(count));
   await page.screenshot({
@@ -28,7 +31,7 @@ test('loads the generated scene and exports the same real city', async ({ page }
   for await (const chunk of stream!) chunks.push(chunk as Buffer);
   const svg = Buffer.concat(chunks).toString();
   expect(svg).toContain(`${count} files`);
-  expect(svg).toContain(scene.isFixture ? 'DEMO CITY' : 'LOCAL CITY');
+  expect(svg).toContain(`${sceneSource(scene).toUpperCase()} CITY`);
   expect(errors).toEqual([]);
 });
 

@@ -11,7 +11,10 @@ export function normalizeGitHubUrl(remote: string): string | undefined {
   return match ? `https://github.com/${match[1]}/${match[2]}` : undefined;
 }
 
-export async function readGitMetadata(root: string): Promise<{
+export async function readGitMetadata(
+  root: string,
+  environment?: NodeJS.ProcessEnv,
+): Promise<{
   commitSha?: string;
   committedAt?: string;
   pathPrefix?: string;
@@ -26,7 +29,7 @@ export async function readGitMetadata(root: string): Promise<{
         timeout: 10_000,
         maxBuffer: 4 * 1024 * 1024,
         windowsHide: true,
-        env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
+        env: { ...(environment ?? process.env), GIT_TERMINAL_PROMPT: '0' },
       })
     ).stdout.trim();
   try {

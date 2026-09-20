@@ -31,6 +31,7 @@ import type { ThemeId } from './core/theme';
 import { repositoryScene, repositorySlug } from './core/repository-scene';
 import City3D from './renderers/three/City3D';
 import { sitePath } from './core/site-paths';
+import { sceneSource } from './core/source-label';
 import config from '../codecity.config';
 import { compactNumber, sceneStats } from './core/metrics';
 import { renderBanner, renderCitySvg } from './renderers/svg/city';
@@ -97,6 +98,7 @@ export default function App({
     sourceScene.theme.background === daylightTheme.background ? 'github-light' : 'github-dark',
   );
   const scene = useMemo(() => applyTheme(sourceScene, theme), [sourceScene, theme]);
+  const source = sceneSource(scene);
   const [dimension, setDimension] = useState<'2.5D' | '3D'>('2.5D');
   const [reset, setReset] = useState(0);
   const [threeError, setThreeError] = useState('');
@@ -293,7 +295,9 @@ export default function App({
           </button>
           <div className="version">
             <span className="status-dot" />
-            {scene.isFixture ? 'Local demo' : 'Local repository'}
+            {scene.isFixture
+              ? 'Local demo'
+              : `${source === 'local' ? 'Local' : source} repositories`}
             <span>v0.3.0</span>
           </div>
         </div>
@@ -318,7 +322,7 @@ export default function App({
             </button>
             <span className="fixture-badge">
               <span />
-              {scene.isFixture ? 'Demo data' : 'Local scan'}
+              {scene.isFixture ? 'Demo data' : `${source === 'local' ? 'Local' : source} scan`}
             </span>
             <span className="topbar-divider" />
             <button
@@ -454,7 +458,7 @@ export default function App({
                   {visibleBuildings.length} buildings ·{' '}
                   {repository
                     ? 'District highlighted'
-                    : `Built from ${stats.repositories} ${scene.isFixture ? 'demo' : 'local'} repositories`}
+                    : `Built from ${stats.repositories} ${source} repositories`}
                 </span>
               </div>
               {dimension === '3D' ? (
@@ -804,7 +808,7 @@ export default function App({
           <p className="fixture-note">
             {scene.isFixture
               ? 'This demo uses 30 fixed example files in 4 fictional repositories.'
-              : `This city contains ${stats.files} files scanned from ${stats.repositories} local repositories. Each neighborhood is divided into directory blocks.`}{' '}
+              : `This city contains ${stats.files} files scanned from ${stats.repositories} ${source} repositories. Each neighborhood is divided into directory blocks.`}{' '}
             Building positions and window lights are deterministic. The 2.5D and 3D views share the
             same scene. In 3D, drag to rotate, right-drag to pan and scroll to zoom. Arrow keys
             rotate the focused canvas; Home resets the camera.

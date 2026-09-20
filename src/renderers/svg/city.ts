@@ -2,6 +2,7 @@ import type { Building, CityScene, Point } from '../../core/model';
 import { compactNumber, sceneStats, stableHash } from '../../core/metrics';
 import { project } from '../../layout/isometric';
 import { cityLegend, cityPalette, languageColor } from '../../core/theme';
+import { sceneSource } from '../../core/source-label';
 
 export interface RenderOptions {
   selectedId?: string;
@@ -368,7 +369,7 @@ export function renderBanner(scene: CityScene, options: BannerOptions = {}): str
   const subtitle = options.subtitle ?? 'A skyline built from code';
   const titleSize = Math.min(43, Math.floor(510 / Math.max(title.length, 1)));
   const subtitleSize = Math.min(16, Math.floor(570 / Math.max(subtitle.length, 1)));
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 1200 420" role="img" aria-labelledby="banner-title banner-desc"><title id="banner-title">${escapeXml(title)}</title><desc id="banner-desc">${stats.repositories} ${scene.isFixture ? 'demo' : 'local'} repositories, ${stats.files} files and ${stats.lines} lines of code, shown as an isometric city.</desc><rect width="1200" height="420" rx="12" fill="${scene.theme.background}"/><rect x="0.5" y="0.5" width="1199" height="419" rx="12" fill="none" stroke="${palette.light ? palette.labelBorder : '#283444'}"/><g font-family="system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif"><path d="M46 40 62 49 46 58 30 49Z" fill="#80d6fb"/><path d="M30 49 46 58 46 77 30 68Z" fill="#389ace"/><path d="M46 58 62 49 62 68 46 77Z" fill="#236489"/><text x="78" y="65" fill="${palette.light ? scene.theme.text : '#e5edf7'}" font-size="15" font-weight="600" letter-spacing="3.4">CODE CITY</text><text x="32" y="156" fill="${scene.theme.text}" font-size="${titleSize}" font-weight="700" letter-spacing="-1.4">${escapeXml(title)}</text><text x="34" y="186" fill="${scene.theme.muted}" font-size="${subtitleSize}">${escapeXml(subtitle)}</text>${[
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 1200 420" role="img" aria-labelledby="banner-title banner-desc"><title id="banner-title">${escapeXml(title)}</title><desc id="banner-desc">${stats.repositories} ${sceneSource(scene)} repositories, ${stats.files} files and ${stats.lines} lines of code, shown as an isometric city.</desc><rect width="1200" height="420" rx="12" fill="${scene.theme.background}"/><rect x="0.5" y="0.5" width="1199" height="419" rx="12" fill="none" stroke="${palette.light ? palette.labelBorder : '#283444'}"/><g font-family="system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif"><path d="M46 40 62 49 46 58 30 49Z" fill="#80d6fb"/><path d="M30 49 46 58 46 77 30 68Z" fill="#389ace"/><path d="M46 58 62 49 62 68 46 77Z" fill="#236489"/><text x="78" y="65" fill="${palette.light ? scene.theme.text : '#e5edf7'}" font-size="15" font-weight="600" letter-spacing="3.4">CODE CITY</text><text x="32" y="156" fill="${scene.theme.text}" font-size="${titleSize}" font-weight="700" letter-spacing="-1.4">${escapeXml(title)}</text><text x="34" y="186" fill="${scene.theme.muted}" font-size="${subtitleSize}">${escapeXml(subtitle)}</text>${[
     { value: String(stats.repositories), label: 'repositories' },
     { value: String(stats.files), label: 'files' },
     { value: compactNumber(stats.lines), label: 'lines of code' },
@@ -379,7 +380,7 @@ export function renderBanner(scene: CityScene, options: BannerOptions = {}): str
     )
     .join(
       '',
-    )}<text x="34" y="385" fill="${palette.light ? scene.theme.muted : '#677b90'}" font-size="10" letter-spacing="1.6">${scene.isFixture ? 'DEMO CITY' : 'LOCAL CITY'} · ${escapeXml(scene.theme.name.toUpperCase())}</text></g><g transform="translate(348 2) scale(0.75 0.62)">${renderCityContents(scene, { showLabels: options.showLabels })}</g>${
+    )}<text x="34" y="385" fill="${palette.light ? scene.theme.muted : '#677b90'}" font-size="10" letter-spacing="1.6">${sceneSource(scene).toUpperCase()} CITY · ${escapeXml(scene.theme.name.toUpperCase())}</text></g><g transform="translate(348 2) scale(0.75 0.62)">${renderCityContents(scene, { showLabels: options.showLabels })}</g>${
     options.showLegend === false
       ? ''
       : `<g font-family="system-ui,sans-serif" font-size="11">${cityLegend(scene)

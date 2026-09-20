@@ -36,6 +36,7 @@ export interface Building {
   githubUrl?: string;
 }
 export interface RepositoryDistrict {
+  source?: 'local' | 'github';
   name: string;
   description: string;
   url?: string;
@@ -74,7 +75,9 @@ export interface FileSnapshot {
 export interface RepositorySnapshot {
   schemaVersion: 1;
   name: string;
-  source: 'local';
+  source: 'local' | 'github';
+  description?: string;
+  stars?: number;
   commitSha?: string;
   committedAt?: string;
   pathPrefix?: string;

@@ -137,13 +137,16 @@ export function layoutCity(input: RepositorySnapshot[], owner = 'local'): CitySc
       [...totals].sort((a, b) => b[1] - a[1] || compare(a[0], b[0]))[0]?.[0] ?? 'Config';
     return {
       name: snapshot.name,
-      description: snapshot.commitSha
-        ? `Local repository · ${snapshot.commitSha.slice(0, 7)}${snapshot.dirty ? ' · uncommitted changes' : ''}`
-        : 'Local directory · no Git commit',
+      source: snapshot.source,
+      description:
+        snapshot.description ??
+        (snapshot.commitSha
+          ? `Local repository · ${snapshot.commitSha.slice(0, 7)}${snapshot.dirty ? ' · uncommitted changes' : ''}`
+          : 'Local directory · no Git commit'),
       url: snapshot.url,
       commitSha: snapshot.commitSha ?? '',
       primaryLanguage,
-      stars: 0,
+      stars: snapshot.stars ?? 0,
       bounds: repoBounds,
       buildings: buildings.sort((a, b) => compare(a.path, b.path)),
       blocks: [...blockRects]

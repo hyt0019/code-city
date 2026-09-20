@@ -19,7 +19,7 @@
 - 场景导出为 `generated/scene.json`，SVG 与 3D 读取同一份坐标、建筑尺寸和文件信息。
 - 不调用 AI API，不依赖后端、数据库、登录、外部字体或图片。
 
-当前预览可以使用真实扫描数据，右上角显示 **Local scan**；演示模式显示 **Demo data**。尚未接入公开 GitHub 仓库下载/API 或 GitHub Actions。对于有 GitHub remote 且工作区干净的本地仓库，文件详情提供固定到 commit 的源码链接；有未提交修改或没有 Git 历史时只展示本地文件信息。
+当前预览显示 **Local scan**、**GitHub scan** 或 **mixed scan**，演示模式显示 **Demo data**。已支持公开 GitHub 仓库浅克隆、元数据缓存和固定到 commit 的源码链接；本地有未提交修改或没有 Git 历史时只展示本地文件信息。
 
 ## 启动
 
@@ -43,11 +43,26 @@ npm run preview      # 预览 dist，默认端口 4173
 ```sh
 npm run generate -- --repo .
 npm run generate -- --repo ../project-a --repo ../project-b
+npm run generate -- --github hyt0019/code-city
 npm run build
 npm run dev
 ```
 
 包含空格的路径请加引号。生成后刷新浏览器即可；构建会保留已有场景，不会把真实数据覆盖回演示数据。重新扫描可更新城市。恢复演示场景使用 `npm run generate -- --demo`。
+
+本地和公开 GitHub 输入可混合，最多 8 个仓库。默认配置扫描当前项目；`--repo` / `--github` 参数会替换配置中的仓库列表。公开仓库可在配置中指定分支、标签或 commit：
+
+```ts
+repositories: [
+  { path: '.', name: 'my-local-project' },
+  { github: 'OWNER/REPOSITORY', ref: 'main', name: 'project-a' },
+  { github: 'OWNER/ANOTHER-REPOSITORY', name: 'project-b' },
+];
+```
+
+`ref` 默认跟随远程 HEAD，`name` 默认使用仓库名；多个同名仓库需指定不同别名。公开仓库只在生成阶段下载到 `.cache/github/`，每次获取最新选定 ref，后续复用浅克隆缓存。不会运行下载仓库的脚本、安装依赖或拉取子模块，也不会发送本地 Git 凭据。
+
+GitHub 描述和 Star 元数据缓存 6 小时。接口限流、离线或响应异常时使用旧缓存或仅生成文件数据；Git 源码获取失败会停止生成，避免静默发布过期代码。确认没有任何 refs 的空仓库会生成空城区。可选通过环境变量 `GITHUB_TOKEN` 提高元数据 API 限额；令牌只留在构建进程，不进入缓存 JSON 或浏览器。当前不支持私有仓库。
 
 生成结果：
 
@@ -112,6 +127,7 @@ GitHub README 也可以跟随阅读者的主题自动切换图片：
 - `fixtures/city.ts`：固定文件列表、城区位置、建筑大小和语言配色。
 - `codecity.config.ts`：本地仓库列表、排除规则、默认标题、副标题与导出显示设置。
 - `src/scanner/`：目录扫描、忽略规则、语言识别及本地 Git 元数据。
+- `src/scanner/github.ts`：匿名公开仓库采集、浅克隆缓存和可降级的 GitHub 元数据读取。
 - `src/layout/treemap.ts`：稳定的仓库/目录/文件土地分配。
 - `src/core/model.ts`：`CityScene`、`RepositoryDistrict`、`Building`、主题与相机类型。
 - `src/layout/isometric.ts`：纯函数等距投影与地面逆投影。
@@ -155,7 +171,7 @@ Windows 默认使用已安装的 Microsoft Edge。其他平台默认使用 Playw
 
 ## 下一阶段
 
-独立仓库页面已输出至 `dist/repos/<name>/index.html`。下一步接入公开 GitHub 仓库采集和 GitHub Pages 自动部署。
+独立仓库页面和公开 GitHub 仓库采集已接通。下一步完成 GitHub Actions 检查与 GitHub Pages 自动部署。
 
 技术参考：[Node.js 版本说明](https://nodejs.org/en/about/previous-releases)、[Vite 文档](https://vite.dev/guide/)、[Three.js OrbitControls](https://threejs.org/docs/pages/OrbitControls.html)。
 

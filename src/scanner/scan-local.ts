@@ -10,6 +10,7 @@ import { classify, countLines } from './languages';
 import { readGitMetadata } from './git-metadata';
 
 export interface ScanOptions {
+  gitEnvironment?: NodeJS.ProcessEnv;
   name?: string;
   exclude?: string[];
   maxFileBytes?: number;
@@ -24,7 +25,7 @@ export async function scanLocal(
 ): Promise<RepositorySnapshot> {
   const root = await realpath(resolve(directory));
   if (!(await lstat(root)).isDirectory()) throw new Error('Repository input must be a directory.');
-  const metadata = await readGitMetadata(root);
+  const metadata = await readGitMetadata(root, options.gitEnvironment);
   const names = (
     await fg('**/*', {
       cwd: root,

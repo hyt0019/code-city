@@ -1,6 +1,6 @@
 export default {
-  owner: 'local',
-  repositories: [],
+  owner: 'hyt0019',
+  repositories: [{ path: '.', name: 'code-city' }],
   exclude: ['previews/**'],
   appearance: { theme: 'github-dark', showLabels: true, showLegend: true },
   profile: {
