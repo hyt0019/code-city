@@ -55,7 +55,7 @@ export default {
 } as const;
 ```
 
-默认配置扫描 Code City 自身。`owner` 是场景信息，不会自动发现该账号的全部仓库；需要在 `repositories` 中明确列出要展示的项目。公开 GitHub 输入还支持可选的分支、标签或 commit，以及展示名称：
+默认配置读取示例中的公开 GitHub 仓库。`owner` 是场景信息，不会自动发现该账号的全部仓库；需要在 `repositories` 中明确列出要展示的项目。公开 GitHub 输入还支持可选的分支、标签或 commit，以及展示名称：
 
 ```ts
 { github: 'USERNAME/project-one', ref: 'main', name: 'my-project' }
