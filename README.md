@@ -2,11 +2,13 @@
 
 **A skyline built from code.** Turn repositories into deterministic isometric cities.
 
+[在线体验](https://hyt0019.github.io/code-city/) · [独立仓库城市](https://hyt0019.github.io/code-city/repos/code-city/) · [自动构建与部署](https://github.com/hyt0019/code-city/actions/workflows/deploy-pages.yml)
+
 ![Code City Midnight Skyline banner](./generated/profile.svg)
 
 ## 当前进度
 
-已按所选 **A · 午夜天际线（Midnight Skyline）** 接通本地扫描、确定性布局、SVG 横幅与交互式 3D 浏览，当前版本 **0.3.0**。
+已按所选 **A · 午夜天际线（Midnight Skyline）** 接通本地与公开 GitHub 扫描、确定性布局、SVG 横幅、交互式 3D 浏览和 GitHub Pages 自动部署，当前版本 **0.3.0**。
 
 - React、TypeScript、Vite 单项目；可扫描本地仓库，也保留 30 栋建筑、4 个虚构仓库的演示数据。
 - 支持 Git 仓库和普通目录、嵌套 `.gitignore`、语言和文件类别识别、有效行数/字节数/内容哈希、Git commit 元数据。
@@ -104,13 +106,13 @@ GitHub 描述和 Star 元数据缓存 6 小时。接口限流、离线或响应�
 ![My Code City](./generated/profile.svg)
 ```
 
-后续部署至 GitHub Pages 后，将以下占位符换成自己的用户名和部署路径：
+其他仓库部署至 GitHub Pages 后，将以下占位符换成自己的用户名和部署路径：
 
 ```md
 [![My Code City](https://USERNAME.github.io/code-city/assets/profile.svg)](https://USERNAME.github.io/code-city/)
 ```
 
-UI 中的复制按钮提供站点路径模板；用于不同仓库的 README 时，需要换成已托管的完整图片 URL。
+线上导出窗口的 **Copy README snippet** 会复制完整图片地址和对应城市页面链接，可直接粘贴到 GitHub README，并跟随所选仓库和深浅主题。链接指向已发布的默认横幅；临时修改的标题、副标题只用于 **Download SVG** 下载文件，修改配置并重新部署才会更新线上横幅。在本地预览时复制的是本机地址，需要先部署再分享。
 
 ## GitHub Pages 自动部署
 

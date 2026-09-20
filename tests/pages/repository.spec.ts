@@ -22,12 +22,22 @@ test('built repository pages refresh and load assets under a Pages prefix', asyn
   await expect(page.locator('.city-three canvas')).toBeVisible();
   await page.getByRole('button', { name: 'Export SVG', exact: true }).click();
   await expect(page.getByLabel('Export scope')).toHaveValue(repo.name);
-  await expect(page.locator('.embed-section code')).toContainText(`/code-city/repos/${slug}/`);
+  const siteRoot = new URL('/code-city/', page.url()).href;
+  const snippet = `[![Code City](${siteRoot}assets/repos/${slug}.dark.svg)](${siteRoot}repos/${slug}/)`;
+  await expect(page.locator('.embed-section code')).toHaveText(snippet);
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.getByLabel('Copy README snippet', { exact: true }).click();
+  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(snippet);
   await expect(page.locator('.export-preview svg')).toHaveAttribute('width', '900');
   await page.keyboard.press('Escape');
   await page.screenshot({ path: `previews/repository-${info.project.name}.png`, fullPage: true });
   await page.getByRole('link', { name: 'All repositories', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'My Code City.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Export SVG', exact: true }).click();
+  await expect(page.locator('.embed-section code')).toHaveText(
+    `[![Code City](${siteRoot}assets/profile.dark.svg)](${siteRoot})`,
+  );
+  await page.keyboard.press('Escape');
   expect(errors).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

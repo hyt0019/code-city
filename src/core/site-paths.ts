@@ -7,3 +7,7 @@ export function sitePath(path: string): string {
   const root = pageRoute(location.pathname)?.root ?? new URL('./', location.href).pathname;
   return `${root}${path}`;
 }
+
+export function siteUrl(path: string): string {
+  return new URL(sitePath(path), location.origin).href;
+}

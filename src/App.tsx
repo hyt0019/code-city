@@ -30,7 +30,7 @@ import { applyTheme, cityLegend, daylightTheme } from './core/theme';
 import type { ThemeId } from './core/theme';
 import { repositoryScene, repositorySlug } from './core/repository-scene';
 import City3D from './renderers/three/City3D';
-import { sitePath } from './core/site-paths';
+import { sitePath, siteUrl } from './core/site-paths';
 import { sceneSource } from './core/source-label';
 import config from '../codecity.config';
 import { compactNumber, sceneStats } from './core/metrics';
@@ -162,7 +162,9 @@ export default function App({
   const assetName = exportRepository ? `repos/${repositorySlug(exportRepository)}` : 'profile';
   const assetTheme = theme === 'github-light' ? 'light' : 'dark';
   const exportDimensions = exportRepository ? '900 × 315' : '1200 × 420';
-  const embed = `[![Code City](${sitePath(`assets/${assetName}.${assetTheme}.svg`)})](${sitePath(exportRepository ? `repos/${repositorySlug(exportRepository)}/` : '')})`;
+  const embed = `[![Code City](${siteUrl(`assets/${assetName}.${assetTheme}.svg`)})](${siteUrl(exportRepository ? `repos/${repositorySlug(exportRepository)}/` : '')})`;
+
+  useEffect(() => setCopied(false), [embed]);
 
   function toggleTheme() {
     setTheme(theme === 'github-dark' ? 'github-light' : 'github-dark');
@@ -199,7 +201,7 @@ export default function App({
     try {
       await navigator.clipboard.writeText(embed);
       setCopied(true);
-      setNotice('README snippet copied. Update the image URL after hosting.');
+      setNotice('README snippet copied.');
     } catch {
       setNotice('Clipboard unavailable. Select and copy the snippet below.');
     }
@@ -757,7 +759,8 @@ export default function App({
           </div>
           <div className="embed-section">
             <span>
-              README snippet <small>Update the image path after hosting</small>
+              README snippet{' '}
+              <small>Links use the hosted banner; custom text applies to downloads.</small>
             </span>
             <div>
               <code>{embed}</code>
