@@ -30,6 +30,7 @@ import { applyTheme, cityLegend, daylightTheme } from './core/theme';
 import type { ThemeId } from './core/theme';
 import { repositoryScene, repositorySlug } from './core/repository-scene';
 import City3D from './renderers/three/City3D';
+import { sitePath } from './core/site-paths';
 import config from '../codecity.config';
 import { compactNumber, sceneStats } from './core/metrics';
 import { renderBanner, renderCitySvg } from './renderers/svg/city';
@@ -84,7 +85,14 @@ function Dialog({
   );
 }
 
-export default function App({ scene: sourceScene }: { scene: CityScene }) {
+export default function App({
+  scene: sourceScene,
+  repositoryPage = false,
+}: {
+  scene: CityScene;
+  repositoryPage?: boolean;
+}) {
+  const pageRepository = repositoryPage ? (sourceScene.repositories[0]?.name ?? '') : '';
   const [theme, setTheme] = useState<ThemeId>(
     sourceScene.theme.background === daylightTheme.background ? 'github-light' : 'github-dark',
   );
@@ -119,9 +127,11 @@ export default function App({ scene: sourceScene }: { scene: CityScene }) {
   const [dialog, setDialog] = useState<'export' | 'mapping' | null>(null);
   const [notice, setNotice] = useState('');
   const [copied, setCopied] = useState(false);
-  const [exportTitle, setExportTitle] = useState<string>(config.profile.title);
+  const [exportTitle, setExportTitle] = useState<string>(
+    pageRepository ? pageRepository.slice(0, 28) : config.profile.title,
+  );
   const [exportSubtitle, setExportSubtitle] = useState<string>(config.profile.subtitle);
-  const [exportRepository, setExportRepository] = useState('');
+  const [exportRepository, setExportRepository] = useState(pageRepository);
   const active = allBuildings.find((building) => building.id === (hoveredId || selectedId));
   const visibleBuildings = allBuildings.filter(
     (building) => !repository || building.repository === repository,
@@ -150,7 +160,7 @@ export default function App({ scene: sourceScene }: { scene: CityScene }) {
   const assetName = exportRepository ? `repos/${repositorySlug(exportRepository)}` : 'profile';
   const assetTheme = theme === 'github-light' ? 'light' : 'dark';
   const exportDimensions = exportRepository ? '900 × 315' : '1200 × 420';
-  const embed = `[![Code City](./assets/${assetName}.${assetTheme}.svg)](./${exportRepository ? `?repo=${encodeURIComponent(exportRepository)}` : ''})`;
+  const embed = `[![Code City](${sitePath(`assets/${assetName}.${assetTheme}.svg`)})](${sitePath(exportRepository ? `repos/${repositorySlug(exportRepository)}/` : '')})`;
 
   function toggleTheme() {
     setTheme(theme === 'github-dark' ? 'github-light' : 'github-dark');
@@ -202,7 +212,7 @@ export default function App({ scene: sourceScene }: { scene: CityScene }) {
       <aside className="sidebar">
         <a
           className="logo-link"
-          href="#"
+          href={repositoryPage ? sitePath('') : '#'}
           aria-label="Code City home"
           onClick={() => {
             setView('overview');
@@ -292,9 +302,9 @@ export default function App({ scene: sourceScene }: { scene: CityScene }) {
       <div className="main-shell">
         <header className="topbar">
           <div className="breadcrumb">
-            <span>Workspace</span>
+            {repositoryPage ? <a href={sitePath('')}>All repositories</a> : <span>Workspace</span>}
             <ChevronRight size={13} />
-            <span>{view === 'overview' ? 'Overview' : 'Repositories'}</span>
+            <span>{pageRepository || (view === 'overview' ? 'Overview' : 'Repositories')}</span>
           </div>
           <div className="topbar-right">
             <button
@@ -329,7 +339,7 @@ export default function App({ scene: sourceScene }: { scene: CityScene }) {
                 <span /> A DIFFERENT VIEW OF YOUR CODE
               </div>
               <h1>
-                {view === 'overview' ? 'My Code City' : 'Your repositories'}
+                {view === 'overview' ? pageRepository || 'My Code City' : 'Your repositories'}
                 <span className="heading-dot">.</span>
               </h1>
               <p>
@@ -530,9 +540,13 @@ export default function App({ scene: sourceScene }: { scene: CityScene }) {
                       ))}
                     </select>
                   )}
-                  <span className="inspector-repo">
+                  <a
+                    className="inspector-repo"
+                    href={sitePath(`repos/${repositorySlug(active.repository)}/`)}
+                    title="Open repository page"
+                  >
                     {active.repository} <ChevronRight size={11} /> {active.category}
-                  </span>
+                  </a>
                   <dl>
                     <div>
                       <dt>Language</dt>
@@ -698,7 +712,7 @@ export default function App({ scene: sourceScene }: { scene: CityScene }) {
                   setCopied(false);
                 }}
               >
-                <option value="">All repositories</option>
+                <option value="">{repositoryPage ? 'Profile size' : 'All repositories'}</option>
                 {scene.repositories.map((repo) => (
                   <option key={repo.name} value={repo.name}>
                     {repo.name}

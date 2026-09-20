@@ -8,12 +8,13 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsx scripts/build-assets.ts && tsc --noEmit && vite build",
+    "build": "tsx scripts/build-assets.ts && tsc --noEmit && vite build && tsx scripts/build-pages.ts",
     "preview": "vite preview --host 127.0.0.1",
     "generate": "tsx scripts/generate.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:pages": "playwright test --config playwright.pages.config.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run format:check && npm test && npm run build"

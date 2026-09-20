@@ -459,6 +459,7 @@ button:hover:not(:disabled) {
   background: #71b8dd;
 }
 .page-heading h1 {
+  overflow-wrap: anywhere;
   font-size: 35px;
   letter-spacing: -1.3px;
   line-height: 1.2;

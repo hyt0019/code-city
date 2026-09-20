@@ -2,15 +2,19 @@ import { useEffect, useState } from 'react';
 import type { CityScene } from './core/model';
 import { sceneSchema } from './core/config';
 import App from './App';
+import { pageRoute, sitePath } from './core/site-paths';
+import { repositoryScene, repositorySlug } from './core/repository-scene';
 
 export default function CityLoader() {
   const [scene, setScene] = useState<CityScene | null>(null);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
+  const [missing, setMissing] = useState(false);
+  const route = pageRoute(location.pathname);
   useEffect(() => {
     const controller = new AbortController();
     setError(false);
-    fetch(`${import.meta.env.BASE_URL}assets/scene.json`, {
+    fetch(sitePath('assets/scene.json'), {
       signal: controller.signal,
       cache: 'no-store',
     })
@@ -18,13 +22,34 @@ export default function CityLoader() {
         if (!response.ok) throw new Error('Scene unavailable');
         return response.json();
       })
-      .then((data) => setScene(sceneSchema.parse(data)))
+      .then((data) => {
+        const city = sceneSchema.parse(data);
+        const slug = pageRoute(location.pathname)?.slug;
+        const repo = slug
+          ? city.repositories.find((item) => repositorySlug(item.name) === slug)
+          : undefined;
+        if (slug && !repo) {
+          setMissing(true);
+          return;
+        }
+        setScene(repo ? repositoryScene(city, repo.name) : city);
+      })
       .catch((cause) => {
         if (cause.name !== 'AbortError') setError(true);
       });
     return () => controller.abort();
   }, [attempt]);
-  if (scene) return <App scene={scene} />;
+  if (scene) return <App scene={scene} repositoryPage={!!route} />;
+  if (missing)
+    return (
+      <main className="loading-screen">
+        <h1>Repository not found</h1>
+        <p>This repository is not part of the current city.</p>
+        <a className="primary-button" href={sitePath('')}>
+          All repositories
+        </a>
+      </main>
+    );
   return (
     <main className="loading-screen">
       <h1>
@@ -34,7 +59,7 @@ export default function CityLoader() {
         <>
           <p>The city data could not be loaded. Your static skyline is still available.</p>
           <img
-            src={`${import.meta.env.BASE_URL}assets/profile.svg`}
+            src={sitePath(route ? `assets/repos/${route.slug}.svg` : 'assets/profile.svg')}
             alt="Code City static skyline"
           />
           <button className="primary-button" onClick={() => setAttempt(attempt + 1)}>

@@ -73,6 +73,7 @@ npm run dev
 - 聚焦 3D 画布后，方向键旋转，Home 恢复默认视角。右下角按钮调整缩放或重置取景。
 - 顶栏太阳 / 月亮按钮切换主题，手机上同样可用。工具栏标签按钮控制城区名称。
 - `?repo=tools` 可打开指定仓库的高亮视图，名称需要与当前场景一致。
+- `repos/<name>/` 是独立仓库页面，只展示该仓库的建筑；点击文件详情中的仓库名进入，点击页顶 **All repositories** 返回城市总览。构建会写出真实 HTML，支持 GitHub Pages 子路径和直接刷新；禁用 JavaScript 时仍展示对应 SVG。
 
 默认先显示 SVG，Three.js 只在第一次打开 3D 时加载。建筑使用 InstancedMesh 合批；没有自动旋转和持续动画循环，空闲时不绘制新帧，兼容减少动态效果的系统设置。WebGL 不可用、加载失败或上下文丢失时自动恢复 SVG，导出仍可使用。当前直接使用 Three.js，避免 React Three Fiber 当前对 React 19.3 的 peer dependency 限制。
 
@@ -133,6 +134,7 @@ npm run format:check  # Prettier 格式检查
 npm test              # Vitest：坐标、确定性、边界、XML 等
 npm run build         # TypeScript + SVG/JSON 生成 + Vite 构建
 npm run test:e2e      # Playwright 桌面与手机浏览器检查
+npm run test:pages    # 构建后检查独立页面、Pages 子路径和无 JavaScript 回退
 ```
 
 Windows 默认使用已安装的 Microsoft Edge。其他平台默认使用 Playwright Chromium，首次运行需要执行 `npx playwright install chromium`。也可以通过 `PLAYWRIGHT_CHANNEL` 环境变量指定支持的浏览器通道。
@@ -153,7 +155,7 @@ Windows 默认使用已安装的 Microsoft Edge。其他平台默认使用 Playw
 
 ## 下一阶段
 
-继续个人主页聚合：增加独立仓库页面、公开 GitHub 仓库采集和 GitHub Pages 自动部署。当前仓库可通过 URL 查询参数高亮，尚未输出 `repos/<name>/index.html` 独立页面。
+独立仓库页面已输出至 `dist/repos/<name>/index.html`。下一步接入公开 GitHub 仓库采集和 GitHub Pages 自动部署。
 
 技术参考：[Node.js 版本说明](https://nodejs.org/en/about/previous-releases)、[Vite 文档](https://vite.dev/guide/)、[Three.js OrbitControls](https://threejs.org/docs/pages/OrbitControls.html)。
 
