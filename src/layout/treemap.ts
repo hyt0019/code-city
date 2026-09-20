@@ -11,6 +11,7 @@ import type {
 import { heightFromLines, stableHash } from '../core/metrics';
 import { languageColor, midnightTheme } from '../core/theme';
 import { activityBrightness } from '../core/activity';
+import { applyRepositorySignals } from '../core/repository-signals';
 interface Parcel {
   key: string;
   value: number;
@@ -154,6 +155,8 @@ export function layoutCity(input: RepositorySnapshot[], owner = 'local'): CitySc
       commitSha: snapshot.commitSha ?? '',
       primaryLanguage,
       stars: snapshot.stars ?? 0,
+      archived: snapshot.archived,
+      metadataAvailable: snapshot.stars !== undefined,
       bounds: repoBounds,
       buildings: buildings.sort((a, b) => compare(a.path, b.path)),
       blocks: [...blockRects]
@@ -176,7 +179,7 @@ export function layoutCity(input: RepositorySnapshot[], owner = 'local'): CitySc
       ),
     )
     .digest('hex');
-  return {
+  return applyRepositorySignals({
     schemaVersion: 1,
     generatedAt: dates.at(-1) ?? '1970-01-01T00:00:00.000Z',
     owner,
@@ -186,5 +189,5 @@ export function layoutCity(input: RepositorySnapshot[], owner = 'local'): CitySc
     bounds,
     repositories,
     snapshotHash,
-  };
+  });
 }

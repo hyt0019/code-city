@@ -1,4 +1,5 @@
 import type { Building } from './model';
+import { archivedColor } from './repository-signals';
 
 /** Relative to the scanned commit, never the wall clock or filesystem mtime. */
 export function activityBrightness(modifiedAt?: string, committedAt?: string): number | undefined {
@@ -10,7 +11,8 @@ export function activityBrightness(modifiedAt?: string, committedAt?: string): n
 }
 
 export function windowColor(building: Building, color: string): string {
-  const brightness = building.windowBrightness ?? 1;
+  color = archivedColor(color, building.archived);
+  const brightness = (building.windowBrightness ?? 1) * (building.archived ? 0.55 : 1);
   return `#${[1, 3, 5]
     .map((i) =>
       Math.round(parseInt(color.slice(i, i + 2), 16) * brightness)

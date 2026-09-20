@@ -8,7 +8,7 @@
 
 ## 当前进度
 
-已按所选 **A · 午夜天际线（Midnight Skyline）** 接通本地与公开 GitHub 扫描、确定性布局、SVG 横幅、交互式 3D 浏览和 GitHub Pages 自动部署，当前版本 **0.3.0**。
+已按所选 **A · 午夜天际线（Midnight Skyline）** 接通本地与公开 GitHub 扫描、确定性布局、SVG 横幅、交互式 3D 浏览和 GitHub Pages 自动部署，当前版本 **0.4.0**，新增 PNG 导出、高度指标切换、提交时间窗灯、Star 地标和归档仓库外观。
 
 - React、TypeScript、Vite 单项目；可扫描本地仓库，也保留 30 栋建筑、4 个虚构仓库的演示数据。
 - 支持 Git 仓库和普通目录、嵌套 `.gitignore`、语言和文件类别识别、有效行数/字节数/内容哈希、Git commit 元数据。
@@ -164,6 +164,8 @@ GitHub README 也可以跟随阅读者的主题自动切换图片：
 
 文件详情的 **Last committed change** 来自最多 256 条近期主线提交：合并按进入当前主线的提交记录，重命名按新路径进入主线的时间记录。公开仓库和 CI 默认获取深度 257 的历史以保留边界；浅克隆边界、超出历史范围、无 Git 历史或读取失败的日期显示 **Unknown**，不会拿文件系统时间代替。本地未提交修改仍显示最近一次已提交的时间。窗灯按文件提交时间相对于该仓库扫描 commit 的时间衰减，近期更亮、长期未改较暗，未知维持默认亮度。亮度写入共享场景，不依赖当前日期或 `generatedAt`，因此重复生成保持一致。
 
+公开 GitHub 元数据中的 **Stars** 为每个有星标的非空仓库增加一个地标塔尖，优先选入口地标，否则按稳定文件 ID 选择一栋建筑。塔尖按 Star 数量对数增长，上限为 18 个场景单位；不会增加文件数、改变文件高度指标或重新分配地块。**Archived** 仓库使用灰色建筑、街区和树木，窗灯进一步变暗，仓库卡片与详情明确显示归档状态。SVG、3D 和 PNG 使用同一份场景。API 元数据缺失时显示 **Stars unavailable**；本地扫描不会主动查询 GitHub 元数据，需使用 `{ github: 'owner/repo' }` 开启这些公开仓库信号。
+
 可在 `codecity.config.ts` 配置 `repositories: [{ path: '../project-a', name: 'project-a' }]`，然后直接执行 `npm run generate`。不同仓库名称须唯一。可选 `scanner: { maxFileBytes: 2000000, maxFiles: 20000 }` 修改扫描边界。输入配置和场景数据均有 Zod 校验。
 
 每种城市元素的解释可在页面 **How the city works** 中查看。`appearance.theme` 支持 `github-dark` 和 `github-light`；前端切换只影响当前预览和下载，修改配置可设置构建默认主题。
@@ -194,9 +196,11 @@ Windows 默认使用已安装的 Microsoft Edge。其他平台默认使用 Playw
 
 浅色预览见 [daylight-desktop.png](./previews/daylight-desktop.png)，手机 3D 预览见 [three-mobile.png](./previews/three-mobile.png)。这些截图使用固定演示数据；真实扫描截图使用 `local-city-` 前缀。
 
+Star 塔尖和归档城区的演示见 [signals-desktop.png](./previews/signals-desktop.png)，手机预览见 [signals-mobile.png](./previews/signals-mobile.png)。示例的灰色城区为归档仓库，塔尖高度展示不同 Star 数量。
+
 ## 后续路线图
 
-本地 / 公开 GitHub 采集、独立仓库页面、Pages 部署链路、展示指标切换、逐文件提交时间与窗灯亮度、横幅 / 当前视角 PNG 导出已经实现。后续可增加 Star 地标细节与更多城市装饰；完整 Git 历史动画、私有仓库和登录服务不在当前 MVP 范围内。
+本地 / 公开 GitHub 采集、独立仓库页面、Pages 部署链路、展示指标切换、逐文件提交时间与窗灯亮度、Star 地标、归档仓库外观、横幅 / 当前视角 PNG 导出均已实现。后续扩展可增加更多城市装饰与完整 Git 历史动画；私有仓库、用户登录和多用户在线生成服务不在当前范围内。
 
 技术参考：[Node.js 版本说明](https://nodejs.org/en/about/previous-releases)、[Vite 文档](https://vite.dev/guide/)、[Three.js OrbitControls](https://threejs.org/docs/pages/OrbitControls.html)。
 

@@ -14,6 +14,7 @@ const metadataSchema = z.object({
   private: z.boolean(),
   description: z.string().nullable(),
   stargazers_count: z.number().int().nonnegative(),
+  archived: z.boolean().optional(),
 });
 const cacheSchema = z.object({ checkedAt: z.number().finite(), data: metadataSchema });
 export class PrivateRepositoryError extends Error {}
@@ -38,7 +39,12 @@ export async function githubMetadata(
   }
   if (cached && cached.data.private)
     throw new PrivateRepositoryError('Private repositories are not supported.');
-  if (cached && now >= cached.checkedAt && now - cached.checkedAt < 6 * 60 * 60 * 1000)
+  if (
+    cached &&
+    cached.data.archived !== undefined &&
+    now >= cached.checkedAt &&
+    now - cached.checkedAt < 6 * 60 * 60 * 1000
+  )
     return cached.data;
   try {
     const response = await (options.fetcher ?? fetch)(
@@ -201,7 +207,8 @@ export async function collectGitHub(
       files: [],
       skipped: [],
       description: metadata?.description ?? 'Empty public GitHub repository',
-      stars: metadata?.stargazers_count ?? 0,
+      stars: metadata?.stargazers_count,
+      archived: metadata?.archived,
     };
   }
   await git(['checkout', '--detach', 'FETCH_HEAD']);
@@ -216,6 +223,7 @@ export async function collectGitHub(
     url: `https://github.com/${repository}`,
     description:
       metadata?.description ?? `Public GitHub repository · ${snapshot.commitSha?.slice(0, 7)}`,
-    stars: metadata?.stargazers_count ?? 0,
+    stars: metadata?.stargazers_count,
+    archived: metadata?.archived,
   };
 }

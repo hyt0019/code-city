@@ -20,7 +20,12 @@ async function temporary() {
   roots.push(root);
   return root;
 }
-const publicData = { private: false, description: 'A public project', stargazers_count: 12 };
+const publicData = {
+  private: false,
+  description: 'A public project',
+  stargazers_count: 12,
+  archived: false,
+};
 const metadata = async () => Response.json(publicData);
 afterEach(() => vi.unstubAllEnvs());
 afterAll(async () => {
@@ -96,6 +101,21 @@ describe('public GitHub collection', () => {
       }),
     ).resolves.toBeUndefined();
   });
+  it('refreshes legacy metadata caches to collect archive status', async () => {
+    const cache = join(await temporary(), 'metadata.json');
+    await writeFile(
+      cache,
+      JSON.stringify({
+        checkedAt: 1000,
+        data: { private: false, description: 'old', stargazers_count: 12 },
+      }),
+    );
+    const fetcher = vi.fn(async () => Response.json({ ...publicData, archived: true }));
+    expect((await githubMetadata('example/project', cache, { fetcher, now: 2000 }))?.archived).toBe(
+      true,
+    );
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
   it('fetches new commits through a reusable shallow cache and emits encoded pinned URLs', async () => {
     const root = await temporary();
     const source = join(root, 'source');
@@ -138,6 +158,8 @@ describe('public GitHub collection', () => {
       `https://github.com/example/project/blob/${first.commitSha}/${encodeURIComponent('中文 & file.ts')}`,
     );
     expect(first.stars).toBe(12);
+    expect(first.archived).toBe(false);
+    expect(layoutCity([first]).repositories[0].metadataAvailable).toBe(true);
     expect(JSON.stringify(first)).not.toContain(root);
     expect(
       await collectGitHub({ github: 'example/project' }, options, { fetcher: metadata, runGit }),

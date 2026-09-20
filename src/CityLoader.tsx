@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { applyRepositorySignals } from './core/repository-signals';
 import type { CityScene } from './core/model';
 import { sceneSchema } from './core/config';
 import App from './App';
@@ -23,7 +24,7 @@ export default function CityLoader() {
         return response.json();
       })
       .then((data) => {
-        const city = sceneSchema.parse(data);
+        const city = applyRepositorySignals(sceneSchema.parse(data));
         const slug = pageRoute(location.pathname)?.slug;
         const repo = slug
           ? city.repositories.find((item) => repositorySlug(item.name) === slug)

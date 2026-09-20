@@ -5,6 +5,7 @@ import { cityPalette } from '../../core/theme';
 import { stableHash } from '../../core/metrics';
 import { canvasToPng } from '../../core/image-export';
 import { windowColor } from '../../core/activity';
+import { archivedColor, spireBase } from '../../core/repository-signals';
 
 export interface ViewerState {
   selectedId: string;
@@ -22,6 +23,9 @@ export interface ViewerEvents {
 
 /** The scene's ground Y axis becomes Three.js Z. Dimensions are never relaid out. */
 export function createViewer(host: HTMLDivElement, data: CityScene, events: ViewerEvents) {
+  const archived = new Set(
+    data.repositories.filter((repo) => repo.archived).map((repo) => repo.name),
+  );
   const palette = cityPalette(data);
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -71,6 +75,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     materials.push(material);
     const mesh = new THREE.InstancedMesh(geometry, material, parts.length);
     parts.forEach((p, index) => {
+      p.color = archivedColor(p.color, archived.has(p.repo));
       position.set(p.x + p.w / 2, p.y + p.h / 2, p.z + p.d / 2);
       scale.set(p.w, p.h, p.d);
       matrix.compose(position, quaternion, scale);
@@ -193,6 +198,30 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       color: b.category === 'test' ? '#78a967' : b.color,
       repo,
     });
+    if (b.spireHeight) {
+      const base = spireBase(b, dense);
+      const thickness = Math.min(w, d, 8) * 0.09;
+      details.push({
+        x: x + w / 2 - thickness / 2,
+        y: base,
+        z: z + d / 2 - thickness / 2,
+        w: thickness,
+        h: b.spireHeight,
+        d: thickness,
+        color: '#e1bf74',
+        repo,
+      });
+      details.push({
+        x: x + w / 2 - thickness,
+        y: base + b.spireHeight,
+        z: z + d / 2 - thickness,
+        w: thickness * 2,
+        h: 0.6,
+        d: thickness * 2,
+        color: '#e1bf74',
+        repo,
+      });
+    }
     if (!dense) {
       details.push({
         x: x - 0.5,

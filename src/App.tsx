@@ -35,6 +35,7 @@ import type { City3DHandle } from './renderers/three/City3D';
 import { downloadImage, svgToPng } from './core/image-export';
 import { sitePath, siteUrl } from './core/site-paths';
 import { sceneSource } from './core/source-label';
+import { applyRepositorySignals } from './core/repository-signals';
 import config from '../codecity.config';
 import { applyHeightMetric, compactNumber, sceneStats } from './core/metrics';
 import { renderBanner, renderCitySvg } from './renderers/svg/city';
@@ -104,7 +105,7 @@ export default function App({
     sourceScene.heightMetric ?? 'lines',
   );
   const scene = useMemo(
-    () => applyTheme(applyHeightMetric(sourceScene, heightMetric), theme),
+    () => applyTheme(applyRepositorySignals(applyHeightMetric(sourceScene, heightMetric)), theme),
     [sourceScene, theme, heightMetric],
   );
   const source = sceneSource(scene);
@@ -146,6 +147,7 @@ export default function App({
   const [exportSubtitle, setExportSubtitle] = useState<string>(config.profile.subtitle);
   const [exportRepository, setExportRepository] = useState(pageRepository);
   const active = allBuildings.find((building) => building.id === (hoveredId || selectedId));
+  const activeRepository = scene.repositories.find((repo) => repo.name === active?.repository);
   const visibleBuildings = allBuildings.filter(
     (building) => !repository || building.repository === repository,
   );
@@ -348,7 +350,7 @@ export default function App({
             {scene.isFixture
               ? 'Local demo'
               : `${source === 'local' ? 'Local' : source} repositories`}
-            <span>v0.3.0</span>
+            <span>v0.4.0</span>
           </div>
         </div>
       </aside>
@@ -431,6 +433,12 @@ export default function App({
                     <ArrowRight size={16} />
                   </h2>
                   <p>{repo.description}</p>
+                  <p className="repo-signals">
+                    {repo.metadataAvailable === false
+                      ? 'Stars unavailable'
+                      : `★ ${compactNumber(repo.stars)} stars`}
+                    {repo.archived && ' · Archived'}
+                  </p>
                   <div>
                     <span>{repo.primaryLanguage}</span>
                     <span>{repo.buildings.length} files</span>
@@ -654,6 +662,12 @@ export default function App({
                       'Local file · scanned from disk'
                     )}
                   </div>
+                  {(activeRepository?.archived || (activeRepository?.stars ?? 0) > 0) && (
+                    <p className="repo-signals">
+                      ★ {compactNumber(activeRepository?.stars ?? 0)} stars
+                      {activeRepository?.archived && ' · Archived'}
+                    </p>
+                  )}
                 </aside>
               )}
               <div className="zoom-controls">
@@ -881,6 +895,11 @@ export default function App({
                 'Switch between lines of code and file size; logarithmically scaled',
               ],
               ['Language', 'The color of its buildings'],
+              [
+                'Repository stars',
+                'One landmark spire; its height grows logarithmically with stars',
+              ],
+              ['Archived repository', 'Gray buildings and dimmed windows'],
               [
                 'Window lights',
                 'Recent committed changes glow brighter; unknown dates keep default lighting',

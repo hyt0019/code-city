@@ -28,6 +28,8 @@ export interface Building {
   bytes: number;
   modifiedAt?: string;
   windowBrightness?: number;
+  archived?: boolean;
+  spireHeight?: number;
   position: Point;
   width: number;
   depth: number;
@@ -39,6 +41,8 @@ export interface Building {
   githubUrl?: string;
 }
 export interface RepositoryDistrict {
+  archived?: boolean;
+  metadataAvailable?: boolean;
   source?: 'local' | 'github';
   name: string;
   description: string;
@@ -78,6 +82,7 @@ export interface FileSnapshot {
 }
 
 export interface RepositorySnapshot {
+  archived?: boolean;
   schemaVersion: 1;
   name: string;
   source: 'local' | 'github';

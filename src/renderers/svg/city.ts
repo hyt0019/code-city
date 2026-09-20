@@ -4,6 +4,7 @@ import { project } from '../../layout/isometric';
 import { cityLegend, cityPalette, languageColor } from '../../core/theme';
 import { sceneSource } from '../../core/source-label';
 import { windowColor as activityWindowColor } from '../../core/activity';
+import { archivedColor, spireBase } from '../../core/repository-signals';
 
 export interface RenderOptions {
   selectedId?: string;
@@ -88,9 +89,9 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
     );
   }
 
-  function tree(x: number, y: number, variant: number): string {
+  function tree(x: number, y: number, variant: number, archived = false): string {
     const height = 5 + (variant % 3);
-    const color = ['#365d50', '#426d57', '#2a554d'][variant % 3];
+    const color = archivedColor(['#365d50', '#426d57', '#2a554d'][variant % 3], archived);
     return (
       box(x - 0.4, y - 0.4, 0.8, 0.8, 2, '#7b7361') +
       polygon([p(x - 1.6, y + 1.6, 2), p(x + 1.6, y + 1.6, 2), p(x, y, height + 2)], color) +
@@ -106,6 +107,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
   }
 
   function building(b: Building): string {
+    b = { ...b, color: archivedColor(b.color, b.archived) };
     const { x, y } = b.position;
     const { width: w, depth: d, height: h } = b;
     const isSelected = b.id === options.selectedId;
@@ -158,7 +160,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       y + 1.2 * unit,
       w - 2.4 * unit,
       d - 2.4 * unit,
-      b.category === 'test' ? '#78a967' : shade(b.color, 0.94),
+      b.category === 'test' ? archivedColor('#78a967', b.archived) : shade(b.color, 0.94),
       h + 0.2,
     );
     if (b.landmark && b.category !== 'docs' && w > 8 && d > 8 && !dense) {
@@ -166,9 +168,16 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       output += ground(x + w / 2 - 0.7, y + d / 2 - 0.7, 1.4, 1.4, '#d6f1ff', h + 4);
     } else if (b.category === 'docs' && w > 9 && d > 9 && !dense) {
       output += box(x + 3, y + 2, w - 6, d - 4, h + 2, '#c3cdcd', h);
-      output += ground(x + 4, y + 3, w - 8, d - 6, '#769471', h + 2.2);
+      output += ground(x + 4, y + 3, w - 8, d - 6, archivedColor('#769471', b.archived), h + 2.2);
     } else if (b.category === 'config' && w > 8 && d > 8 && !dense) {
       output += box(x + 2, y + 2, 3, 4, h + 1.8, '#607184', h);
+    }
+    if (b.spireHeight) {
+      const base = spireBase(b, dense);
+      const tip = base + b.spireHeight;
+      const thickness = Math.min(w, d, 8) * 0.09;
+      const color = archivedColor('#e1bf74', b.archived);
+      output += `<g data-star-spire="${b.spireHeight}">${box(x + w / 2 - thickness / 2, y + d / 2 - thickness / 2, thickness, thickness, tip, color, base)}${box(x + w / 2 - thickness, y + d / 2 - thickness, thickness * 2, thickness * 2, tip + 0.6, color, tip)}</g>`;
     }
     if (isSelected) {
       output += polygon(
@@ -182,7 +191,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
         line(p(x + w, y), p(x + w, y, h), palette.highlight, 1.8);
     }
     const metric = scene.heightMetric === 'bytes' ? `${b.bytes} bytes` : `${b.lines} lines`;
-    return `<g data-building="${escapeXml(b.id)}" ${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${metric}" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${metric}</title>${output}</g>`;
+    return `<g data-building="${escapeXml(b.id)}" ${b.archived ? 'data-archived="true" ' : ''}${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${metric}" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${metric}${b.archived ? ' · archived repository' : ''}</title>${output}</g>`;
   }
 
   let output =
@@ -248,7 +257,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       y + border,
       width - 2 * border,
       depth - 2 * border,
-      repo.name === 'docs' ? palette.park : palette.pavement,
+      archivedColor(repo.name === 'docs' ? palette.park : palette.pavement, repo.archived),
       0.35,
     );
     if (repo.blocks) {
@@ -259,7 +268,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
           b.y,
           b.width,
           b.depth,
-          palette.block,
+          archivedColor(palette.block, repo.archived),
           0.4,
           `stroke="${palette.blockBorder}" stroke-width="0.7"`,
         );
@@ -279,7 +288,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
         objects.push({
           depth: tx + ty,
           key: `${repo.name}-tree-${i}`,
-          markup: tree(tx, ty, i),
+          markup: tree(tx, ty, i, repo.archived),
           repo: repo.name,
         });
       }
@@ -291,14 +300,14 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
         objects.push({
           depth: tx + ty,
           key: `${repo.name}-tree-${i}`,
-          markup: tree(tx, ty, i),
+          markup: tree(tx, ty, i, repo.archived),
           repo: repo.name,
         });
         if (i < 5)
           objects.push({
             depth: x + 74 + y + 7 + i * 13,
             key: `${repo.name}-side-${i}`,
-            markup: tree(x + 74, y + 7 + i * 13, i + 2),
+            markup: tree(x + 74, y + 7 + i * 13, i + 2, repo.archived),
             repo: repo.name,
           });
       }
@@ -330,8 +339,10 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
         repo.bounds.y + repo.bounds.depth + 1,
         0,
       );
-      const color =
-        scene.theme.languages[repo.primaryLanguage] ?? languageColor(repo.primaryLanguage);
+      const color = archivedColor(
+        scene.theme.languages[repo.primaryLanguage] ?? languageColor(repo.primaryLanguage),
+        repo.archived,
+      );
       const name = repo.name.length > 22 ? `${repo.name.slice(0, 21)}…` : repo.name;
       const width = Math.max(68, name.length * 7 + 28);
       output += `<g opacity="${options.repository && options.repository !== repo.name ? '0.3' : '1'}"><rect x="${(label.x - width / 2).toFixed(2)}" y="${(label.y + 5).toFixed(2)}" width="${width}" height="27" rx="6" fill="${palette.label}" stroke="${palette.labelBorder}"/><circle cx="${(label.x - width / 2 + 13).toFixed(2)}" cy="${(label.y + 18.5).toFixed(2)}" r="3" fill="${color}"/><text x="${(label.x + 5).toFixed(2)}" y="${(label.y + 22).toFixed(2)}" fill="${palette.labelText}" text-anchor="middle" font-size="12" font-family="system-ui,sans-serif">${escapeXml(name)}</text></g>`;

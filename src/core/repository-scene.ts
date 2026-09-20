@@ -15,9 +15,17 @@ export function repositoryScene(scene: CityScene, name: string): CityScene {
     project({ x: x - 5, y: y + depth + 5 }, 0, camera),
     project({ x: x + width + 5, y: y + depth + 5 }, -5, camera),
     ...repository.buildings.flatMap((b) => [
-      project(b.position, b.height + 4, camera),
-      project({ x: b.position.x + b.width, y: b.position.y }, b.height + 4, camera),
-      project({ x: b.position.x, y: b.position.y + b.depth }, b.height + 4, camera),
+      project(b.position, b.height + 4 + (b.spireHeight ?? 0), camera),
+      project(
+        { x: b.position.x + b.width, y: b.position.y },
+        b.height + 4 + (b.spireHeight ?? 0),
+        camera,
+      ),
+      project(
+        { x: b.position.x, y: b.position.y + b.depth },
+        b.height + 4 + (b.spireHeight ?? 0),
+        camera,
+      ),
     ]),
   ];
   let minX = Infinity,
