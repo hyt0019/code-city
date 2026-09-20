@@ -116,7 +116,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     );
   }
   const buildings = data.repositories.flatMap((repo) =>
-    repo.buildings.map((b) => ({ ...b, repo: repo.name })),
+    repo.buildings.map((b) => ({ ...b, repo: repo.name, cityOnly: repo.privacy === 'city-only' })),
   );
   const bodies: Part[] = [];
   const details: Part[] = [];
@@ -380,7 +380,8 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     );
     raycaster.setFromCamera(pointer, camera);
     const index = raycaster.intersectObject(bodyMesh, false)[0]?.instanceId;
-    return index === undefined ? undefined : buildings[index];
+    const building = index === undefined ? undefined : buildings[index];
+    return building?.cityOnly ? undefined : building;
   }
   let start = { x: 0, y: 0 };
   let dragging = false;
@@ -507,7 +508,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
           if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
         }
       }
-      highlight(buildings.find((b) => b.id === state.selectedId));
+      highlight(buildings.find((b) => !b.cityOnly && b.id === state.selectedId));
       invalidate();
     },
     dispose() {

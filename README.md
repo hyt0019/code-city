@@ -15,6 +15,7 @@ Code City 将本地目录或公开 GitHub 仓库生成城市 SVG 横幅和可交
 - **探索代码结构**：在 2.5D / 3D 视图中旋转、缩放、筛选仓库和查看文件信息。
 - **导出分享图片**：下载 SVG、高清 PNG 横幅或当前 3D 视角截图。
 - **自动保持更新**：通过 GitHub Actions 定期生成，再发布到 GitHub Pages。
+- **展示私有项目的规模**：为选定仓库启用 `city-only`，发布匿名城市，不发布文件详情。
 
 支持深浅主题、按行数或文件大小切换建筑高度、提交时间窗灯、Star 地标和归档仓库外观。运行时不调用 AI API，不需要后端、数据库或用户登录。
 
@@ -109,6 +110,62 @@ export default {
 ```
 
 发布后图片地址保持不变，后续更新城市不需要反复修改个人主页 README。
+
+## 私有仓库与隐私展示
+
+每个仓库可独立设置 `privacy: 'city-only'`。公开和隐私仓库可以混合展示，配置与 Secrets 中的输入合计最多 **8 个**。
+
+| 模式           | 展示内容                                                                 |
+| -------------- | ------------------------------------------------------------------------ |
+| `full`（默认） | 仓库和文件详情、语言、提交信息，以及可用的源码链接                       |
+| `city-only`    | 自定义公开别名、建筑布局和尺寸、文件数量、行数与字节数；使用统一建筑颜色 |
+
+`city-only` 会在生成阶段移除文件名、目录名、真实仓库地址、描述、commit、文件日期和内容哈希；生成记录只保留别名和汇总数字。网页数据、SVG、PNG 和独立城区页均使用脱敏结果，文件悬停、选择器和源码跳转关闭。3D 旋转、缩放和图片导出仍可使用。
+
+这是**公开规模、隐藏详情**的模式：建筑尺寸、逐建筑行数/字节数和数量仍在公开场景数据中，别名、城市标题和副标题也会公开。请使用准备公开的别名，例如 `private-one`。
+
+### 本地生成私有项目
+
+如果项目已在本机克隆，无需再提供 GitHub 令牌：
+
+```sh
+npm run generate -- --repo "../my-private-project" --city-only
+npm run build
+```
+
+命令行模式自动使用 `private-1`、`private-2` 等别名，不会把路径写进配置文件。上传 `dist/` 到静态托管即可展示此版本；仓库现有的 Actions 会根据它自己的配置重新生成，若希望后续由 Actions 自动更新，请使用下面的 Secrets 方式。
+
+也可以在本地配置中为单个输入设置公开别名：
+
+```ts
+{ path: '../my-private-project', name: 'private-one', privacy: 'city-only' }
+```
+
+公开配置文件本身会被 GitHub 访问者看到。真实私有仓库名称和本地路径应保留在本地，自动部署时用 Secrets 配置。
+
+### 通过 GitHub Actions 自动更新私有城市
+
+1. 创建一个仅选中目标私有仓库的 **fine-grained personal access token**，授予 **Contents: Read-only**。默认工作流令牌通常不能读取其他私有仓库；参考 [GitHub 令牌设置说明](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)。
+2. 打开 Code City 仓库的 **Settings → Secrets and variables → Actions → New repository secret**，添加：
+
+   | Secret 名称                     | 值                                             |
+   | ------------------------------- | ---------------------------------------------- |
+   | `CODECITY_GITHUB_TOKEN`         | 上面的只读令牌                                 |
+   | `CODECITY_PRIVATE_REPOSITORIES` | 以下 JSON 数组，替换为真实仓库和准备公开的别名 |
+
+   ```json
+   [
+     { "github": "USERNAME/private-project-one", "name": "private-one" },
+     { "github": "USERNAME/private-project-two", "name": "private-two" }
+   ]
+   ```
+
+3. `codecity.config.ts` 的 `repositories` 保留想同时展示的公开项目；**只展示私有项目时设为 `[]`**。Secrets 中的项目自动追加到列表，强制使用 `city-only`，不用重复写进配置。
+4. 打开 **Actions → Deploy Code City → Run workflow**。部署成功后，原来的主页横幅地址会展示新的组合城市。
+
+Secrets 清单支持可选的 `ref`。令牌只用于生成时读取，不写入网页或 Git 配置；私有代码在临时目录中扫描，结束后清理，不使用公共仓库缓存。鉴权失败会停止生成。Pull Request 检查不会使用这两个 Secrets。
+
+`privacy: 'city-only'` 也可用于普通公开 GitHub 输入；显式配置私有 GitHub 输入时仍需令牌。修改隐私配置后先运行 `npm run generate` 再构建，保证发布的是新的脱敏数据。已经发布过的旧详情不会从历史提交、旧下载或第三方缓存中自动消失。
 
 ## 为单个项目添加横幅
 
@@ -234,7 +291,7 @@ Fork 后需要确认定时工作流已启用；公开仓库长时间没有活动
 
 **支持私有仓库吗？**
 
-GitHub 输入只支持公开仓库。本地扫描支持普通目录和 Git 仓库；发布前可用 `exclude` 排除不希望展示的文件路径。生成场景包含文件名和统计信息，不包含源码正文。
+支持。已克隆的私有项目可在本地用 `--city-only` 生成；远程私有仓库通过只读令牌读取，并强制以 `city-only` 发布。见上面的“私有仓库与隐私展示”。默认 `full` 模式不支持远程私有仓库。所有模式都不发布源码正文；`full` 保留文件名和统计信息，`city-only` 移除标识与详情。
 
 **哪些文件会被忽略？**
 
@@ -261,6 +318,8 @@ WebGL 不可用时自动使用 SVG 视图。禁用 JavaScript 时，已构建的
 ![3D 城市浏览](./previews/three-desktop.png)
 
 [浅色主题](./previews/daylight-desktop.png) · [手机 3D](./previews/three-mobile.png) · [Star 与归档城区](./previews/signals-desktop.png) · [归档城区手机预览](./previews/signals-mobile.png)
+
+[公开与隐私城区混合展示](./previews/privacy-desktop.png) · [隐私城区手机预览](./previews/privacy-mobile.png)
 
 上述截图使用演示仓库；[本地仓库示例](./previews/local-city-desktop.png) 展示真实扫描结果。
 

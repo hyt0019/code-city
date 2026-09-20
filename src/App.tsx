@@ -36,7 +36,7 @@ import { downloadImage, svgToPng } from './core/image-export';
 import { sitePath, siteUrl } from './core/site-paths';
 import { sceneSource } from './core/source-label';
 import { applyRepositorySignals } from './core/repository-signals';
-import config from '../codecity.config';
+import config from '../generated/display.json';
 import { applyHeightMetric, compactNumber, sceneStats } from './core/metrics';
 import { renderBanner, renderCitySvg } from './renderers/svg/city';
 
@@ -121,15 +121,24 @@ export default function App({
     [scene],
   );
   const legend = useMemo(() => cityLegend(scene), [scene]);
+  const privateRepositories = new Set(
+    scene.repositories.filter((repo) => repo.privacy === 'city-only').map((repo) => repo.name),
+  );
+  const inspectableBuildings = allBuildings.filter(
+    (building) => !privateRepositories.has(building.repository),
+  );
   const [repository, setRepository] = useState(() => {
     const requested = new URLSearchParams(location.search).get('repo');
     return scene.repositories.some((repo) => repo.name === requested) ? requested! : '';
   });
+  const detailsHidden = repository
+    ? privateRepositories.has(repository)
+    : privateRepositories.size > 0 && inspectableBuildings.length === 0;
   const [selectedId, setSelectedId] = useState(
-    allBuildings.find((building) =>
+    inspectableBuildings.find((building) =>
       repository ? building.repository === repository : building.landmark,
     )?.id ??
-      allBuildings[0]?.id ??
+      (!repository ? inspectableBuildings[0]?.id : '') ??
       '',
   );
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -146,7 +155,7 @@ export default function App({
   );
   const [exportSubtitle, setExportSubtitle] = useState<string>(config.profile.subtitle);
   const [exportRepository, setExportRepository] = useState(pageRepository);
-  const active = allBuildings.find((building) => building.id === (hoveredId || selectedId));
+  const active = inspectableBuildings.find((building) => building.id === (hoveredId || selectedId));
   const activeRepository = scene.repositories.find((repo) => repo.name === active?.repository);
   const visibleBuildings = allBuildings.filter(
     (building) => !repository || building.repository === repository,
@@ -193,7 +202,10 @@ export default function App({
     setRepository(name);
     setHoveredId(null);
     if (name)
-      setSelectedId(allBuildings.find((building) => building.repository === name)?.id ?? '');
+      setSelectedId(
+        inspectableBuildings.find((building) => building.repository === name)?.id ?? '',
+      );
+    else setSelectedId(inspectableBuildings[0]?.id ?? '');
   }
 
   function download() {
@@ -258,7 +270,9 @@ export default function App({
   }
 
   function buildingId(event: MouseEvent | KeyboardEvent) {
-    return (event.target as Element).closest('[data-building]')?.getAttribute('data-building');
+    return (event.target as Element)
+      .closest('[data-building]:not([data-private])')
+      ?.getAttribute('data-building');
   }
 
   return (
@@ -350,7 +364,7 @@ export default function App({
             {scene.isFixture
               ? 'Local demo'
               : `${source === 'local' ? 'Local' : source} repositories`}
-            <span>v0.4.0</span>
+            <span>v0.5.0</span>
           </div>
         </div>
       </aside>
@@ -434,9 +448,11 @@ export default function App({
                   </h2>
                   <p>{repo.description}</p>
                   <p className="repo-signals">
-                    {repo.metadataAvailable === false
-                      ? 'Stars unavailable'
-                      : `★ ${compactNumber(repo.stars)} stars`}
+                    {repo.privacy === 'city-only'
+                      ? 'City only · details hidden'
+                      : repo.metadataAvailable === false
+                        ? 'Stars unavailable'
+                        : `★ ${compactNumber(repo.stars)} stars`}
                     {repo.archived && ' · Archived'}
                   </p>
                   <div>
@@ -532,8 +548,12 @@ export default function App({
                 <span>
                   {visibleBuildings.length} buildings ·{' '}
                   {repository
-                    ? 'District highlighted'
-                    : `Built from ${stats.repositories} ${source} repositories`}
+                    ? detailsHidden
+                      ? 'City only · file details hidden'
+                      : 'District highlighted'
+                    : detailsHidden
+                      ? 'City only · file details hidden'
+                      : `Built from ${stats.repositories} ${source} repositories`}
                 </span>
               </div>
               {dimension === '3D' ? (
@@ -613,11 +633,13 @@ export default function App({
                         setHoveredId(null);
                       }}
                     >
-                      {visibleBuildings.map((building) => (
-                        <option key={building.id} value={building.id}>
-                          {building.repository}/{building.path}
-                        </option>
-                      ))}
+                      {visibleBuildings
+                        .filter((building) => !privateRepositories.has(building.repository))
+                        .map((building) => (
+                          <option key={building.id} value={building.id}>
+                            {building.repository}/{building.path}
+                          </option>
+                        ))}
                     </select>
                   )}
                   <a
@@ -710,9 +732,11 @@ export default function App({
                 ))}
               </div>
               <span className="interaction-hint">
-                {dimension === '3D'
-                  ? 'Drag to rotate · Right-drag to pan · Click to inspect'
-                  : 'Hover to discover · Click to inspect'}
+                {detailsHidden
+                  ? 'City only · file details hidden'
+                  : dimension === '3D'
+                    ? 'Drag to rotate · Right-drag to pan · Click to inspect'
+                    : 'Hover to discover · Click to inspect'}
               </span>
             </div>
           </section>
@@ -739,7 +763,8 @@ export default function App({
             <div>
               <Sparkles size={19} />
               <span>
-                <strong>{stats.languages.length.toString().padStart(2, '0')}</strong>Languages
+                <strong>{stats.languages.length.toString().padStart(2, '0')}</strong>
+                {privateRepositories.size ? 'Public languages' : 'Languages'}
               </span>
             </div>
             <span className="stats-note">

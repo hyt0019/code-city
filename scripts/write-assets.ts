@@ -7,10 +7,18 @@ import { applyTheme } from '../src/core/theme';
 import { repositoryScene, repositorySlug } from '../src/core/repository-scene';
 import rawConfig from '../codecity.config';
 import { applyRepositorySignals } from '../src/core/repository-signals';
+import { redactScene } from '../src/core/privacy';
 export async function writeAssets(scene: CityScene) {
   const config = configSchema.parse(rawConfig);
   sceneSchema.parse(scene);
-  scene = applyRepositorySignals(applyHeightMetric(scene, config.appearance.heightMetric));
+  scene = redactScene(
+    applyRepositorySignals(applyHeightMetric(redactScene(scene), config.appearance.heightMetric)),
+  );
+  await mkdir('generated', { recursive: true });
+  await writeFile(
+    'generated/display.json',
+    `${JSON.stringify({ profile: config.profile, appearance: config.appearance }, null, 2)}\n`,
+  );
   const files = new Map<string, string>();
   const themed = applyTheme(scene, config.appearance.theme);
   files.set('scene.json', `${JSON.stringify(themed, null, 2)}\n`);

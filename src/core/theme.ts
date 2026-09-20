@@ -21,6 +21,7 @@ export const midnightTheme: CityTheme = {
     TOML: '#9ba980',
     Shell: '#78b497',
     Config: '#8195aa',
+    Private: '#8195aa',
   },
 };
 export type ThemeId = 'github-dark' | 'github-light';

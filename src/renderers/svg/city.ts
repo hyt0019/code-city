@@ -106,11 +106,11 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
     );
   }
 
-  function building(b: Building): string {
+  function building(b: Building, cityOnly = false): string {
     b = { ...b, color: archivedColor(b.color, b.archived) };
     const { x, y } = b.position;
     const { width: w, depth: d, height: h } = b;
-    const isSelected = b.id === options.selectedId;
+    const isSelected = !cityOnly && b.id === options.selectedId;
     const seed = b.seed ?? stableHash(b.id);
     const unit = Math.min(1, w / 12, d / 12);
     let output = ground(x + 2, y + 1, w + 4, d + 3, '#070b10', 0, 'opacity="0.35"');
@@ -191,6 +191,8 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
         line(p(x + w, y), p(x + w, y, h), palette.highlight, 1.8);
     }
     const metric = scene.heightMetric === 'bytes' ? `${b.bytes} bytes` : `${b.lines} lines`;
+    if (cityOnly)
+      return `<g data-building="${escapeXml(b.id)}" data-private="true" aria-hidden="true">${output}</g>`;
     return `<g data-building="${escapeXml(b.id)}" ${b.archived ? 'data-archived="true" ' : ''}${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${metric}" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${metric}${b.archived ? ' · archived repository' : ''}</title>${output}</g>`;
   }
 
@@ -278,7 +280,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       objects.push({
         depth: b.position.x + b.position.y + (b.width + b.depth) / 2,
         key: b.id,
-        markup: building(b),
+        markup: building(b, repo.privacy === 'city-only'),
         repo: repo.name,
       });
     if (!scene.isFixture && Math.min(width, depth) > 20) {
@@ -346,7 +348,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       const name = repo.name.length > 22 ? `${repo.name.slice(0, 21)}…` : repo.name;
       const width = Math.max(68, name.length * 7 + 28);
       output += `<g opacity="${options.repository && options.repository !== repo.name ? '0.3' : '1'}"><rect x="${(label.x - width / 2).toFixed(2)}" y="${(label.y + 5).toFixed(2)}" width="${width}" height="27" rx="6" fill="${palette.label}" stroke="${palette.labelBorder}"/><circle cx="${(label.x - width / 2 + 13).toFixed(2)}" cy="${(label.y + 18.5).toFixed(2)}" r="3" fill="${color}"/><text x="${(label.x + 5).toFixed(2)}" y="${(label.y + 22).toFixed(2)}" fill="${palette.labelText}" text-anchor="middle" font-size="12" font-family="system-ui,sans-serif">${escapeXml(name)}</text></g>`;
-      if (!scene.isFixture)
+      if (!scene.isFixture && repo.privacy !== 'city-only')
         for (const block of repo.blocks ?? []) {
           const pos = p(
             block.bounds.x + block.bounds.width / 2,

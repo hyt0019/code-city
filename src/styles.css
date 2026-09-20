@@ -645,14 +645,14 @@ button:hover:not(:disabled) {
   height: 100%;
   display: block;
 }
-.city-art [data-building] {
+.city-art [data-building]:not([data-private]) {
   cursor: pointer;
   outline: none;
 }
 .city-art [data-building]:focus-visible {
   filter: drop-shadow(0 0 4px #80ddff);
 }
-.city-art [data-building]:hover {
+.city-art [data-building]:not([data-private]):hover {
   filter: brightness(1.13);
 }
 .compass {

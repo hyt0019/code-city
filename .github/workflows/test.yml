@@ -9,6 +9,13 @@ on:
         description: Upload the verified static site for a Pages deployment.
         type: boolean
         default: false
+    secrets:
+      CODECITY_GITHUB_TOKEN:
+        description: Optional read-only token for selected private repositories.
+        required: false
+      CODECITY_PRIVATE_REPOSITORIES:
+        description: Optional JSON list of private repositories and public aliases.
+        required: false
 
 permissions:
   contents: read
@@ -34,6 +41,8 @@ jobs:
         run: npm run generate
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          CODECITY_GITHUB_TOKEN: ${{ github.event_name != 'pull_request' && secrets.CODECITY_GITHUB_TOKEN || '' }}
+          CODECITY_PRIVATE_REPOSITORIES: ${{ github.event_name != 'pull_request' && secrets.CODECITY_PRIVATE_REPOSITORIES || '' }}
       - name: Check formatting, types, unit tests and build
         run: npm run check
       - name: Install Chromium

@@ -42,7 +42,13 @@ export function sceneStats(scene: CityScene) {
     repositories: scene.repositories.length,
     files: buildings.length,
     lines: buildings.reduce((sum, building) => sum + building.lines, 0),
-    languages: [...new Set(buildings.map((building) => building.language))],
+    languages: [
+      ...new Set(
+        scene.repositories
+          .filter((repo) => repo.privacy !== 'city-only')
+          .flatMap((repo) => repo.buildings.map((building) => building.language)),
+      ),
+    ],
   };
 }
 

@@ -1,0 +1,14 @@
+{
+  "profile": {
+    "title": "My Code City",
+    "subtitle": "A skyline built from code",
+    "width": 1200,
+    "height": 420
+  },
+  "appearance": {
+    "theme": "github-dark",
+    "showLabels": true,
+    "showLegend": true,
+    "heightMetric": "lines"
+  }
+}

@@ -1,6 +1,6 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { access, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { basename, dirname, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
@@ -40,6 +40,111 @@ afterAll(async () => {
 });
 
 describe('public GitHub collection', () => {
+  it('authenticates city-only inputs in memory and removes the disposable private checkout', async () => {
+    const root = await temporary();
+    const source = join(root, 'private-source');
+    await mkdir(source);
+    const git = async (args: string[]) =>
+      (await execute('git', args, { cwd: source, windowsHide: true })).stdout.trim();
+    await git(['init']);
+    await writeFile(join(source, 'customer-secret.ts'), 'export const value = 123;');
+    await git(['add', '.']);
+    await git([
+      '-c',
+      'user.name=Test',
+      '-c',
+      'user.email=test@example.invalid',
+      '-c',
+      'commit.gpgsign=false',
+      'commit',
+      '-m',
+      'private fixture',
+    ]);
+    const token = 'test-private-token';
+    const auth = `Authorization: Basic ${Buffer.from(`x-access-token:${token}`).toString('base64')}`;
+    let checkout = '';
+    let networkCalls = 0;
+    const runGit = async (args: string[], cwd: string, env: NodeJS.ProcessEnv) => {
+      checkout = cwd;
+      expect(args.join(' ')).not.toContain(token);
+      expect(args.join(' ')).not.toContain(auth);
+      const network = args.includes('fetch') || args.includes('ls-remote');
+      expect(env.CODECITY_GIT_AUTH).toBe(network ? auth : undefined);
+      if (network) {
+        networkCalls++;
+        const command = args.findIndex((arg) => arg === 'fetch' || arg === 'ls-remote');
+        const effective = await execute(
+          'git',
+          [
+            ...args.slice(0, command),
+            'config',
+            '--get-urlmatch',
+            'http.extraHeader',
+            'https://github.com/example/confidential-project.git',
+          ],
+          { cwd, env, windowsHide: true },
+        );
+        expect(effective.stdout.trim()).toBe(auth);
+      }
+      const local = args.map((arg) =>
+        arg === 'protocol.file.allow=never'
+          ? 'protocol.file.allow=always'
+          : arg === 'https://github.com/example/confidential-project.git'
+            ? source
+            : arg,
+      );
+      return (await execute('git', local, { cwd, env, windowsHide: true })).stdout.trim();
+    };
+    const fetcher = vi.fn(async (_url, init) => {
+      expect(init?.headers).toMatchObject({ Authorization: `Bearer ${token}` });
+      return Response.json({ ...publicData, private: true, description: 'secret description' });
+    }) as unknown as typeof fetch;
+    const snapshot = await collectGitHub(
+      { github: 'example/confidential-project', name: 'private-one', privacy: 'city-only' },
+      { privateToken: token },
+      { runGit, fetcher },
+    );
+    expect(snapshot.privacy).toBe('city-only');
+    expect(snapshot.files).toHaveLength(1);
+    expect(networkCalls).toBe(1);
+    const published = JSON.stringify(layoutCity([snapshot]));
+    expect(published).not.toMatch(
+      /confidential-project|customer-secret|secret description|test-private-token/,
+    );
+    await expect(access(dirname(checkout))).rejects.toThrow();
+  });
+
+  it('fails closed without exposing private identifiers or invoking Git after authorization failure', async () => {
+    const runGit = vi.fn(async () => {
+      throw new Error('confidential-project test-private-token');
+    });
+    const input = {
+      github: 'example/confidential-project',
+      name: 'private-one',
+      privacy: 'city-only' as const,
+    };
+    for (const status of [401, 403, 404, 429, 503])
+      await expect(
+        collectGitHub(
+          input,
+          { privateToken: 'test-private-token' },
+          { runGit, fetcher: async () => new Response('', { status }) },
+        ),
+      ).rejects.toThrow(/^Unable to read a city-only GitHub input\./);
+    expect(runGit).not.toHaveBeenCalled();
+    await expect(
+      collectGitHub(input, {}, { runGit, fetcher: async () => Response.json({ private: true }) }),
+    ).rejects.toThrow(/^Unable to read a city-only GitHub input\./);
+    expect(runGit).not.toHaveBeenCalled();
+    await expect(
+      collectGitHub(
+        input,
+        { privateToken: 'test-private-token' },
+        { runGit, fetcher: async () => Response.json({ private: true }) },
+      ),
+    ).rejects.toThrow(/^Unable to read a city-only GitHub input\./);
+  });
+
   it('validates mixed inputs and rejects URLs, paths and option-like refs', () => {
     expect(
       configSchema.parse({

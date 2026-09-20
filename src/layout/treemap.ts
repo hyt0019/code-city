@@ -12,6 +12,7 @@ import { heightFromLines, stableHash } from '../core/metrics';
 import { languageColor, midnightTheme } from '../core/theme';
 import { activityBrightness } from '../core/activity';
 import { applyRepositorySignals } from '../core/repository-signals';
+import { redactScene } from '../core/privacy';
 interface Parcel {
   key: string;
   value: number;
@@ -144,6 +145,7 @@ export function layoutCity(input: RepositorySnapshot[], owner = 'local'): CitySc
     const primaryLanguage =
       [...totals].sort((a, b) => b[1] - a[1] || compare(a[0], b[0]))[0]?.[0] ?? 'Config';
     return {
+      ...(snapshot.privacy ? { privacy: snapshot.privacy } : {}),
       name: snapshot.name,
       source: snapshot.source,
       description:
@@ -179,15 +181,19 @@ export function layoutCity(input: RepositorySnapshot[], owner = 'local'): CitySc
       ),
     )
     .digest('hex');
-  return applyRepositorySignals({
-    schemaVersion: 1,
-    generatedAt: dates.at(-1) ?? '1970-01-01T00:00:00.000Z',
-    owner,
-    isFixture: false,
-    theme: { ...midnightTheme, languages },
-    camera: { origin: { x: 520, y: 120 }, scale: Math.min(2.6, 440 / side) },
-    bounds,
-    repositories,
-    snapshotHash,
-  });
+  return redactScene(
+    applyRepositorySignals(
+      redactScene({
+        schemaVersion: 1,
+        generatedAt: dates.at(-1) ?? '1970-01-01T00:00:00.000Z',
+        owner,
+        isFixture: false,
+        theme: { ...midnightTheme, languages },
+        camera: { origin: { x: 520, y: 120 }, scale: Math.min(2.6, 440 / side) },
+        bounds,
+        repositories,
+        snapshotHash,
+      }),
+    ),
+  );
 }

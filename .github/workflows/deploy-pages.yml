@@ -32,6 +32,9 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       publish-artifact: true
+    secrets:
+      CODECITY_GITHUB_TOKEN: ${{ secrets.CODECITY_GITHUB_TOKEN }}
+      CODECITY_PRIVATE_REPOSITORIES: ${{ secrets.CODECITY_PRIVATE_REPOSITORIES }}
   deploy:
     needs: build
     runs-on: ubuntu-latest

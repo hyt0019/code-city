@@ -20,10 +20,23 @@ export const githubRef = z
       !/[\s~^:?*\[\\\x00-\x1f]/.test(value),
     'Invalid Git ref',
   );
-export const repositoryInput = z.union([
-  z.object({ path: z.string().min(1), name: repositoryName }).strict(),
-  z.object({ github: githubRepository, ref: githubRef.optional(), name: repositoryName }).strict(),
-]);
+const privacy = z.enum(['full', 'city-only']).optional();
+export const repositoryInput = z
+  .union([
+    z.object({ path: z.string().min(1), name: repositoryName, privacy }).strict(),
+    z
+      .object({
+        github: githubRepository,
+        ref: githubRef.optional(),
+        name: repositoryName,
+        privacy,
+      })
+      .strict(),
+  ])
+  .refine((input) => input.privacy !== 'city-only' || !!input.name, {
+    message: 'City-only repositories require a public display alias in name.',
+    path: ['name'],
+  });
 
 export const configSchema = z
   .object({
@@ -107,6 +120,7 @@ export const sceneSchema = z.object({
   camera: z.object({ origin: point, scale: positive }),
   repositories: z.array(
     z.object({
+      privacy: z.enum(['full', 'city-only']).optional(),
       source: z.enum(['local', 'github']).optional(),
       name: z.string().min(1),
       description: z.string(),

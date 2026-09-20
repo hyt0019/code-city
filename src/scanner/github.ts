@@ -8,6 +8,7 @@ import { githubRef, githubRepository } from '../core/config';
 import { scanLocal } from './scan-local';
 import type { ScanOptions } from './scan-local';
 import { HISTORY_LIMIT } from './file-history';
+import { collectPrivateGitHub } from './private-github';
 
 const execute = promisify(execFile);
 const metadataSchema = z.object({
@@ -38,7 +39,9 @@ export async function githubMetadata(
     /* Optional metadata cache. */
   }
   if (cached && cached.data.private)
-    throw new PrivateRepositoryError('Private repositories are not supported.');
+    throw new PrivateRepositoryError(
+      'Private repositories require city-only mode and CODECITY_GITHUB_TOKEN.',
+    );
   if (
     cached &&
     cached.data.archived !== undefined &&
@@ -64,7 +67,10 @@ export async function githubMetadata(
         `GitHub metadata HTTP ${response.status}${response.headers.get('retry-after') ? `; retry after ${response.headers.get('retry-after')} seconds` : ''}`,
       );
     const data = metadataSchema.parse(await response.json());
-    if (data.private) throw new PrivateRepositoryError('Private repositories are not supported.');
+    if (data.private)
+      throw new PrivateRepositoryError(
+        'Private repositories require city-only mode and CODECITY_GITHUB_TOKEN.',
+      );
     await writeFile(cacheFile, `${JSON.stringify({ checkedAt: now, data })}\n`);
     return data;
   } catch (error) {
@@ -79,7 +85,7 @@ export async function githubMetadata(
 export function publicGitEnvironment(emptyConfig: string): NodeJS.ProcessEnv {
   // Fetch public code without forwarding local Git credentials, hooks, filters or repository overrides.
   const env = Object.fromEntries(
-    Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')),
+    Object.entries(process.env).filter(([key]) => !/^(?:GIT_|CODECITY_|GITHUB_TOKEN$)/i.test(key)),
   );
   return {
     ...env,
@@ -92,10 +98,11 @@ export function publicGitEnvironment(emptyConfig: string): NodeJS.ProcessEnv {
 }
 
 export async function collectGitHub(
-  input: { github: string; ref?: string; name?: string },
+  input: { github: string; ref?: string; name?: string; privacy?: 'full' | 'city-only' },
   options: ScanOptions & {
     cacheDirectory?: string;
     metadataToken?: string;
+    privateToken?: string;
     warn?: (message: string) => void;
   } = {},
   dependencies: {
@@ -103,6 +110,14 @@ export async function collectGitHub(
     runGit?: (args: string[], cwd: string, env: NodeJS.ProcessEnv) => Promise<string>;
   } = {},
 ) {
+  if (input.privacy === 'city-only') {
+    if (!input.name?.trim()) throw new Error('City-only inputs require a public display alias.');
+    return collectPrivateGitHub(
+      { ...input, name: input.name },
+      { ...options, token: options.privateToken ?? options.metadataToken ?? '' },
+      dependencies,
+    );
+  }
   const repository = githubRepository.parse(input.github).toLowerCase();
   const ref = input.ref ? githubRef.parse(input.ref) : 'HEAD';
   const cacheRoot = resolve(options.cacheDirectory ?? '.cache/github');
@@ -198,6 +213,7 @@ export async function collectGitHub(
     // An accessible repository with no refs is an empty city, not a network failure.
     if (ref !== 'HEAD' || (await git(['ls-remote', 'origin']))) throw error;
     return {
+      ...(input.privacy ? { privacy: input.privacy } : {}),
       schemaVersion: 1 as const,
       name: input.name ?? repository.split('/')[1],
       source: 'github' as const,
@@ -219,6 +235,7 @@ export async function collectGitHub(
   });
   return {
     ...snapshot,
+    ...(input.privacy ? { privacy: input.privacy } : {}),
     source: 'github' as const,
     url: `https://github.com/${repository}`,
     description:

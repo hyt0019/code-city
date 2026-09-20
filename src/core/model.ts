@@ -41,6 +41,7 @@ export interface Building {
   githubUrl?: string;
 }
 export interface RepositoryDistrict {
+  privacy?: 'full' | 'city-only';
   archived?: boolean;
   metadataAvailable?: boolean;
   source?: 'local' | 'github';
@@ -82,6 +83,7 @@ export interface FileSnapshot {
 }
 
 export interface RepositorySnapshot {
+  privacy?: 'full' | 'city-only';
   archived?: boolean;
   schemaVersion: 1;
   name: string;
