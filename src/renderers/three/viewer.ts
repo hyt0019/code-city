@@ -295,8 +295,8 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
   }
   batch(groundParts);
   const bodyMesh = batch(bodies);
-  const detailMesh = batch(details);
-  const windowMesh = batch(windows, true);
+  batch(details);
+  batch(windows, true);
   const edges = new THREE.EdgesGeometry(geometry);
   const edgeMaterial = new THREE.LineBasicMaterial({ color: palette.highlight });
   const selection = new THREE.LineSegments(edges, edgeMaterial);
@@ -331,7 +331,6 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       item.label.style.left = `${((p.x + 1) * width) / 2}px`;
       item.label.style.top = `${((1 - p.y) * height) / 2}px`;
       item.label.hidden = !state.showLabels || p.z < -1 || p.z > 1;
-      item.label.style.opacity = state.repository && item.repo !== state.repository ? '0.25' : '1';
     }
   }
   function invalidate() {
@@ -475,7 +474,6 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
         const x = ((point.x + 1) * width) / 2;
         const y = ((1 - point.y) * height) / 2;
         const labelWidth = context.measureText(item.repo).width + 16;
-        context.globalAlpha = state.repository && item.repo !== state.repository ? 0.25 : 1;
         context.fillStyle = palette.label;
         context.fillRect(x - labelWidth / 2, y - 10, labelWidth, 22);
         context.fillStyle = data.theme.text;
@@ -485,7 +483,6 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     },
     update(next: ViewerState) {
       const reset = next.reset !== state.reset;
-      const refilter = next.repository !== state.repository;
       const rezoom = next.zoom !== state.zoom;
       state = next;
       if (rezoom) {
@@ -493,21 +490,6 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
         camera.updateProjectionMatrix();
       }
       if (reset) resetCamera();
-      if (refilter) {
-        for (const [mesh, parts] of [
-          [bodyMesh, bodies],
-          [detailMesh, details],
-          [windowMesh, windows],
-        ] as const) {
-          parts.forEach((part, index) => {
-            const color = new THREE.Color(part.color);
-            if (state.repository && part.repo !== state.repository)
-              color.lerp(new THREE.Color(palette.ground), 0.85);
-            mesh.setColorAt(index, color);
-          });
-          if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-        }
-      }
       highlight(buildings.find((b) => !b.cityOnly && b.id === state.selectedId));
       invalidate();
     },

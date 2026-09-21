@@ -1,7 +1,8 @@
-import { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import type { Ref } from 'react';
 import type { CityScene } from '../../core/model';
 import type { ViewerState, ViewerEvents } from './viewer';
+import { repositoryScene } from '../../core/repository-scene';
 
 export interface City3DHandle {
   capture: () => Promise<Blob>;
@@ -22,6 +23,10 @@ export default function City3D({
   const viewer = useRef<ReturnType<typeof import('./viewer').createViewer> | null>(null);
   const latest = useRef({ state, events });
   const [ready, setReady] = useState(false);
+  const visibleScene = useMemo(
+    () => repositoryScene(scene, state.repository),
+    [scene, state.repository],
+  );
   useImperativeHandle(
     ref,
     () => ({
@@ -39,7 +44,7 @@ export default function City3D({
     import('./viewer')
       .then(({ createViewer }) => {
         if (cancelled || !host.current) return;
-        viewer.current = createViewer(host.current, scene, {
+        viewer.current = createViewer(host.current, visibleScene, {
           hover: (id) => latest.current.events.hover(id),
           select: (id) => latest.current.events.select(id),
           zoom: (zoom) => latest.current.events.zoom(zoom),
@@ -56,7 +61,7 @@ export default function City3D({
       viewer.current?.dispose();
       viewer.current = null;
     };
-  }, [scene]);
+  }, [visibleScene]);
   useEffect(() => {
     viewer.current?.update(state);
   }, [state]);

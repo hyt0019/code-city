@@ -120,7 +120,6 @@ export default function App({
       ),
     [scene],
   );
-  const legend = useMemo(() => cityLegend(scene), [scene]);
   const privateRepositories = new Set(
     scene.repositories.filter((repo) => repo.privacy === 'city-only').map((repo) => repo.name),
   );
@@ -131,6 +130,7 @@ export default function App({
     const requested = new URLSearchParams(location.search).get('repo');
     return scene.repositories.some((repo) => repo.name === requested) ? requested! : '';
   });
+  const legend = useMemo(() => cityLegend(repositoryScene(scene, repository)), [scene, repository]);
   const detailsHidden = repository
     ? privateRepositories.has(repository)
     : privateRepositories.size > 0 && inspectableBuildings.length === 0;
@@ -205,6 +205,7 @@ export default function App({
   function filterRepository(name: string) {
     setRepository(name);
     setHoveredId(null);
+    setZoom(1);
     if (name)
       setSelectedId(
         inspectableBuildings.find((building) => building.repository === name)?.id ?? '',
@@ -539,8 +540,8 @@ export default function App({
               </div>
             </div>
 
-            <div className="city-stage">
-              {stats.files === 0 && (
+            <div className={`city-stage${detailsHidden ? ' city-stage-private' : ''}`}>
+              {visibleBuildings.length === 0 && (
                 <div className="empty-city" role="status">
                   <h2>No source files to display</h2>
                   <p>This directory is empty or its files were excluded.</p>

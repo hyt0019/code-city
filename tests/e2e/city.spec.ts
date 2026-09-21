@@ -13,12 +13,15 @@ test('city renders, filters, zooms and supports building inspection', async ({ p
   await expect(page.locator('.city-art [data-building]')).toHaveCount(30);
   await expect(page.getByLabel('File details')).toContainText('src/main.ts');
   await page.getByLabel('Filter repository').selectOption('tools');
+  await expect(page.locator('.city-art [data-building]')).toHaveCount(7);
+  await expect(page.locator('.city-art svg')).not.toContainText('atlas');
   await expect(page.getByLabel('File details')).toContainText('src/cli.py');
   await expect(page.locator('.city-caption')).toContainText('7 buildings');
   await page.getByLabel('Zoom in', { exact: true }).click();
   await expect(page.locator('.zoom-controls')).toContainText('110%');
   await page.getByLabel('Reset view').click();
   await expect(page.getByLabel('Filter repository')).toHaveValue('');
+  await expect(page.locator('.city-art [data-building]')).toHaveCount(30);
   await page.getByRole('button', { name: 'src/router.ts, 426 lines', exact: true }).focus();
   await page.keyboard.press('Enter');
   await expect(page.getByLabel('File details')).toContainText('src/router.ts');

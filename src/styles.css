@@ -2009,3 +2009,21 @@ dialog::backdrop {
     scroll-behavior: auto !important;
   }
 }
+
+@media (max-width: 600px) {
+  .city-stage-private {
+    height: 420px;
+  }
+  .city-stage-private .city-art {
+    height: 100%;
+    width: 100%;
+    margin-left: 0;
+    padding-bottom: 40px;
+  }
+  .city-stage-private .city-three {
+    height: 100%;
+  }
+  .city-stage-private .compass {
+    bottom: 68px;
+  }
+}

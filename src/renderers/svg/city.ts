@@ -5,6 +5,7 @@ import { cityLegend, cityPalette, languageColor } from '../../core/theme';
 import { sceneSource } from '../../core/source-label';
 import { windowColor as activityWindowColor } from '../../core/activity';
 import { archivedColor, spireBase } from '../../core/repository-signals';
+import { repositoryScene } from '../../core/repository-scene';
 
 export interface RenderOptions {
   selectedId?: string;
@@ -29,6 +30,7 @@ function shade(hex: string, amount: number): string {
 }
 
 export function renderCityContents(scene: CityScene, options: RenderOptions = {}): string {
+  scene = repositoryScene(scene, options.repository ?? '');
   const palette = cityPalette(scene);
   const dense = sceneStats(scene).files > 300;
   const p = (x: number, y: number, z = 0): Point => project({ x, y }, z, scene.camera);

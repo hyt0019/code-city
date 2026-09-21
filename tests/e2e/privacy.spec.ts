@@ -19,10 +19,13 @@ test('mixes public and private districts without exposing private inspection or 
   await page.locator('.city-art').dispatchEvent('mouseleave');
   await expect(page.getByLabel('File details')).toHaveCount(0);
   await page.getByLabel('Filter repository').selectOption('private-one');
+  await expect(page.locator('.city-art [data-building]')).toHaveCount(2);
   await expect(page.getByLabel('File details')).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'View committed source' })).toHaveCount(0);
   await page.getByLabel('3D view', { exact: true }).click();
   await expect(page.locator('.city-three')).toHaveAttribute('aria-busy', 'false');
+  await expect(page.locator('.three-label')).toHaveCount(1);
+  await expect(page.locator('.three-label')).toHaveText('private-one');
   await expect(page.getByLabel('Inspect file', { exact: true })).toHaveCount(0);
   const canvas = page.locator('.city-three canvas');
   await canvas.click();

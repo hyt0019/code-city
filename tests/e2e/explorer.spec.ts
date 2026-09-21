@@ -140,6 +140,8 @@ test('3D renders, rotates with keyboard, inspects files and resets without idle 
     .toBeGreaterThan(2);
   await page.getByLabel('Reset view').click();
   await page.getByLabel('Filter repository').selectOption('tools');
+  await expect(page.locator('.three-label')).toHaveCount(1);
+  await expect(page.locator('.three-label')).toHaveText('tools');
   await page.getByLabel('Inspect file', { exact: true }).selectOption({ index: 1 });
   await expect(page.getByLabel('File details')).toContainText('src/analysis.py');
   await page.getByLabel('Zoom in', { exact: true }).click();
