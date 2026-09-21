@@ -557,7 +557,7 @@ export default function App({
                   {repository
                     ? detailsHidden
                       ? 'City only · file details hidden'
-                      : 'District highlighted'
+                      : 'Selected district only'
                     : detailsHidden
                       ? 'City only · file details hidden'
                       : `Built from ${stats.repositories} ${source} repositories`}

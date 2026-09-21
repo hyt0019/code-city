@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type { Building, CityScene } from '../../core/model';
 import { cityPalette } from '../../core/theme';
-import { stableHash } from '../../core/metrics';
+import { buildingArchitecture } from '../../core/architecture';
 import { canvasToPng } from '../../core/image-export';
 import { windowColor } from '../../core/activity';
 import { archivedColor, spireBase } from '../../core/repository-signals';
@@ -69,11 +69,12 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     d: number;
     color: string;
     repo: string;
+    buildingIndex?: number;
   };
-  function batch(parts: Part[], unlit = false) {
+  function batch(parts: Part[], unlit = false, shape: THREE.BufferGeometry = geometry) {
     const material = unlit ? new THREE.MeshBasicMaterial() : new THREE.MeshLambertMaterial();
     materials.push(material);
-    const mesh = new THREE.InstancedMesh(geometry, material, parts.length);
+    const mesh = new THREE.InstancedMesh(shape, material, parts.length);
     parts.forEach((p, index) => {
       p.color = archivedColor(p.color, archived.has(p.repo));
       position.set(p.x + p.w / 2, p.y + p.h / 2, p.z + p.d / 2);
@@ -121,7 +122,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
   const bodies: Part[] = [];
   const details: Part[] = [];
   const windows: Part[] = [];
-  const dense = buildings.length > 300;
+  const roofs: Part[] = [];
   for (const repo of data.repositories) {
     const r = repo.bounds;
     groundParts.push({
@@ -184,27 +185,33 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       }
     }
   }
-  for (const b of buildings) {
+  buildings.forEach((b, buildingIndex) => {
+    const design = buildingArchitecture(b, buildings.length);
     const { x, y: z } = b.position;
-    const { width: w, depth: d, height: h, repo } = b;
-    bodies.push({ x, y: 1.5, z, w, h: Math.max(0.01, h - 1.5), d, color: b.color, repo });
-    details.push({
-      x,
-      y: h,
-      z,
-      w,
-      h: 0.3,
-      d,
-      color: b.category === 'test' ? '#78a967' : b.color,
+    const repo = b.repo;
+    const convert = (part: (typeof design.solids)[number]): Part => ({
+      x: x + part.x,
+      y: part.z,
+      z: z + part.y,
+      w: part.width,
+      h: part.height,
+      d: part.depth,
+      color: part.color,
       repo,
+      buildingIndex,
     });
+    bodies.push(...design.solids.map(convert));
+    windows.push(
+      ...design.windows.map((pane) => ({ ...convert(pane), color: windowColor(b, pane.color) })),
+    );
+    if (design.pitchedRoof) roofs.push(convert(design.pitchedRoof));
     if (b.spireHeight) {
-      const base = spireBase(b, dense);
-      const thickness = Math.min(w, d, 8) * 0.09;
+      const base = spireBase(b);
+      const thickness = Math.min(b.width, b.depth, 8) * 0.09;
       details.push({
-        x: x + w / 2 - thickness / 2,
+        x: x + b.width / 2 - thickness / 2,
         y: base,
-        z: z + d / 2 - thickness / 2,
+        z: z + b.depth / 2 - thickness / 2,
         w: thickness,
         h: b.spireHeight,
         d: thickness,
@@ -212,9 +219,9 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
         repo,
       });
       details.push({
-        x: x + w / 2 - thickness,
+        x: x + b.width / 2 - thickness,
         y: base + b.spireHeight,
-        z: z + d / 2 - thickness,
+        z: z + b.depth / 2 - thickness,
         w: thickness * 2,
         h: 0.6,
         d: thickness * 2,
@@ -222,79 +229,28 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
         repo,
       });
     }
-    if (!dense) {
-      details.push({
-        x: x - 0.5,
-        y: 0.4,
-        z: z - 0.5,
-        w: w + 1,
-        h: 1.1,
-        d: d + 1,
-        color: palette.border,
-        repo,
-      });
-      if (b.landmark && b.category !== 'docs' && w > 8 && d > 8)
-        details.push({
-          x: x + 2,
-          y: h,
-          z: z + 2,
-          w: w - 4,
-          h: 3.8,
-          d: d - 4,
-          color: b.color,
-          repo,
-        });
-      if (b.category === 'docs' && w > 9 && d > 9)
-        details.push({
-          x: x + 3,
-          y: h,
-          z: z + 2,
-          w: w - 6,
-          h: 2,
-          d: d - 4,
-          color: '#c3cdcd',
-          repo,
-        });
-      const unit = Math.min(1, w / 12, d / 12);
-      const seed = b.seed ?? stableHash(b.id);
-      for (let row = 0; row < Math.floor((h - 4) / 4.8); row++) {
-        for (let col = 0; col < 3; col++) {
-          if ((seed + row * 7 + col * 13) % 5 === 0) continue;
-          const yy = 3 + row * 4.8;
-          const color =
-            b.language === 'JavaScript'
-              ? '#ffe1a0'
-              : b.language === 'Python'
-                ? '#d9c7ff'
-                : '#9cdef5';
-          for (const side of [0, 1]) {
-            windows.push({
-              x: x + 2 * unit + (col * (w - 3 * unit)) / 3,
-              y: yy,
-              z: z + side * d - 0.04,
-              w: 1.35 * unit,
-              h: 2.1,
-              d: 0.08,
-              color: windowColor(b, color),
-              repo,
-            });
-            windows.push({
-              x: x + side * w - 0.04,
-              y: yy,
-              z: z + 2 * unit + (col * (d - 3 * unit)) / 3,
-              w: 0.08,
-              h: 2.1,
-              d: 1.35 * unit,
-              color: windowColor(b, color),
-              repo,
-            });
-          }
-        }
-      }
-    }
-  }
+  });
+  const roofGeometry = new THREE.BufferGeometry();
+  const corners = [
+    [-0.5, -0.5, -0.5],
+    [0.5, -0.5, -0.5],
+    [0, 0.5, -0.5],
+    [-0.5, -0.5, 0.5],
+    [0.5, -0.5, 0.5],
+    [0, 0.5, 0.5],
+  ];
+  const faces = [0, 2, 1, 3, 4, 5, 0, 3, 5, 0, 5, 2, 1, 2, 5, 1, 5, 4, 0, 1, 4, 0, 4, 3];
+  roofGeometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(
+      faces.flatMap((index) => corners[index]),
+      3,
+    ),
+  );
+  roofGeometry.computeVertexNormals();
   batch(groundParts);
   const bodyMesh = batch(bodies);
+  const roofMesh = batch(roofs, false, roofGeometry);
   batch(details);
   batch(windows, true);
   const edges = new THREE.EdgesGeometry(geometry);
@@ -378,8 +334,12 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       (-(event.clientY - rect.top) / rect.height) * 2 + 1,
     );
     raycaster.setFromCamera(pointer, camera);
-    const index = raycaster.intersectObject(bodyMesh, false)[0]?.instanceId;
-    const building = index === undefined ? undefined : buildings[index];
+    const hit = raycaster.intersectObjects([bodyMesh, roofMesh], false)[0];
+    const part =
+      hit?.instanceId === undefined
+        ? undefined
+        : (hit.object === roofMesh ? roofs : bodies)[hit.instanceId];
+    const building = part?.buildingIndex === undefined ? undefined : buildings[part.buildingIndex];
     return state.repository && building?.repo !== state.repository ? undefined : building;
   }
   let start = { x: 0, y: 0 };
@@ -501,6 +461,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       controls.dispose();
       canvas.removeEventListener('webglcontextlost', lost);
       geometry.dispose();
+      roofGeometry.dispose();
       edges.dispose();
       edgeMaterial.dispose();
       materials.forEach((material) => material.dispose());

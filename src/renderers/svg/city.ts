@@ -1,11 +1,12 @@
 import type { Building, CityScene, Point } from '../../core/model';
-import { compactNumber, sceneStats, stableHash } from '../../core/metrics';
+import { compactNumber, sceneStats } from '../../core/metrics';
 import { project } from '../../layout/isometric';
 import { cityLegend, cityPalette, languageColor } from '../../core/theme';
 import { sceneSource } from '../../core/source-label';
 import { windowColor as activityWindowColor } from '../../core/activity';
 import { archivedColor, spireBase } from '../../core/repository-signals';
 import { repositoryScene } from '../../core/repository-scene';
+import { buildingArchitecture } from '../../core/architecture';
 
 export interface RenderOptions {
   selectedId?: string;
@@ -32,7 +33,7 @@ function shade(hex: string, amount: number): string {
 export function renderCityContents(scene: CityScene, options: RenderOptions = {}): string {
   scene = repositoryScene(scene, options.repository ?? '');
   const palette = cityPalette(scene);
-  const dense = sceneStats(scene).files > 300;
+  const count = sceneStats(scene).files;
   const p = (x: number, y: number, z = 0): Point => project({ x, y }, z, scene.camera);
   const points = (vertices: Point[]): string =>
     vertices.map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
@@ -113,69 +114,80 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
     const { x, y } = b.position;
     const { width: w, depth: d, height: h } = b;
     const isSelected = !cityOnly && b.id === options.selectedId;
-    const seed = b.seed ?? stableHash(b.id);
-    const unit = Math.min(1, w / 12, d / 12);
-    let output = ground(x + 2, y + 1, w + 4, d + 3, '#070b10', 0, 'opacity="0.35"');
-    if (!dense) output += box(x - unit, y - unit, w + 2 * unit, d + 2 * unit, 1.5, '#536170');
-    output += box(x, y, w, d, h, b.color, 1.5);
-    // The two visible window grids use the same fixed hash on every render.
-    const rows = dense || h < 6 ? 0 : Math.max(1, Math.floor((h - 4) / 4.8));
-    for (let row = 0; row < rows; row++) {
-      const z = 3 + row * 4.8;
-      for (let col = 0; col < 3; col++) {
-        const lit = (seed + row * 7 + col * 13) % 5 !== 0;
-        const windowColor = lit
-          ? b.language === 'JavaScript'
-            ? '#ffe1a0'
-            : b.language === 'Python'
-              ? '#d9c7ff'
-              : b.language === 'Markdown'
-                ? '#e8e6cb'
-                : '#9cdef5'
-          : shade(b.color, 0.78);
-        const xx = x + 2 * unit + (col * (w - 3 * unit)) / 3;
-        const yy = y + 2 * unit + (col * (d - 3 * unit)) / 3;
-        output += polygon(
-          [
-            p(xx, y + d + 0.03, z),
-            p(xx + 1.35 * unit, y + d + 0.03, z),
-            p(xx + 1.35 * unit, y + d + 0.03, z + 2.1),
-            p(xx, y + d + 0.03, z + 2.1),
-          ],
-          activityWindowColor(b, windowColor),
-          'opacity="0.86"',
-        );
-        output += polygon(
-          [
-            p(x + w + 0.03, yy, z),
-            p(x + w + 0.03, yy + 1.35 * unit, z),
-            p(x + w + 0.03, yy + 1.35 * unit, z + 2.1),
-            p(x + w + 0.03, yy, z + 2.1),
-          ],
-          activityWindowColor(b, windowColor),
-          'opacity="0.58"',
-        );
-      }
+    const design = buildingArchitecture(b, count);
+    let output = ground(x + 1, y + 1, w + 1.5, d + 1.5, '#070b10', 0, 'opacity="0.28"');
+    for (const part of design.solids) {
+      output += box(
+        x + part.x,
+        y + part.y,
+        part.width,
+        part.depth,
+        part.z + part.height,
+        archivedColor(part.color, b.archived),
+        part.z,
+      );
     }
-    output += ground(
-      x + 1.2 * unit,
-      y + 1.2 * unit,
-      w - 2.4 * unit,
-      d - 2.4 * unit,
-      b.category === 'test' ? archivedColor('#78a967', b.archived) : shade(b.color, 0.94),
-      h + 0.2,
-    );
-    if (b.landmark && b.category !== 'docs' && w > 8 && d > 8 && !dense) {
-      output += box(x + 2, y + 2, w - 4, d - 4, h + 3.8, shade(b.color, 0.85), h);
-      output += ground(x + w / 2 - 0.7, y + d / 2 - 0.7, 1.4, 1.4, '#d6f1ff', h + 4);
-    } else if (b.category === 'docs' && w > 9 && d > 9 && !dense) {
-      output += box(x + 3, y + 2, w - 6, d - 4, h + 2, '#c3cdcd', h);
-      output += ground(x + 4, y + 3, w - 8, d - 6, archivedColor('#769471', b.archived), h + 2.2);
-    } else if (b.category === 'config' && w > 8 && d > 8 && !dense) {
-      output += box(x + 2, y + 2, 3, 4, h + 1.8, '#607184', h);
+    // Batch windows by color: dense cities keep readable facades without thousands of SVG nodes.
+    const panes = new Map<string, string[]>();
+    for (const pane of design.windows) {
+      if (pane.face !== 'front' && pane.face !== 'right') continue;
+      const px = x + pane.x,
+        py = y + pane.y,
+        z = pane.z;
+      const vertices =
+        pane.face === 'front'
+          ? [
+              p(px, py, z),
+              p(px + pane.width, py, z),
+              p(px + pane.width, py, z + pane.height),
+              p(px, py, z + pane.height),
+            ]
+          : [
+              p(px, py, z),
+              p(px, py + pane.depth, z),
+              p(px, py + pane.depth, z + pane.height),
+              p(px, py, z + pane.height),
+            ];
+      const color = activityWindowColor(
+        b,
+        pane.face === 'right' ? shade(pane.color, 0.82) : pane.color,
+      );
+      if (!panes.has(color)) panes.set(color, []);
+      panes
+        .get(color)!
+        .push('M' + vertices.map((v) => v.x.toFixed(2) + ',' + v.y.toFixed(2)).join('L') + 'Z');
+    }
+    for (const [color, paths] of panes)
+      output += '<path data-windows="true" d="' + paths.join('') + '" fill="' + color + '"/>';
+    if (design.pitchedRoof) {
+      const roof = design.pitchedRoof;
+      const rx = x + roof.x,
+        ry = y + roof.y,
+        rw = roof.width,
+        rd = roof.depth;
+      const z = roof.z,
+        top = z + roof.height;
+      const color = archivedColor(roof.color, b.archived);
+      output += polygon(
+        [p(rx, ry, z), p(rx + rw / 2, ry, top), p(rx + rw / 2, ry + rd, top), p(rx, ry + rd, z)],
+        shade(color, 1.2),
+      );
+      output += polygon(
+        [
+          p(rx + rw, ry, z),
+          p(rx + rw, ry + rd, z),
+          p(rx + rw / 2, ry + rd, top),
+          p(rx + rw / 2, ry, top),
+        ],
+        shade(color, 0.78),
+      );
+      output += polygon(
+        [p(rx, ry + rd, z), p(rx + rw, ry + rd, z), p(rx + rw / 2, ry + rd, top)],
+        shade(color, 0.95),
+      );
     }
     if (b.spireHeight) {
-      const base = spireBase(b, dense);
+      const base = spireBase(b);
       const tip = base + b.spireHeight;
       const thickness = Math.min(w, d, 8) * 0.09;
       const color = archivedColor('#e1bf74', b.archived);
@@ -194,8 +206,8 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
     }
     const metric = scene.heightMetric === 'bytes' ? `${b.bytes} bytes` : `${b.lines} lines`;
     if (cityOnly)
-      return `<g data-building="${escapeXml(b.id)}" data-private="true" aria-hidden="true">${output}</g>`;
-    return `<g data-building="${escapeXml(b.id)}" ${b.archived ? 'data-archived="true" ' : ''}${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${metric}" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${metric}${b.archived ? ' · archived repository' : ''}</title>${output}</g>`;
+      return `<g data-building="${escapeXml(b.id)}" data-private="true" data-architecture="${design.style}" aria-hidden="true">${output}</g>`;
+    return `<g data-building="${escapeXml(b.id)}" data-architecture="${design.style}" ${b.archived ? 'data-archived="true" ' : ''}${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${metric}" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${metric}${b.archived ? ' · archived repository' : ''}</title>${output}</g>`;
   }
 
   let output =
@@ -350,7 +362,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       const name = repo.name.length > 22 ? `${repo.name.slice(0, 21)}…` : repo.name;
       const width = Math.max(68, name.length * 7 + 28);
       output += `<g opacity="${options.repository && options.repository !== repo.name ? '0.3' : '1'}"><rect x="${(label.x - width / 2).toFixed(2)}" y="${(label.y + 5).toFixed(2)}" width="${width}" height="27" rx="6" fill="${palette.label}" stroke="${palette.labelBorder}"/><circle cx="${(label.x - width / 2 + 13).toFixed(2)}" cy="${(label.y + 18.5).toFixed(2)}" r="3" fill="${color}"/><text x="${(label.x + 5).toFixed(2)}" y="${(label.y + 22).toFixed(2)}" fill="${palette.labelText}" text-anchor="middle" font-size="12" font-family="system-ui,sans-serif">${escapeXml(name)}</text></g>`;
-      if (!scene.isFixture && repo.privacy !== 'city-only')
+      if (!scene.isFixture && count <= 120 && repo.privacy !== 'city-only')
         for (const block of repo.blocks ?? []) {
           const pos = p(
             block.bounds.x + block.bounds.width / 2,

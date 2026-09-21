@@ -1,5 +1,6 @@
 import type { Building, CityScene } from './model';
 import { project } from '../layout/isometric';
+import { roofRise } from './architecture';
 
 export function archivedColor(color: string, archived?: boolean): string {
   if (!archived) return color;
@@ -13,15 +14,8 @@ export function archivedColor(color: string, archived?: boolean): string {
   return `#${gray}${gray}${gray}`;
 }
 
-export function spireBase(building: Building, dense: boolean): number {
-  const detail = dense
-    ? 0.3
-    : building.landmark && building.category !== 'docs' && building.width > 8 && building.depth > 8
-      ? 3.8
-      : building.category === 'docs' && building.width > 9 && building.depth > 9
-        ? 2.2
-        : 0.3;
-  return building.height + detail;
+export function spireBase(building: Building): number {
+  return building.height + roofRise(building);
 }
 
 export function applyRepositorySignals(scene: CityScene): CityScene {
