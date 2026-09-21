@@ -14,8 +14,10 @@ test('mixes public and private districts without exposing private inspection or 
   await expect(privateBuildings.locator('title')).toHaveCount(0);
   await expect(privateBuildings.first()).not.toHaveAttribute('tabindex');
   await privateBuildings.first().dispatchEvent('mouseover');
+  await expect(page.getByLabel('File details')).toHaveCount(0);
   await privateBuildings.first().dispatchEvent('click');
-  await expect(page.getByLabel('File details')).toContainText('src/main.ts');
+  await page.locator('.city-art').dispatchEvent('mouseleave');
+  await expect(page.getByLabel('File details')).toHaveCount(0);
   await page.getByLabel('Filter repository').selectOption('private-one');
   await expect(page.getByLabel('File details')).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'View committed source' })).toHaveCount(0);
@@ -48,6 +50,54 @@ test('mixes public and private districts without exposing private inspection or 
     expect(svg).not.toContain(marker);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('redacts private metadata again when loading scene data', async ({ page }) => {
+  const scene = privacyFixture();
+  const privateRepo = scene.repositories.find((repo) => repo.privacy === 'city-only')!;
+  privateRepo.description = 'confidential-description';
+  privateRepo.blocks![0].name = 'secret-folder';
+  privateRepo.buildings[0].id = 'secret-folder/customer-ledger.ts';
+  privateRepo.buildings[0].path = 'secret-folder/customer-ledger.ts';
+  await page.route('**/assets/scene.json', (route) => route.fulfill({ json: scene }));
+  await page.goto('/');
+  await expect(page.locator('.city-art [data-private]')).toHaveCount(2);
+  await page.locator('.city-art [data-private]').first().dispatchEvent('mouseover');
+  await expect(page.getByLabel('File details')).toHaveCount(0);
+  for (const marker of privateMarkers) expect(await page.content()).not.toContain(marker);
+});
+
+test('hovering a private 3D building dismisses a previously selected public file', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.route('**/assets/scene.json', (route) => route.fulfill({ json: privacyFixture() }));
+  await page.goto('/');
+  await expect(page.getByLabel('File details')).toContainText('src/main.ts');
+  await page.getByLabel('3D view', { exact: true }).click();
+  await expect(page.locator('.city-three')).toHaveAttribute('aria-busy', 'false');
+  const foundPrivate = await page.locator('.city-three canvas').evaluate(async (canvas) => {
+    const rect = canvas.getBoundingClientRect();
+    for (let y = 0.15; y < 0.85; y += 0.07) {
+      for (let x = 0.15; x < 0.85; x += 0.07) {
+        const point = { clientX: rect.left + x * rect.width, clientY: rect.top + y * rect.height };
+        canvas.dispatchEvent(new PointerEvent('pointermove', point));
+        await new Promise(requestAnimationFrame);
+        await new Promise(requestAnimationFrame);
+        if (!document.querySelector('.file-inspector')) {
+          return point;
+        }
+      }
+    }
+    return null;
+  });
+  expect(foundPrivate).not.toBeNull();
+  await page.mouse.click(foundPrivate!.clientX, foundPrivate!.clientY);
+  await page.mouse.move(1, 1);
+  await expect(page.getByLabel('File details')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'View committed source' })).toHaveCount(0);
+  expect(errors).toEqual([]);
 });
 
 test('a city containing only private districts stays viewable and exportable without a file inspector', async ({

@@ -381,19 +381,19 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     raycaster.setFromCamera(pointer, camera);
     const index = raycaster.intersectObject(bodyMesh, false)[0]?.instanceId;
     const building = index === undefined ? undefined : buildings[index];
-    return building?.cityOnly ? undefined : building;
+    return state.repository && building?.repo !== state.repository ? undefined : building;
   }
   let start = { x: 0, y: 0 };
   let dragging = false;
   function down(event: PointerEvent) {
     start = { x: event.clientX, y: event.clientY };
     dragging = true;
-    events.hover(null);
+    events.hover(hit(event)?.id ?? null);
   }
   function move(event: PointerEvent) {
     if (dragging) return;
     const building = hit(event);
-    canvas.style.cursor = building ? 'pointer' : 'grab';
+    canvas.style.cursor = building && !building.cityOnly ? 'pointer' : 'grab';
     events.hover(building?.id ?? null);
   }
   function up(event: PointerEvent) {
@@ -401,8 +401,8 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
     const building = hit(event);
     if (building) {
-      events.hover(null);
-      events.select(building.id);
+      events.hover(building.cityOnly ? building.id : null);
+      events.select(building.cityOnly ? '' : building.id);
     }
   }
   function leave() {

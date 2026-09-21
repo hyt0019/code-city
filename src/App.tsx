@@ -155,7 +155,11 @@ export default function App({
   );
   const [exportSubtitle, setExportSubtitle] = useState<string>(config.profile.subtitle);
   const [exportRepository, setExportRepository] = useState(pageRepository);
-  const active = inspectableBuildings.find((building) => building.id === (hoveredId || selectedId));
+  const active = inspectableBuildings.find(
+    (building) =>
+      building.id === (hoveredId ?? selectedId) &&
+      (!repository || building.repository === repository),
+  );
   const activeRepository = scene.repositories.find((repo) => repo.name === active?.repository);
   const visibleBuildings = allBuildings.filter(
     (building) => !repository || building.repository === repository,
@@ -270,9 +274,11 @@ export default function App({
   }
 
   function buildingId(event: MouseEvent | KeyboardEvent) {
-    return (event.target as Element)
-      .closest('[data-building]:not([data-private])')
-      ?.getAttribute('data-building');
+    return (event.target as Element).closest('[data-building]')?.getAttribute('data-building');
+  }
+
+  function selectBuilding(id: string) {
+    setSelectedId(inspectableBuildings.some((building) => building.id === id) ? id : '');
   }
 
   return (
@@ -569,7 +575,7 @@ export default function App({
                   }}
                   events={{
                     hover: setHoveredId,
-                    select: setSelectedId,
+                    select: selectBuilding,
                     zoom: setZoom,
                     failed: () => {
                       setDimension('2.5D');
@@ -585,7 +591,7 @@ export default function App({
                   style={{ '--city-zoom': zoom } as CSSProperties}
                   onClick={(event) => {
                     const id = buildingId(event);
-                    if (id) setSelectedId(id);
+                    if (id) selectBuilding(id);
                   }}
                   onMouseOver={(event) => {
                     const id = buildingId(event);
@@ -597,7 +603,7 @@ export default function App({
                       const id = buildingId(event);
                       if (id) {
                         event.preventDefault();
-                        setSelectedId(id);
+                        selectBuilding(id);
                       }
                     }
                   }}

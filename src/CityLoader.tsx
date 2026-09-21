@@ -5,6 +5,7 @@ import { sceneSchema } from './core/config';
 import App from './App';
 import { pageRoute, sitePath } from './core/site-paths';
 import { repositoryScene, repositorySlug } from './core/repository-scene';
+import { redactScene } from './core/privacy';
 
 export default function CityLoader() {
   const [scene, setScene] = useState<CityScene | null>(null);
@@ -24,7 +25,7 @@ export default function CityLoader() {
         return response.json();
       })
       .then((data) => {
-        const city = applyRepositorySignals(sceneSchema.parse(data));
+        const city = applyRepositorySignals(redactScene(sceneSchema.parse(data)));
         const slug = pageRoute(location.pathname)?.slug;
         const repo = slug
           ? city.repositories.find((item) => repositorySlug(item.name) === slug)
