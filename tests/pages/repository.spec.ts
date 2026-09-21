@@ -42,12 +42,15 @@ test('built repository pages refresh and load assets under a Pages prefix', asyn
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('built repository page has a usable skyline with JavaScript disabled', async ({ browser }) => {
+test('built repository page has a usable skyline with JavaScript disabled', async ({
+  browser,
+  baseURL,
+}) => {
   const scene = JSON.parse(await readFile('generated/scene.json', 'utf8'));
   const slug = repositorySlug(scene.repositories[0].name);
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto(`http://127.0.0.1:4173/code-city/repos/${slug}/`);
+  await page.goto(new URL(`repos/${slug}/`, baseURL).href);
   const img = page.getByRole('img', { name: `${scene.repositories[0].name} code city` });
   await expect(img).toBeVisible();
   expect(await img.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBe(900);

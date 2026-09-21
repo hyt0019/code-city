@@ -163,11 +163,11 @@
     "schemaVersion": 1,
     "name": "code-city",
     "source": "github",
-    "commitSha": "c5db8a4d8e35a6c0d633b6afb2cb5392f3518bfd",
-    "committedAt": "2026-09-20T22:48:08+08:00",
+    "commitSha": "564df909fd8b59a6f1c4e7060abac8e5a26b8144",
+    "committedAt": "2026-09-22T01:07:52+08:00",
     "url": "https://github.com/hyt0019/code-city",
     "dirty": false,
-    "snapshotHash": "a5ad6b233e8c8be49e12784716a4bac21e72b0388d67d00fcacf8f35e5f06d14",
+    "snapshotHash": "198df4f5601decb290d0911117cad4711c1107c9a06dd42d710a489a7c61359d",
     "files": [
       {
         "path": ".github/workflows/deploy-pages.yml",
@@ -236,10 +236,10 @@
         "path": "README.md",
         "language": "Markdown",
         "category": "docs",
-        "lines": 234,
-        "bytes": 19593,
-        "contentHash": "f6d67979811931c35584288f8ea6d415dd7b3e7bdff67b52db9919a3a1f8b62b",
-        "modifiedAt": "2026-09-20T14:48:08.000Z"
+        "lines": 236,
+        "bytes": 20036,
+        "contentHash": "542fecfd4adeb0bb153ebd1726de42e59fb19e73b03fb235b801a238cf000aca",
+        "modifiedAt": "2026-09-21T08:31:28.000Z"
       },
       {
         "path": "code-city-project-brief.md",
@@ -254,10 +254,10 @@
         "path": "codecity.config.ts",
         "language": "TypeScript",
         "category": "config",
-        "lines": 12,
-        "bytes": 327,
-        "contentHash": "69465221cda752be211940c8e78b113cad418cbef64e941f12ed3b8883631e62",
-        "modifiedAt": "2026-09-20T08:25:01.000Z"
+        "lines": 17,
+        "bytes": 561,
+        "contentHash": "bd38635057c0c3a039231e795bc56b6fdf8188d8e6a2a950e6fae1c8653c099c",
+        "modifiedAt": "2026-09-20T15:07:14.000Z"
       },
       {
         "path": "fixtures/city.ts",
@@ -362,19 +362,19 @@
         "path": "src/App.tsx",
         "language": "TypeScript",
         "category": "source",
-        "lines": 945,
-        "bytes": 36220,
-        "contentHash": "2b741e053f44da497be41c0e405b7ee825efe4bd6e30d64e4e5bd74839f42cb8",
-        "modifiedAt": "2026-09-20T14:48:08.000Z"
+        "lines": 951,
+        "bytes": 36518,
+        "contentHash": "5c22f01101c9b2085e42c533fa3bbbd363e6923e67bae4445964abce25f1b464",
+        "modifiedAt": "2026-09-21T08:31:28.000Z"
       },
       {
         "path": "src/CityLoader.tsx",
         "language": "TypeScript",
         "category": "source",
-        "lines": 74,
-        "bytes": 2554,
-        "contentHash": "203d85d196c3ba5d0f668105fba5d8422a79ccefc04f8783384860273beb5939",
-        "modifiedAt": "2026-09-20T14:07:58.000Z"
+        "lines": 75,
+        "bytes": 2613,
+        "contentHash": "504a9c6826d9ac48c3b5ec0ca0ead36d163ddca6f69acd0f1e3d5c29e8eb1183",
+        "modifiedAt": "2026-09-21T08:13:07.000Z"
       },
       {
         "path": "src/core/activity.ts",
@@ -386,6 +386,15 @@
         "modifiedAt": "2026-09-20T14:07:58.000Z"
       },
       {
+        "path": "src/core/architecture.ts",
+        "language": "TypeScript",
+        "category": "source",
+        "lines": 214,
+        "bytes": 7030,
+        "contentHash": "e34be6287c60cb48c6c66651307f51e4e8a35cd3a542360134d417395e2d8fe0",
+        "modifiedAt": "2026-09-21T08:31:28.000Z"
+      },
+      {
         "path": "src/core/config.ts",
         "language": "TypeScript",
         "category": "config",
@@ -393,6 +402,15 @@
         "bytes": 4622,
         "contentHash": "1bf32286187f02e57b3f4a3419d010a9dddd1df1f8a9a00e5ef8dbf2d0d22cf8",
         "modifiedAt": "2026-09-20T14:48:08.000Z"
+      },
+      {
+        "path": "src/core/district-labels.ts",
+        "language": "TypeScript",
+        "category": "source",
+        "lines": 99,
+        "bytes": 3691,
+        "contentHash": "6fc7cd7868b3afd9795b0b0f411558c184d12250ec1f045321feb44299088025",
+        "modifiedAt": "2026-09-21T17:07:52.000Z"
       },
       {
         "path": "src/core/image-export.ts",
@@ -443,10 +461,10 @@
         "path": "src/core/repository-signals.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 73,
-        "bytes": 2615,
-        "contentHash": "ab15136a1ee7720cdd9e7cc08331298e75ddb4f6bdf96ce2588e10d290f82b05",
-        "modifiedAt": "2026-09-20T14:07:58.000Z"
+        "lines": 67,
+        "bytes": 2399,
+        "contentHash": "ebb2d238feffb076f581786b30c2bcedd40fdf332c304ef8424943b658c3b1d3",
+        "modifiedAt": "2026-09-21T08:31:28.000Z"
       },
       {
         "path": "src/core/site-paths.ts",
@@ -506,28 +524,28 @@
         "path": "src/renderers/svg/city.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 396,
-        "bytes": 17451,
-        "contentHash": "57d3f9ff3a1173663d9dfda65bf358ed194d7f0662c0204abed3664fa33ae6ed",
-        "modifiedAt": "2026-09-20T14:48:08.000Z"
+        "lines": 434,
+        "bytes": 19134,
+        "contentHash": "176d02ff7f96c645980fb0572f96d073f30bc5d70655eb5c601dc570d3ea6487",
+        "modifiedAt": "2026-09-21T17:07:52.000Z"
       },
       {
         "path": "src/renderers/three/City3D.tsx",
         "language": "TypeScript",
         "category": "source",
-        "lines": 70,
-        "bytes": 2033,
-        "contentHash": "d1e96cb454d52def3456f7cf647ca02455e350966417dd2110d71b1dc4a0b4cf",
-        "modifiedAt": "2026-09-20T08:51:41.000Z"
+        "lines": 75,
+        "bytes": 2239,
+        "contentHash": "a7c9407651d1090d5a687aa1ed4242ee86111446ea3a00d85d66195db9d659b9",
+        "modifiedAt": "2026-09-21T08:16:55.000Z"
       },
       {
         "path": "src/renderers/three/viewer.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 527,
-        "bytes": 17356,
-        "contentHash": "71b997e161004444014a942de939ce0bbd5cbccb52bef02ea236fdfff6a86177",
-        "modifiedAt": "2026-09-20T14:48:08.000Z"
+        "lines": 564,
+        "bytes": 19704,
+        "contentHash": "1dabc1361be756890bafe9961283cfaac72eaa0857a679f751e91dbeeeeed85c",
+        "modifiedAt": "2026-09-21T17:07:52.000Z"
       },
       {
         "path": "src/scanner/exclusions.ts",
@@ -605,10 +623,10 @@
         "path": "src/styles.css",
         "language": "CSS",
         "category": "source",
-        "lines": 2011,
-        "bytes": 35530,
-        "contentHash": "b2043f9b6ad1cb16ce79a52293fbe623cec7fa7b8a580fa30f0bb33150171720",
-        "modifiedAt": "2026-09-20T14:48:08.000Z"
+        "lines": 2051,
+        "bytes": 36365,
+        "contentHash": "a71a91aa3d789468227462601fccd7b4852d1895a8039a87b990fba7f701ae59",
+        "modifiedAt": "2026-09-21T17:07:52.000Z"
       },
       {
         "path": "tests/activity.test.ts",
@@ -618,6 +636,24 @@
         "bytes": 988,
         "contentHash": "00452ca027b6496b6e9d7b462cef69155abfe841f341701496ae154c4f61fbc1",
         "modifiedAt": "2026-09-20T13:57:48.000Z"
+      },
+      {
+        "path": "tests/architecture.test.ts",
+        "language": "TypeScript",
+        "category": "test",
+        "lines": 60,
+        "bytes": 3138,
+        "contentHash": "f1aee2bb28b6de68d30772f29780541f242a7b5477b9348ddc95d8080b0c8aa8",
+        "modifiedAt": "2026-09-21T08:31:28.000Z"
+      },
+      {
+        "path": "tests/district-labels.test.ts",
+        "language": "TypeScript",
+        "category": "test",
+        "lines": 55,
+        "bytes": 2510,
+        "contentHash": "258c6fb578dbb5b3771898816f206b75a3bd39ff5956449c114d92e78546767e",
+        "modifiedAt": "2026-09-21T17:07:52.000Z"
       },
       {
         "path": "tests/e2e/activity.spec.ts",
@@ -632,19 +668,19 @@
         "path": "tests/e2e/city.spec.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 78,
-        "bytes": 4081,
-        "contentHash": "f91dc698e01b07287590347af0ba9d0f00c64d54910075692ff92dce318fb4ef",
-        "modifiedAt": "2026-09-20T02:49:13.000Z"
+        "lines": 81,
+        "bytes": 4304,
+        "contentHash": "c5ea0f1e60d3638fc3477ebbc6b379ae2d146104430c36b2d47aad696ad89319",
+        "modifiedAt": "2026-09-21T08:16:55.000Z"
       },
       {
         "path": "tests/e2e/explorer.spec.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 193,
-        "bytes": 8966,
-        "contentHash": "57e701d4bf843e446fc4a75c0b179a75106b5fea3032fe0e610ac3e06a9d31de",
-        "modifiedAt": "2026-09-20T03:20:53.000Z"
+        "lines": 210,
+        "bytes": 9549,
+        "contentHash": "abf569df5482f846e4c54ff70b816dac1b20d315a86eb8d8ec290397cd169bf4",
+        "modifiedAt": "2026-09-21T17:07:52.000Z"
       },
       {
         "path": "tests/e2e/local-city.spec.ts",
@@ -677,10 +713,10 @@
         "path": "tests/e2e/privacy.spec.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 71,
-        "bytes": 4039,
-        "contentHash": "134657bda30f8d2d7d0139538ac1fdcec038d6eb51886232b997a5ccb5a0ec5e",
-        "modifiedAt": "2026-09-20T14:48:08.000Z"
+        "lines": 122,
+        "bytes": 6750,
+        "contentHash": "997fa44be50f906ac889b5a58a71e2a4fc3d28c854d5033fd5c1023d03d19bc1",
+        "modifiedAt": "2026-09-21T08:16:55.000Z"
       },
       {
         "path": "tests/e2e/repository-signals.spec.ts",

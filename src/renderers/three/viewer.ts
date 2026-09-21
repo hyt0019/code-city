@@ -120,6 +120,30 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
   const buildings = data.repositories.flatMap((repo) =>
     repo.buildings.map((b) => ({ ...b, repo: repo.name, cityOnly: repo.privacy === 'city-only' })),
   );
+  // Fit the actual roofs as well as the ground. Tall files must not be cropped.
+  const screenRight = new THREE.Vector3(1, 0, -1).normalize();
+  const screenUp = new THREE.Vector3(-1, Math.sqrt(6), -1).normalize();
+  let minX = Infinity,
+    maxX = -Infinity,
+    minY = Infinity,
+    maxY = -Infinity;
+  function include(x: number, y: number, z: number) {
+    const point = new THREE.Vector3(x, y, z);
+    const sx = point.dot(screenRight),
+      sy = point.dot(screenUp);
+    minX = Math.min(minX, sx);
+    maxX = Math.max(maxX, sx);
+    minY = Math.min(minY, sy);
+    maxY = Math.max(maxY, sy);
+  }
+  for (const x of [bounds.x - 5, bounds.x + bounds.width + 5])
+    for (const z of [bounds.y - 5, bounds.y + bounds.depth + 5]) include(x, -5, z);
+  for (const b of buildings)
+    for (const x of [b.position.x, b.position.x + b.width])
+      for (const z of [b.position.y, b.position.y + b.depth])
+        include(x, b.height + 4 + (b.spireHeight ?? 0), z);
+  center.addScaledVector(screenRight, (minX + maxX) / 2 - center.dot(screenRight));
+  center.addScaledVector(screenUp, (minY + maxY) / 2 - center.dot(screenUp));
   const bodies: Part[] = [];
   const details: Part[] = [];
   const windows: Part[] = [];
@@ -382,8 +406,8 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     camera.top = height / 2;
     camera.bottom = -height / 2;
     fitZoom = Math.min(
-      (width * (multiDistrict ? 0.58 : 1)) / ((bounds.width + bounds.depth + 25) * 0.76),
-      height / (span * 1.3),
+      (width * (multiDistrict ? 0.58 : 0.9)) / Math.max(1, maxX - minX),
+      (height * 0.78) / Math.max(1, maxY - minY),
     );
     camera.zoom = fitZoom * state.zoom;
     controls.minZoom = fitZoom * 0.8;

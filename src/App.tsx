@@ -924,7 +924,7 @@ export default function App({
               ['File', 'One building in the city'],
               [
                 'Building height',
-                'Switch between lines of code and file size; logarithmically scaled',
+                'Lines or file size shape the skyline: small homes, midrise blocks and tall towers',
               ],
               ['Language', 'The color of its buildings'],
               [

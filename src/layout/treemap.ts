@@ -107,8 +107,7 @@ export function layoutCity(input: RepositorySnapshot[], owner = 'local'): CitySc
           depth: cell.depth * 0.66,
         };
         const landmark = file.path === entry;
-        const height =
-          heightFromLines(file.lines) * (landmark ? 2.5 : file.category === 'docs' ? 0.7 : 1.3);
+        const height = heightFromLines(file.lines);
         buildings.push({
           id: `b-${encodeURIComponent(snapshot.name)}:${encodeURIComponent(file.path)}`,
           path: file.path,

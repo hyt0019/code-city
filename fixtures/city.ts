@@ -33,10 +33,7 @@ function district(
       position: { x: x + 8 + (index % 3) * 22, y: y + 8 + Math.floor(index / 3) * 22 },
       width: category === 'docs' ? 17 : 11 + (hash % 5),
       depth: category === 'docs' ? 16 : 11 + ((hash >>> 4) % 5),
-      height:
-        category === 'docs'
-          ? 10
-          : heightFromLines(lines) * (landmark ? 2.8 : 1.35 + (hash % 3) * 0.22),
+      height: heightFromLines(lines),
       color: palette[language],
       landmark,
     };

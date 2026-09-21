@@ -10,14 +10,10 @@ export function applyHeightMetric(scene: CityScene, metric: HeightMetric): CityS
       ...repo,
       buildings: repo.buildings.map((building) => {
         const lineHeight = building.lineHeight ?? building.height;
-        const bytesHeight = Math.max(3, Math.min(28, 2 + Math.log2(building.bytes + 1) * 1.1));
         return {
           ...building,
           lineHeight,
-          height:
-            metric === 'lines'
-              ? lineHeight
-              : bytesHeight * (building.landmark ? 2.5 : building.category === 'docs' ? 0.7 : 1.3),
+          height: metric === 'lines' ? lineHeight : heightFromLines(building.bytes / 40),
         };
       }),
     })),
@@ -25,7 +21,10 @@ export function applyHeightMetric(scene: CityScene, metric: HeightMetric): CityS
 }
 
 export function heightFromLines(lines: number): number {
-  return Math.max(3, Math.min(28, 2 + Math.log2(Math.max(0, lines) + 1) * 1.5));
+  // A global power curve keeps ordinary files low and makes large files landmarks.
+  // Filtering or redacting a repository must never change the scale of its buildings.
+  const value = Number.isNaN(lines) ? 0 : Math.max(0, lines);
+  return Math.min(160, 4 + 0.27 * value ** 0.8);
 }
 
 export function stableHash(value: string): number {

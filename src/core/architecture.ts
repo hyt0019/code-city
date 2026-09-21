@@ -1,7 +1,8 @@
 import type { Building } from './model';
 import { stableHash } from './metrics';
 
-export type BuildingStyle = 'tower' | 'terrace' | 'pavilion' | 'midrise' | 'utility';
+export type BuildingStyle =
+  'skyscraper' | 'tower' | 'terrace' | 'pavilion' | 'rowhouse' | 'cottage' | 'midrise' | 'utility';
 export interface BuildingPart {
   x: number;
   y: number;
@@ -29,15 +30,20 @@ function mix(color: string, target: string, amount: number): string {
 }
 
 export function buildingStyle(b: Building): BuildingStyle {
-  if (Math.min(b.width, b.depth) < 2.5 || b.category === 'config') return 'utility';
-  if (b.category === 'docs') return 'pavilion';
-  if (b.landmark || b.height > Math.min(b.width, b.depth) * 1.6) return 'tower';
-  return (b.seed ?? stableHash(b.id)) % 3 === 0 ? 'terrace' : 'midrise';
+  const variant = (b.seed ?? stableHash(b.id)) % 3;
+  if (b.height >= 90) return 'skyscraper';
+  if (b.height >= 42) return 'tower';
+  if (b.height >= 18) return variant === 0 ? 'terrace' : 'midrise';
+  if (b.height >= 9) return b.category === 'docs' || variant === 0 ? 'pavilion' : 'rowhouse';
+  if (b.height >= 6) return 'cottage';
+  return 'utility';
 }
+
+const pitched = (style: BuildingStyle) => style === 'pavilion' || style === 'cottage';
 
 /** Roof detail always fits inside the four-unit framing allowance. */
 export function roofRise(b: Building): number {
-  return buildingStyle(b) === 'pavilion'
+  return pitched(buildingStyle(b))
     ? Math.min(3.4, Math.min(b.width, b.depth) * 0.28)
     : 0.4 + Math.min(2.6, Math.min(b.width, b.depth) * 0.16);
 }
@@ -45,6 +51,7 @@ export function roofRise(b: Building): number {
 /** One deterministic architectural model shared by SVG and Three.js. */
 export function buildingArchitecture(b: Building, count: number) {
   const style = buildingStyle(b);
+  const tall = style === 'tower' || style === 'skyscraper';
   const seed = b.seed ?? stableHash(b.id);
   const w = b.width,
     d = b.depth,
@@ -76,13 +83,13 @@ export function buildingArchitecture(b: Building, count: number) {
     width: w - 2 * inset,
     depth: d - 2 * inset,
     height: h - base,
-    color: style === 'tower' ? mix(b.color, '#214352', 0.22) : b.color,
+    color: tall ? mix(b.color, '#214352', 0.22) : b.color,
   };
   const masses = [lower];
-  if ((style === 'tower' || style === 'terrace') && h > 9) {
-    const split = style === 'tower' ? 0.64 : 0.58;
+  if ((tall || style === 'terrace') && h > 9) {
+    const split = tall ? 0.26 : 0.58;
     lower.height = h * split - base;
-    const setback = Math.min(w, d) * (style === 'tower' ? 0.14 : 0.19);
+    const setback = Math.min(w, d) * (tall ? 0.11 : 0.19);
     masses.push({
       x: inset + setback,
       y: inset + setback,
@@ -92,9 +99,23 @@ export function buildingArchitecture(b: Building, count: number) {
       height: h * (1 - split),
       color: mix(b.color, '#c8e0e6', 0.09),
     });
+    if (style === 'skyscraper') {
+      const shaft = masses[1];
+      shaft.height = h * 0.48;
+      masses.push({
+        ...shaft,
+        x: shaft.x + setback,
+        y: shaft.y + setback,
+        z: h * 0.74,
+        width: shaft.width - 2 * setback,
+        depth: shaft.depth - 2 * setback,
+        height: h * 0.26,
+        color: mix(b.color, '#c8e0e6', 0.2),
+      });
+    }
   }
   // Smaller or denser cities still retain windows; only their number is reduced.
-  const maxRows = count > 2500 ? 1 : count > 600 ? 2 : count > 150 ? 3 : 5;
+  const maxRows = count > 2500 ? 2 : count > 600 ? 6 : 18;
   const maxColumns = count > 600 ? 2 : 3;
   for (const mass of masses) {
     solids.push(mass);
@@ -108,8 +129,8 @@ export function buildingArchitecture(b: Building, count: number) {
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < columns; col++) {
           const lit = (seed + row * 7 + col * 13 + (horizontal ? 0 : 3)) % 5 !== 0;
-          const span = bay * (style === 'tower' ? 0.66 : 0.46);
-          const rise = floor * (style === 'tower' ? 0.58 : 0.46);
+          const span = bay * (tall ? 0.66 : 0.46);
+          const rise = Math.min(floor * (tall ? 0.58 : 0.46), 2.8);
           windows.push({
             face,
             x: horizontal
@@ -153,6 +174,12 @@ export function buildingArchitecture(b: Building, count: number) {
       0.35,
       trim,
     );
+    if (tall && mass !== lower) {
+      const fin = Math.min(mass.width, mass.depth) * 0.045;
+      for (const x of [mass.x, mass.x + mass.width - fin])
+        for (const y of [mass.y, mass.y + mass.depth - fin])
+          add(x, y, mass.z, fin, fin, mass.height, trim);
+    }
   }
 
   const top = masses.at(-1)!;
@@ -166,7 +193,7 @@ export function buildingArchitecture(b: Building, count: number) {
     color: mix(b.color, '#566879', 0.4),
   };
   let pitchedRoof: BuildingPart | undefined;
-  if (style === 'pavilion') pitchedRoof = roof;
+  if (pitched(style)) pitchedRoof = roof;
   else {
     add(roof.x, roof.y, h, roof.width, roof.depth, 0.4, trim);
     const rim = Math.min(0.5, unit * 0.55);
@@ -198,6 +225,14 @@ export function buildingArchitecture(b: Building, count: number) {
         0.65 * unit,
         '#72957a',
       );
+    }
+    if (style === 'rowhouse') {
+      // A parapet around an open roof gives low residential blocks a distinct silhouette.
+      const rimWidth = Math.min(top.width, top.depth) * 0.05;
+      add(top.x, top.y, h + 0.4, top.width, rimWidth, 0.8, trim);
+      add(top.x, top.y + top.depth - rimWidth, h + 0.4, top.width, rimWidth, 0.8, trim);
+      add(top.x, top.y, h + 0.4, rimWidth, top.depth, 0.8, trim);
+      add(top.x + top.width - rimWidth, top.y, h + 0.4, rimWidth, top.depth, 0.8, trim);
     }
   }
 
