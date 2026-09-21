@@ -1489,8 +1489,8 @@ dialog::backdrop {
     height: 340px;
     flex-shrink: 0;
     padding-top: 20px;
-    width: 116%;
-    margin-left: -8%;
+    width: 100%;
+    margin-left: 0;
     transform-origin: 50% 45%;
   }
   .compass {
@@ -1734,9 +1734,10 @@ dialog::backdrop {
 }
 .three-label {
   position: absolute;
-  transform: translate(-50%, 0);
+  box-sizing: border-box;
+  align-content: center;
   padding: 5px 10px;
-  max-width: 160px;
+  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1746,6 +1747,28 @@ dialog::backdrop {
   border: 1px solid #394657;
   border-radius: 5px;
   pointer-events: none;
+}
+.three-label[data-district-number]::before {
+  content: attr(data-district-number) '  ';
+  color: #83adc4;
+  font-size: 0.85em;
+}
+.three-leaders {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+@media (min-width: 641px) {
+  .city-stage:not(.city-stage-private) :is(.city-art, .city-three) {
+    width: calc(100% - 230px);
+  }
+}
+@media (min-width: 1650px) {
+  .city-stage:not(.city-stage-private) :is(.city-art, .city-three) {
+    width: calc(100% - 270px);
+  }
 }
 .three-loading {
   position: absolute;

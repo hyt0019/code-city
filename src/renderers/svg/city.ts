@@ -7,6 +7,12 @@ import { windowColor as activityWindowColor } from '../../core/activity';
 import { archivedColor, spireBase } from '../../core/repository-signals';
 import { repositoryScene } from '../../core/repository-scene';
 import { buildingArchitecture } from '../../core/architecture';
+import {
+  districtAnchors,
+  frameDistricts,
+  labelLeader,
+  placeDistrictLabels,
+} from '../../core/district-labels';
 
 export interface RenderOptions {
   selectedId?: string;
@@ -31,7 +37,7 @@ function shade(hex: string, amount: number): string {
 }
 
 export function renderCityContents(scene: CityScene, options: RenderOptions = {}): string {
-  scene = repositoryScene(scene, options.repository ?? '');
+  scene = frameDistricts(repositoryScene(scene, options.repository ?? ''));
   const palette = cityPalette(scene);
   const count = sceneStats(scene).files;
   const p = (x: number, y: number, z = 0): Point => project({ x, y }, z, scene.camera);
@@ -109,7 +115,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
     );
   }
 
-  function building(b: Building, cityOnly = false): string {
+  function building(b: Building, cityOnly = false, repository = ''): string {
     b = { ...b, color: archivedColor(b.color, b.archived) };
     const { x, y } = b.position;
     const { width: w, depth: d, height: h } = b;
@@ -207,7 +213,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
     const metric = scene.heightMetric === 'bytes' ? `${b.bytes} bytes` : `${b.lines} lines`;
     if (cityOnly)
       return `<g data-building="${escapeXml(b.id)}" data-private="true" data-architecture="${design.style}" aria-hidden="true">${output}</g>`;
-    return `<g data-building="${escapeXml(b.id)}" data-architecture="${design.style}" ${b.archived ? 'data-archived="true" ' : ''}${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${metric}" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(b.path)} · ${metric}${b.archived ? ' · archived repository' : ''}</title>${output}</g>`;
+    return `<g data-building="${escapeXml(b.id)}" data-architecture="${design.style}" ${b.archived ? 'data-archived="true" ' : ''}${options.interactive ? `role="button" tabindex="0" aria-label="${escapeXml(b.path)}, ${metric}" aria-pressed="${isSelected}"` : ''}><title>${escapeXml(repository)} / ${escapeXml(b.path)} · ${metric}${b.archived ? ' · archived repository' : ''}</title>${output}</g>`;
   }
 
   let output =
@@ -294,7 +300,7 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       objects.push({
         depth: b.position.x + b.position.y + (b.width + b.depth) / 2,
         key: b.id,
-        markup: building(b, repo.privacy === 'city-only'),
+        markup: building(b, repo.privacy === 'city-only', repo.name),
         repo: repo.name,
       });
     if (!scene.isFixture && Math.min(width, depth) > 20) {
@@ -349,6 +355,19 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
     )
     .join('');
   if (options.showLabels !== false) {
+    const callouts = placeDistrictLabels(
+      repos.map((repo) => {
+        const anchors = districtAnchors(repo);
+        return {
+          key: repo.name,
+          center: p(anchors.center.x, anchors.center.y),
+          left: p(anchors.left.x, anchors.left.y),
+          right: p(anchors.right.x, anchors.right.y),
+        };
+      }),
+      1040,
+      660,
+    );
     for (const repo of repos) {
       const label = p(
         repo.bounds.x + repo.bounds.width / 2 + 2,
@@ -361,7 +380,12 @@ export function renderCityContents(scene: CityScene, options: RenderOptions = {}
       );
       const name = repo.name.length > 22 ? `${repo.name.slice(0, 21)}…` : repo.name;
       const width = Math.max(68, name.length * 7 + 28);
-      output += `<g opacity="${options.repository && options.repository !== repo.name ? '0.3' : '1'}"><rect x="${(label.x - width / 2).toFixed(2)}" y="${(label.y + 5).toFixed(2)}" width="${width}" height="27" rx="6" fill="${palette.label}" stroke="${palette.labelBorder}"/><circle cx="${(label.x - width / 2 + 13).toFixed(2)}" cy="${(label.y + 18.5).toFixed(2)}" r="3" fill="${color}"/><text x="${(label.x + 5).toFixed(2)}" y="${(label.y + 22).toFixed(2)}" fill="${palette.labelText}" text-anchor="middle" font-size="12" font-family="system-ui,sans-serif">${escapeXml(name)}</text></g>`;
+      if (repos.length > 1) {
+        const c = callouts.find((item) => item.key === repo.name)!;
+        const number = String(repos.indexOf(repo) + 1).padStart(2, '0');
+        output += `<g data-district-label="${escapeXml(repo.name)}" pointer-events="none" font-family="system-ui,sans-serif"><polyline data-district-leader="true" points="${points(labelLeader(c))}" fill="none" stroke="${color}" stroke-opacity="0.7" stroke-width="1.2"/><circle cx="${c.anchor.x.toFixed(2)}" cy="${c.anchor.y.toFixed(2)}" r="10" fill="${palette.label}" stroke="${color}"/><text x="${c.anchor.x.toFixed(2)}" y="${(c.anchor.y + 3).toFixed(2)}" fill="${palette.labelText}" text-anchor="middle" font-size="8">${number}</text><rect x="${c.x}" y="${c.y.toFixed(2)}" width="${c.width}" height="${c.height}" rx="5" fill="${palette.label}" stroke="${palette.labelBorder}"/><text x="${c.x + 9}" y="${(c.y + 19).toFixed(2)}" fill="${color}" font-size="9">${number}</text><text x="${c.x + 29}" y="${(c.y + 19).toFixed(2)}" fill="${palette.labelText}" font-size="11">${escapeXml(name)}</text></g>`;
+      } else
+        output += `<g><rect x="${(label.x - width / 2).toFixed(2)}" y="${(label.y + 5).toFixed(2)}" width="${width}" height="27" rx="6" fill="${palette.label}" stroke="${palette.labelBorder}"/><circle cx="${(label.x - width / 2 + 13).toFixed(2)}" cy="${(label.y + 18.5).toFixed(2)}" r="3" fill="${color}"/><text x="${(label.x + 5).toFixed(2)}" y="${(label.y + 22).toFixed(2)}" fill="${palette.labelText}" text-anchor="middle" font-size="12" font-family="system-ui,sans-serif">${escapeXml(name)}</text></g>`;
       if (!scene.isFixture && count <= 120 && repo.privacy !== 'city-only')
         for (const block of repo.blocks ?? []) {
           const pos = p(

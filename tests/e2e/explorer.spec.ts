@@ -124,20 +124,35 @@ test('3D renders, rotates with keyboard, inspects files and resets without idle 
   expect(idleFrames.before).toBeGreaterThan(0);
   expect(idleFrames.after).toBe(idleFrames.before);
   const bounds = (await canvas.boundingBox())!;
-  await canvas.click({ position: { x: bounds.width / 2, y: bounds.height * 0.24 } });
-  await expect(page.locator('.file-inspector h3')).toHaveText('src/index.js');
-  const labelBeforeDrag = await page.locator('.three-label').first().boundingBox();
+  let clicked = '';
+  for (let y = 0.2; y <= 0.8 && !clicked; y += 0.06) {
+    for (let x = 0.25; x <= 0.75; x += 0.05) {
+      await page.mouse.move(bounds.x + bounds.width * x, bounds.y + bounds.height * y);
+      const name = await page.locator('.file-inspector h3').textContent();
+      if (name && name !== 'src/main.ts') {
+        await page.mouse.click(bounds.x + bounds.width * x, bounds.y + bounds.height * y);
+        clicked = name;
+        break;
+      }
+    }
+  }
+  expect(clicked).not.toBe('');
+  await page.mouse.move(bounds.x, bounds.y);
+  await expect(page.locator('.file-inspector h3')).toHaveText(clicked);
+  const leaderBeforeDrag = await page
+    .locator('.three-leaders polyline')
+    .first()
+    .getAttribute('points');
   await page.mouse.move(bounds.x + bounds.width * 0.4, bounds.y + bounds.height * 0.3);
   await page.mouse.down();
   await page.mouse.move(bounds.x + bounds.width * 0.4 + 50, bounds.y + bounds.height * 0.3 + 10, {
     steps: 8,
   });
   await page.mouse.up();
-  await expect
-    .poll(async () =>
-      Math.abs((await page.locator('.three-label').first().boundingBox())!.x - labelBeforeDrag!.x),
-    )
-    .toBeGreaterThan(2);
+  await expect(page.locator('.three-leaders polyline').first()).not.toHaveAttribute(
+    'points',
+    leaderBeforeDrag!,
+  );
   await page.getByLabel('Reset view').click();
   await page.getByLabel('Filter repository').selectOption('tools');
   await expect(page.locator('.three-label')).toHaveCount(1);

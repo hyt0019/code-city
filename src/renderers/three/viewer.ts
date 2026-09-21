@@ -6,6 +6,7 @@ import { buildingArchitecture } from '../../core/architecture';
 import { canvasToPng } from '../../core/image-export';
 import { windowColor } from '../../core/activity';
 import { archivedColor, spireBase } from '../../core/repository-signals';
+import { districtAnchors, labelLeader, placeDistrictLabels } from '../../core/district-labels';
 
 export interface ViewerState {
   selectedId: string;
@@ -257,13 +258,41 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
   const edgeMaterial = new THREE.LineBasicMaterial({ color: palette.highlight });
   const selection = new THREE.LineSegments(edges, edgeMaterial);
   world.add(selection);
+  const multiDistrict = data.repositories.length > 1;
+  const overlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  overlay.classList.add('three-leaders');
+  overlay.setAttribute('aria-hidden', 'true');
+  host.append(overlay);
+  const repoNames = data.repositories.map((repo) => repo.name).sort();
   const labels = data.repositories.map((repo) => {
     const label = document.createElement('span');
     label.className = 'three-label';
     label.textContent = repo.name;
+    const number = String(repoNames.indexOf(repo.name) + 1).padStart(2, '0');
+    if (multiDistrict) label.dataset.districtNumber = number;
     host.append(label);
+    const leader = document.createElementNS(overlay.namespaceURI, 'polyline');
+    leader.setAttribute('fill', 'none');
+    leader.setAttribute('stroke', data.theme.muted);
+    leader.setAttribute('stroke-width', '1');
+    const marker = document.createElementNS(overlay.namespaceURI, 'circle');
+    marker.setAttribute('r', '8');
+    marker.setAttribute('fill', palette.label);
+    marker.setAttribute('stroke', data.theme.muted);
+    const caption = document.createElementNS(overlay.namespaceURI, 'text');
+    caption.textContent = number;
+    caption.setAttribute('fill', data.theme.text);
+    caption.setAttribute('font-size', '7');
+    caption.setAttribute('font-family', 'system-ui,sans-serif');
+    caption.setAttribute('text-anchor', 'middle');
+    overlay.append(leader, marker, caption);
     return {
       label,
+      leader,
+      marker,
+      caption,
+      number,
+      anchors: districtAnchors(repo),
       repo: repo.name,
       position: new THREE.Vector3(
         repo.bounds.x + repo.bounds.width / 2,
@@ -278,15 +307,59 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
   let fitZoom = 1;
   let width = 1;
   let height = 1;
+  function labelPositions() {
+    const screen = (point: { x: number; y: number }) => {
+      const p = new THREE.Vector3(point.x, 0.6, point.y).project(camera);
+      return { x: ((p.x + 1) * width) / 2, y: ((1 - p.y) * height) / 2 };
+    };
+    if (multiDistrict)
+      return placeDistrictLabels(
+        labels.map((item) => ({
+          key: item.repo,
+          center: screen(item.anchors.center),
+          left: screen(item.anchors.left),
+          right: screen(item.anchors.right),
+        })),
+        width,
+        height,
+      );
+    return labels.map((item) => {
+      const p = item.position.clone().project(camera);
+      const labelWidth = Math.min(182, width * 0.6);
+      return {
+        key: item.repo,
+        x: ((p.x + 1) * width) / 2 - labelWidth / 2,
+        y: ((1 - p.y) * height) / 2,
+        width: labelWidth,
+        height: 26,
+        side: 'left' as const,
+        anchor: screen(item.anchors.left),
+      };
+    });
+  }
   function render() {
     frame = 0;
     if (disposed) return;
     renderer.render(world, camera);
-    for (const item of labels) {
-      const p = item.position.clone().project(camera);
-      item.label.style.left = `${((p.x + 1) * width) / 2}px`;
-      item.label.style.top = `${((1 - p.y) * height) / 2}px`;
-      item.label.hidden = !state.showLabels || p.z < -1 || p.z > 1;
+    overlay.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    overlay.style.display = state.showLabels && multiDistrict ? '' : 'none';
+    for (const c of labelPositions()) {
+      const item = labels.find((item) => item.repo === c.key)!;
+      item.label.style.left = `${c.x}px`;
+      item.label.style.top = `${c.y}px`;
+      item.label.style.width = `${c.width}px`;
+      item.label.style.height = `${c.height}px`;
+      item.label.hidden = !state.showLabels;
+      item.leader.setAttribute(
+        'points',
+        labelLeader(c)
+          .map((p) => `${p.x},${p.y}`)
+          .join(' '),
+      );
+      item.marker.setAttribute('cx', String(c.anchor.x));
+      item.marker.setAttribute('cy', String(c.anchor.y));
+      item.caption.setAttribute('x', String(c.anchor.x));
+      item.caption.setAttribute('y', String(c.anchor.y + 2.5));
     }
   }
   function invalidate() {
@@ -308,7 +381,10 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     camera.right = width / 2;
     camera.top = height / 2;
     camera.bottom = -height / 2;
-    fitZoom = Math.min(width / ((bounds.width + bounds.depth + 25) * 0.76), height / (span * 1.3));
+    fitZoom = Math.min(
+      (width * (multiDistrict ? 0.58 : 1)) / ((bounds.width + bounds.depth + 25) * 0.76),
+      height / (span * 1.3),
+    );
     camera.zoom = fitZoom * state.zoom;
     controls.minZoom = fitZoom * 0.8;
     controls.maxZoom = fitZoom * 1.5;
@@ -428,16 +504,33 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       context.scale(ratio, ratio);
       context.font = '12px system-ui, sans-serif';
       context.textAlign = 'center';
-      for (const item of labels) {
-        const point = item.position.clone().project(camera);
-        if (!state.showLabels || point.z < -1 || point.z > 1) continue;
-        const x = ((point.x + 1) * width) / 2;
-        const y = ((1 - point.y) * height) / 2;
-        const labelWidth = context.measureText(item.repo).width + 16;
+      for (const c of labelPositions()) {
+        if (!state.showLabels) continue;
+        const item = labels.find((item) => item.repo === c.key)!;
+        if (multiDistrict) {
+          context.strokeStyle = data.theme.muted;
+          context.beginPath();
+          labelLeader(c).forEach((p, i) =>
+            i ? context.lineTo(p.x, p.y) : context.moveTo(p.x, p.y),
+          );
+          context.stroke();
+          context.beginPath();
+          context.arc(c.anchor.x, c.anchor.y, 8, 0, Math.PI * 2);
+          context.fillStyle = palette.label;
+          context.fill();
+          context.stroke();
+          context.font = '7px system-ui, sans-serif';
+          context.fillStyle = data.theme.text;
+          context.fillText(item.number, c.anchor.x, c.anchor.y + 2.5);
+        }
         context.fillStyle = palette.label;
-        context.fillRect(x - labelWidth / 2, y - 10, labelWidth, 22);
+        context.fillRect(c.x, c.y, c.width, c.height);
         context.fillStyle = data.theme.text;
-        context.fillText(item.repo, x, y + 5);
+        context.font = `${width < 600 ? 8 : 10}px system-ui, sans-serif`;
+        let text = (multiDistrict ? item.number + '  ' : '') + item.repo;
+        while (context.measureText(text).width > c.width - 12 && text.length > 1)
+          text = text.slice(0, -2) + '…';
+        context.fillText(text, c.x + c.width / 2, c.y + c.height / 2 + 3);
       }
       return canvasToPng(image);
     },
@@ -469,6 +562,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       renderer.dispose();
       renderer.forceContextLoss();
       canvas.remove();
+      overlay.remove();
       labels.forEach(({ label }) => label.remove());
     },
   };
