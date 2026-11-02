@@ -21,27 +21,62 @@ export const githubRef = z
     'Invalid Git ref',
   );
 const privacy = z.enum(['full', 'city-only']).optional();
+/** Replaces the repository's own description in the city and its banners. */
+const description = z.string().trim().min(1).max(120).optional();
+
 export const repositoryInput = z
   .union([
-    z.object({ path: z.string().min(1), name: repositoryName, privacy }).strict(),
+    z.object({ path: z.string().min(1), name: repositoryName, privacy, description }).strict(),
     z
       .object({
         github: githubRepository,
         ref: githubRef.optional(),
         name: repositoryName,
         privacy,
+        description,
       })
       .strict(),
   ])
   .refine((input) => input.privacy !== 'city-only' || !!input.name, {
     message: 'City-only repositories require a public display alias in name.',
     path: ['name'],
+  })
+  .refine((input) => input.privacy !== 'city-only' || !input.description, {
+    message: 'City-only repositories keep a fixed public description; remove description.',
+    path: ['description'],
   });
+
+export type RepositoryInput = z.infer<typeof repositoryInput>;
+/** A city shows at most this many districts; extra inputs are skipped with a warning. */
+export const MAX_REPOSITORIES = 8;
+
+const localPath = /^(?:\.{1,2}(?:[\\/]|$)|[\\/]|[A-Za-z]:[\\/])/;
+
+/**
+ * Shorthand for the common case: `'project'` means `owner/project`, `'other/project'` is
+ * read as written and `'./path'` or `'../path'` scans a local directory.
+ */
+export function expandRepository(value: string | RepositoryInput, owner: string): RepositoryInput {
+  if (typeof value !== 'string') return value;
+  const text = value.trim();
+  if (localPath.test(text)) return repositoryInput.parse({ path: text });
+  if (!text.includes('/') && owner === 'local')
+    throw new Error(`Set owner in codecity.config.ts, or write "${text}" as "owner/${text}".`);
+  const parsed = repositoryInput.safeParse({
+    github: text.includes('/') ? text : `${owner}/${text}`,
+  });
+  if (!parsed.success)
+    throw new Error(`"${text}" is not a GitHub repository name, owner/repo or ./local-path.`);
+  return parsed.data;
+}
 
 export const configSchema = z
   .object({
     owner: z.string().trim().min(1).max(100).default('local'),
-    repositories: z.array(repositoryInput).max(8).default([]),
+    repositories: z
+      .array(z.union([z.string().trim().min(1).max(200), repositoryInput]))
+      .max(50)
+      .default([]),
     exclude: z.array(z.string()).default([]),
     scanner: z
       .object({
@@ -71,8 +106,38 @@ export const configSchema = z
         height: 420,
       }),
   })
-  .strict();
+  .strict()
+  .transform((config, context) => {
+    const repositories: RepositoryInput[] = [];
+    config.repositories.forEach((value, index) => {
+      try {
+        repositories.push(expandRepository(value, config.owner));
+      } catch (error) {
+        context.addIssue({
+          code: 'custom',
+          path: ['repositories', index],
+          message: error instanceof Error ? error.message : 'Invalid repository',
+        });
+      }
+    });
+    return { ...config, repositories };
+  });
 export type CodeCityConfig = z.infer<typeof configSchema>;
+
+/** Keep the first inputs that fit in one city and describe what was left out. */
+export function selectRepositories(inputs: RepositoryInput[]) {
+  const selected = inputs.slice(0, MAX_REPOSITORIES);
+  const skipped = inputs.slice(MAX_REPOSITORIES);
+  const publicNames = skipped
+    .filter((input) => input.privacy !== 'city-only')
+    .map((input) => input.name ?? ('github' in input ? input.github : input.path));
+  return {
+    selected,
+    warning: skipped.length
+      ? `Showing the first ${MAX_REPOSITORIES} of ${inputs.length} repositories; skipped ${skipped.length}${publicNames.length ? `: ${publicNames.join(', ')}` : ''}${skipped.length > publicNames.length ? `${publicNames.length ? ' and' : ''} ${skipped.length - publicNames.length} private` : ''}.`
+      : '',
+  };
+}
 
 const number = z.number().finite();
 const positive = number.positive();

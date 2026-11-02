@@ -154,7 +154,22 @@ describe('public GitHub collection', () => {
         ],
       }).repositories,
     ).toHaveLength(2);
+    expect(
+      configSchema.parse({
+        owner: 'example',
+        repositories: ['project', 'other/tool', './local', '../sibling', { github: 'example/x' }],
+      }).repositories,
+    ).toEqual([
+      { github: 'example/project' },
+      { github: 'other/tool' },
+      { path: './local' },
+      { path: '../sibling' },
+      { github: 'example/x' },
+    ]);
+    expect(() => configSchema.parse({ repositories: ['project'] })).toThrow('Set owner');
     for (const input of [
+      'https://github.com/example/project',
+      'example/..',
       { github: 'https://github.com/example/project' },
       { github: '../project' },
       { github: 'example/..' },

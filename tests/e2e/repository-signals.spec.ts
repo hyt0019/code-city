@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { createFixture } from '../../fixtures/city';
+import { chooseRepository } from './helpers';
 
 test('shows star spires and archived districts in SVG, 3D and repository exports', async ({
   page,
@@ -24,7 +25,6 @@ test('shows star spires and archived districts in SVG, 3D and repository exports
       });
     }),
   ).toBe(true);
-  await page.getByRole('button', { name: 'Repositories', exact: false }).first().click();
   const card = page.locator('.repository-card').filter({ hasText: archived.name });
   await expect(card).toContainText('2.0k stars');
   await expect(card).toContainText('Archived');
@@ -39,7 +39,7 @@ test('shows star spires and archived districts in SVG, 3D and repository exports
   await page.keyboard.press('Escape');
   await page.getByLabel('3D view', { exact: true }).click();
   await expect(page.locator('.city-three')).toHaveAttribute('aria-busy', 'false');
-  await page.getByLabel('Filter repository').selectOption('');
+  await chooseRepository(page, '');
   await page.screenshot({ path: `previews/signals-${info.project.name}.png`, fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(errors).toEqual([]);

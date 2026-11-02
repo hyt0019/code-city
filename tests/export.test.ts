@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { DOMParser } from '@xmldom/xmldom';
 import { createFixture } from '../fixtures/city';
-import { applyTheme, cityPalette } from '../src/core/theme';
+import { applyTheme, cityPalette, daylightTheme, midnightTheme } from '../src/core/theme';
 import { repositoryScene, repositorySlug } from '../src/core/repository-scene';
 import { renderBanner } from '../src/renderers/svg/city';
 import { project } from '../src/layout/isometric';
@@ -13,7 +13,8 @@ describe('theme and repository exports', () => {
     const light = applyTheme(source, 'github-light');
     expect(light.repositories).toBe(source.repositories);
     expect(cityPalette(light).ground).not.toBe(cityPalette(source).ground);
-    expect(renderBanner(light)).toContain('DAYLIGHT SKYLINE');
+    expect(renderBanner(light)).toContain(daylightTheme.background);
+    expect(renderBanner(light)).not.toContain(midnightTheme.background);
     expect(renderBanner(light)).not.toMatch(/\$\{|NaN|Infinity/);
     expect(JSON.stringify(source)).toBe(before);
     expect(renderBanner(applyTheme(light, 'github-dark'))).toBe(renderBanner(source));

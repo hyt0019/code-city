@@ -33,16 +33,12 @@ Code City 仓库用于保存配置和托管城市；个人主页的 README 保�
 
 ### 2. 选择要展示的项目
 
-编辑 [codecity.config.ts](./codecity.config.ts)，将 `USERNAME` 和示例仓库名替换为实际值。建议从 3～8 个代表项目开始，也支持只展示一个仓库。
+编辑 [codecity.config.ts](./codecity.config.ts)：把 `owner` 改成自己的 GitHub 用户名，再把想展示的仓库名写进 `repositories`。建议从 3～8 个代表项目开始，也支持只展示一个仓库。
 
 ```ts
 export default {
   owner: 'USERNAME',
-  repositories: [
-    { github: 'USERNAME/project-one' },
-    { github: 'USERNAME/project-two' },
-    { github: 'USERNAME/project-three' },
-  ],
+  repositories: ['project-one', 'project-two', 'project-three'],
   exclude: ['previews/**'],
   appearance: {
     theme: 'github-dark',
@@ -59,13 +55,17 @@ export default {
 } as const;
 ```
 
-默认配置读取示例中的公开 GitHub 仓库。`owner` 是场景信息，不会自动发现该账号的全部仓库；需要在 `repositories` 中明确列出要展示的项目。公开 GitHub 输入还支持可选的分支、标签或 commit，以及展示名称：
+`repositories` 中的每一项可以这样写：
 
-```ts
-{ github: 'USERNAME/project-one', ref: 'main', name: 'my-project' }
-```
+| 写法                                                            | 含义                                    |
+| --------------------------------------------------------------- | --------------------------------------- |
+| `'project-one'`                                                 | `owner` 名下的公开仓库                  |
+| `'someone-else/project'`                                        | 其他账号的公开仓库                      |
+| `'../my-project'`                                               | 本机目录（仅本地生成）                  |
+| `{ github: 'USERNAME/project-one', ref: 'main', name: 'x' }`    | 需要指定分支、标签、commit 或展示名称时 |
+| `{ github: 'USERNAME/project-one', description: '一句话介绍' }` | 用自己写的简介替换仓库简介              |
 
-省略 `ref` 时跟随远程默认分支；省略 `name` 时使用仓库名。多个同名仓库需要设置不同的 `name`。配置列表最多包含 8 个仓库。
+Code City 不会自动发现账号下的全部仓库，只展示列表中的项目。省略 `ref` 时跟随远程默认分支；省略 `name` 时使用仓库名，多个同名仓库需要设置不同的 `name`。`description` 会显示在城市页面和该仓库的横幅上，横幅最多显示两行，过长时末尾加省略号；`city-only` 仓库的简介固定，不能设置。一座城市最多展示 8 个仓库，超出时只取前 8 个，并在生成日志（GitHub Actions 的运行摘要）中提示被跳过的项目。
 
 ### 3. 发布到 GitHub Pages
 
@@ -117,7 +117,7 @@ export default {
 
 ## 私有仓库与隐私展示
 
-每个仓库可独立设置 `privacy: 'city-only'`。公开和隐私仓库可以混合展示，配置与 Secrets 中的输入合计最多 **8 个**。
+每个仓库可独立设置 `privacy: 'city-only'`。公开和隐私仓库可以混合展示，配置与 Secrets 中的输入合计超过 **8 个**时，只展示前 8 个。
 
 | 模式           | 展示内容                                                                 |
 | -------------- | ------------------------------------------------------------------------ |
@@ -152,22 +152,22 @@ npm run build
 1. 创建一个仅选中目标私有仓库的 **fine-grained personal access token**，授予 **Contents: Read-only**。默认工作流令牌通常不能读取其他私有仓库；参考 [GitHub 令牌设置说明](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)。
 2. 打开 Code City 仓库的 **Settings → Secrets and variables → Actions → New repository secret**，添加：
 
-   | Secret 名称                     | 值                                             |
-   | ------------------------------- | ---------------------------------------------- |
-   | `CODECITY_GITHUB_TOKEN`         | 上面的只读令牌                                 |
-   | `CODECITY_PRIVATE_REPOSITORIES` | 以下 JSON 数组，替换为真实仓库和准备公开的别名 |
+   | Secret 名称                     | 值                     |
+   | ------------------------------- | ---------------------- |
+   | `CODECITY_GITHUB_TOKEN`         | 上面的只读令牌         |
+   | `CODECITY_PRIVATE_REPOSITORIES` | 私有仓库清单，每行一个 |
 
-   ```json
-   [
-     { "github": "USERNAME/private-project-one", "name": "private-one" },
-     { "github": "USERNAME/private-project-two", "name": "private-two" }
-   ]
+   ```text
+   USERNAME/private-project-one
+   USERNAME/private-project-two as side-project
    ```
+
+   公开别名默认依次为 `private-1`、`private-2`；需要自定义时在行尾加 `as 别名`。别名会公开显示，真实仓库名不会。也可以写 `仓库名@分支` 指定分支或标签，以 `#` 开头的行会被忽略。旧版 JSON 数组写法（`[{ "github": "...", "name": "..." }]`）继续有效。
 
 3. `codecity.config.ts` 的 `repositories` 保留想同时展示的公开项目；**只展示私有项目时设为 `[]`**。Secrets 中的项目自动追加到列表，强制使用 `city-only`，不用重复写进配置。
 4. 打开 **Actions → Deploy Code City → Run workflow**。部署成功后，原来的主页横幅地址会展示新的组合城市。
 
-Secrets 清单支持可选的 `ref`。令牌只用于生成时读取，不写入网页或 Git 配置；私有代码在临时目录中扫描，结束后清理，不使用公共仓库缓存。鉴权失败会停止生成。Pull Request 检查不会使用这两个 Secrets。
+令牌只用于生成时读取，不写入网页或 Git 配置；私有代码在临时目录中扫描，结束后清理，不使用公共仓库缓存。鉴权失败会停止生成。Pull Request 检查不会使用这两个 Secrets。
 
 `privacy: 'city-only'` 也可用于普通公开 GitHub 输入；显式配置私有 GitHub 输入时仍需令牌。修改隐私配置后先运行 `npm run generate` 再构建，保证发布的是新的脱敏数据。已经发布过的旧详情不会从历史提交、旧下载或第三方缓存中自动消失。
 
@@ -214,7 +214,7 @@ npm run generate -- --repo ../local-project --github USERNAME/project-one
 npm run generate -- --demo
 ```
 
-路径包含空格时需要加引号。`--repo` 与 `--github` 可重复使用，合计最多 8 个输入；提供这些参数时会替换配置中的仓库列表，不会改写配置文件。`--demo` 使用虚构示例数据，不能与仓库参数混用。
+路径包含空格时需要加引号。`--repo` 与 `--github` 可重复使用，超过 8 个时只取前 8 个；提供这些参数时会替换配置中的仓库列表，不会改写配置文件。`--demo` 使用虚构示例数据，不能与仓库参数混用。
 
 生成后刷新浏览器即可看到新城市。构建和预览静态网站：
 

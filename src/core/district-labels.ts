@@ -9,13 +9,18 @@ export interface DistrictLabelInput {
 }
 
 /** Put names outside the skyline; route every label back to its own district. */
-export function placeDistrictLabels(input: DistrictLabelInput[], width: number, height: number) {
+export function placeDistrictLabels(
+  input: DistrictLabelInput[],
+  width: number,
+  height: number,
+  options: { labelWidth?: number; labelHeight?: number; top?: number; bottom?: number } = {},
+) {
   const margin = Math.min(16, width * 0.025);
-  const labelWidth = Math.min(182, width * 0.2);
-  const labelHeight = width < 600 ? 24 : 30;
-  const gap = 12;
-  const top = height * 0.14;
-  const bottom = height * 0.85 - labelHeight;
+  const labelWidth = options.labelWidth ?? Math.min(182, width * 0.2);
+  const labelHeight = options.labelHeight ?? (width < 600 ? 24 : 30);
+  const gap = labelHeight < 26 ? 8 : 12;
+  const top = options.top ?? height * 0.14;
+  const bottom = (options.bottom ?? height * 0.85) - labelHeight;
   const compare = (a: DistrictLabelInput, b: DistrictLabelInput) =>
     a.key < b.key ? -1 : a.key > b.key ? 1 : 0;
   const sorted = [...input].sort((a, b) => a.center.x - b.center.x || compare(a, b));
@@ -66,9 +71,31 @@ export function districtAnchors(repo: RepositoryDistrict) {
   };
 }
 
+export interface CityFrame {
+  width: number;
+  height: number;
+  /** Horizontal space kept free on each side for district labels. */
+  rail: number;
+  top: number;
+  bottom: number;
+}
+export const defaultFrame: CityFrame = {
+  width: 1040,
+  height: 660,
+  rail: 210,
+  top: 85,
+  bottom: 115,
+};
+
 /** Reserve side rails for district labels while including every roof and spire. */
-export function frameDistricts(scene: CityScene): CityScene {
+export function frameDistricts(scene: CityScene, frame: CityFrame = defaultFrame): CityScene {
   if (scene.repositories.length < 2) return scene;
+  return fitCity(scene, frame);
+}
+
+/** Uniformly scale and center the whole city, every roof and spire included, inside a frame. */
+export function fitCity(scene: CityScene, frame: CityFrame): CityScene {
+  if (!scene.repositories.length) return scene;
   const unit = { origin: { x: 0, y: 0 }, scale: 1 };
   const points = scene.repositories.flatMap((repo) => {
     const r = repo.bounds;
@@ -95,12 +122,19 @@ export function frameDistricts(scene: CityScene): CityScene {
     minY = Math.min(minY, p.y);
     maxY = Math.max(maxY, p.y);
   }
-  const scale = Math.min(620 / Math.max(1, maxX - minX), 460 / Math.max(1, maxY - minY));
+  const innerHeight = frame.height - frame.top - frame.bottom;
+  const scale = Math.min(
+    (frame.width - 2 * frame.rail) / Math.max(1, maxX - minX),
+    innerHeight / Math.max(1, maxY - minY),
+  );
   return {
     ...scene,
     camera: {
       scale,
-      origin: { x: 520 - ((minX + maxX) / 2) * scale, y: 315 - ((minY + maxY) / 2) * scale },
+      origin: {
+        x: frame.width / 2 - ((minX + maxX) / 2) * scale,
+        y: frame.top + innerHeight / 2 - ((minY + maxY) / 2) * scale,
+      },
     },
   };
 }

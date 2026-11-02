@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 import { repositorySlug } from '../../src/core/repository-scene';
+import { profileTitle } from '../e2e/helpers';
 
 test('built repository pages refresh and load assets under a Pages prefix', async ({
   page,
@@ -14,7 +15,7 @@ test('built repository pages refresh and load assets under a Pages prefix', asyn
     if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`);
   });
   await page.goto(`repos/${slug}/`);
-  await expect(page.getByRole('heading', { name: `${repo.name}.`, exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: repo.name, exact: true, level: 1 })).toBeVisible();
   await expect(page.locator('.city-art [data-building]')).toHaveCount(repo.buildings.length);
   await page.reload();
   await expect(page.locator('.city-art [data-building]')).toHaveCount(repo.buildings.length);
@@ -32,7 +33,7 @@ test('built repository pages refresh and load assets under a Pages prefix', asyn
   await page.keyboard.press('Escape');
   await page.screenshot({ path: `previews/repository-${info.project.name}.png`, fullPage: true });
   await page.getByRole('link', { name: 'All repositories', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'My Code City.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: profileTitle, level: 1 })).toBeVisible();
   await page.getByRole('button', { name: 'Export SVG', exact: true }).click();
   await expect(page.locator('.embed-section code')).toHaveText(
     `[![Code City](${siteRoot}assets/profile.dark.svg)](${siteRoot})`,

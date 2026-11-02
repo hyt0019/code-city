@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type { Building, CityScene } from '../../core/model';
-import { cityPalette } from '../../core/theme';
+import { buildingAccent, cityPalette, tonedBuilding } from '../../core/theme';
 import { buildingArchitecture } from '../../core/architecture';
 import { canvasToPng } from '../../core/image-export';
 import { windowColor } from '../../core/activity';
@@ -40,13 +40,30 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
   );
   host.append(canvas);
   const world = new THREE.Scene();
-  world.add(new THREE.HemisphereLight('#dceeff', '#314353', 1.5));
-  const light = new THREE.DirectionalLight('#ffffff', 2.0);
-  light.position.set(-150, 240, 180);
-  world.add(light);
+  // The same light as the 2.5D model: cool moonlight from the upper left at night, a warm
+  // sun by day, and a dark fill so right-hand faces stay in shade.
+  const day = palette.light;
+  world.add(
+    new THREE.HemisphereLight(
+      day ? '#ffffff' : '#a9b5cb',
+      day ? '#d3ccc0' : '#14171c',
+      day ? 1.6 : 1.3,
+    ),
+  );
+  const sun = new THREE.DirectionalLight(day ? '#fff3e0' : '#dce4f3', day ? 1.9 : 1.75);
+  sun.position.set(-150, 240, 180);
+  world.add(sun);
   const bounds = data.bounds ?? { x: 0, y: 0, width: 168, depth: 168 };
   const center = new THREE.Vector3(bounds.x + bounds.width / 2, 8, bounds.y + bounds.depth / 2);
   const span = Math.max(bounds.width, bounds.depth, 50);
+  // Depth haze toward the 2.5D air color: about a quarter at the far edge, none up front.
+  // The orbit keeps the camera at a fixed distance, so the range never needs updating.
+  const distance = span * Math.sqrt(8 + 8 / 3);
+  world.fog = new THREE.Fog(
+    day ? '#f6f5f2' : '#14171b',
+    distance - span * 0.25,
+    distance + span * 2.6,
+  );
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, span * 20);
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = false;
@@ -211,7 +228,15 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     }
   }
   buildings.forEach((b, buildingIndex) => {
-    const design = buildingArchitecture(b, buildings.length);
+    const district = b.cityOnly ? b.repo : undefined;
+    const design = buildingArchitecture(
+      tonedBuilding(b, palette.light, district),
+      buildings.length,
+      {
+        light: palette.light,
+        accent: buildingAccent(b.language, palette.light, district),
+      },
+    );
     const { x, y: z } = b.position;
     const repo = b.repo;
     const convert = (part: (typeof design.solids)[number]): Part => ({
@@ -230,6 +255,17 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       ...design.windows.map((pane) => ({ ...convert(pane), color: windowColor(b, pane.color) })),
     );
     if (design.pitchedRoof) roofs.push(convert(design.pitchedRoof));
+    for (const lamp of design.beacons)
+      windows.push({
+        x: x + lamp.x - 0.3,
+        y: lamp.z - 0.3,
+        z: z + lamp.y - 0.3,
+        w: 0.6,
+        h: 0.6,
+        d: 0.6,
+        color: palette.beacon,
+        repo,
+      });
     if (b.spireHeight) {
       const base = spireBase(b);
       const thickness = Math.min(b.width, b.depth, 8) * 0.09;
@@ -240,7 +276,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
         w: thickness,
         h: b.spireHeight,
         d: thickness,
-        color: '#e1bf74',
+        color: palette.spire,
         repo,
       });
       details.push({
@@ -250,7 +286,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
         w: thickness * 2,
         h: 0.6,
         d: thickness * 2,
-        color: '#e1bf74',
+        color: palette.beacon,
         repo,
       });
     }
@@ -298,23 +334,19 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
     const leader = document.createElementNS(overlay.namespaceURI, 'polyline');
     leader.setAttribute('fill', 'none');
     leader.setAttribute('stroke', data.theme.muted);
-    leader.setAttribute('stroke-width', '1');
+    leader.setAttribute('stroke-width', '0.8');
+    leader.setAttribute('stroke-opacity', '0.7');
+    // A small ring where the leader meets its district, as in the 2.5D city.
     const marker = document.createElementNS(overlay.namespaceURI, 'circle');
-    marker.setAttribute('r', '8');
-    marker.setAttribute('fill', palette.label);
-    marker.setAttribute('stroke', data.theme.muted);
-    const caption = document.createElementNS(overlay.namespaceURI, 'text');
-    caption.textContent = number;
-    caption.setAttribute('fill', data.theme.text);
-    caption.setAttribute('font-size', '7');
-    caption.setAttribute('font-family', 'system-ui,sans-serif');
-    caption.setAttribute('text-anchor', 'middle');
-    overlay.append(leader, marker, caption);
+    marker.setAttribute('r', '3.5');
+    marker.setAttribute('fill', data.theme.background);
+    marker.setAttribute('stroke', data.theme.text);
+    marker.setAttribute('stroke-width', '1.2');
+    overlay.append(leader, marker);
     return {
       label,
       leader,
       marker,
-      caption,
       number,
       anchors: districtAnchors(repo),
       repo: repo.name,
@@ -374,6 +406,7 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       item.label.style.width = `${c.width}px`;
       item.label.style.height = `${c.height}px`;
       item.label.hidden = !state.showLabels;
+      item.label.dataset.side = c.side;
       item.leader.setAttribute(
         'points',
         labelLeader(c)
@@ -382,8 +415,6 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       );
       item.marker.setAttribute('cx', String(c.anchor.x));
       item.marker.setAttribute('cy', String(c.anchor.y));
-      item.caption.setAttribute('x', String(c.anchor.x));
-      item.caption.setAttribute('y', String(c.anchor.y + 2.5));
     }
   }
   function invalidate() {
@@ -526,35 +557,44 @@ export function createViewer(host: HTMLDivElement, data: CityScene, events: View
       context.drawImage(canvas, 0, 0);
       const ratio = image.width / width;
       context.scale(ratio, ratio);
-      context.font = '12px system-ui, sans-serif';
-      context.textAlign = 'center';
+      // The same text-only labels as on screen: a leader, a small ring and the name.
       for (const c of labelPositions()) {
         if (!state.showLabels) continue;
         const item = labels.find((item) => item.repo === c.key)!;
         if (multiDistrict) {
           context.strokeStyle = data.theme.muted;
+          context.globalAlpha = 0.7;
+          context.lineWidth = 0.8;
           context.beginPath();
           labelLeader(c).forEach((p, i) =>
             i ? context.lineTo(p.x, p.y) : context.moveTo(p.x, p.y),
           );
           context.stroke();
+          context.globalAlpha = 1;
+          context.lineWidth = 1.2;
+          context.strokeStyle = data.theme.text;
           context.beginPath();
-          context.arc(c.anchor.x, c.anchor.y, 8, 0, Math.PI * 2);
-          context.fillStyle = palette.label;
+          context.arc(c.anchor.x, c.anchor.y, 3.5, 0, Math.PI * 2);
+          context.fillStyle = data.theme.background;
           context.fill();
           context.stroke();
-          context.font = '7px system-ui, sans-serif';
-          context.fillStyle = data.theme.text;
-          context.fillText(item.number, c.anchor.x, c.anchor.y + 2.5);
         }
-        context.fillStyle = palette.label;
-        context.fillRect(c.x, c.y, c.width, c.height);
+        const right = multiDistrict && c.side === 'left';
+        context.textAlign = multiDistrict ? (right ? 'right' : 'left') : 'center';
+        context.font = `550 ${width < 600 ? 10 : 12.5}px system-ui, sans-serif`;
+        let text = multiDistrict
+          ? right
+            ? `${item.repo}  ${item.number}`
+            : `${item.number}  ${item.repo}`
+          : item.repo;
+        while (context.measureText(text).width > c.width && text.length > 1)
+          text = right ? '…' + text.slice(2) : text.slice(0, -2) + '…';
         context.fillStyle = data.theme.text;
-        context.font = `${width < 600 ? 8 : 10}px system-ui, sans-serif`;
-        let text = (multiDistrict ? item.number + '  ' : '') + item.repo;
-        while (context.measureText(text).width > c.width - 12 && text.length > 1)
-          text = text.slice(0, -2) + '…';
-        context.fillText(text, c.x + c.width / 2, c.y + c.height / 2 + 3);
+        context.fillText(
+          text,
+          multiDistrict ? (right ? c.x + c.width : c.x) : c.x + c.width / 2,
+          c.y + c.height / 2 + 4,
+        );
       }
       return canvasToPng(image);
     },

@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 import { createFixture } from '../../fixtures/city';
 import { sceneSource } from '../../src/core/source-label';
+import { profileTitle } from './helpers';
 
 test('loads the generated scene and exports the same real city', async ({ page }, testInfo) => {
   const scene = JSON.parse(await readFile('generated/scene.json', 'utf8'));
@@ -31,7 +32,7 @@ test('loads the generated scene and exports the same real city', async ({ page }
   for await (const chunk of stream!) chunks.push(chunk as Buffer);
   const svg = Buffer.concat(chunks).toString();
   expect(svg).toContain(`${count} files`);
-  expect(svg).toContain(`${sceneSource(scene).toUpperCase()} CITY`);
+  expect(svg).toContain(`${sceneSource(scene)} repositories`);
   expect(errors).toEqual([]);
 });
 
@@ -41,7 +42,7 @@ test('empty directories and invalid JSON have usable states', async ({ page }) =
   scene.isFixture = false;
   await page.route('**/assets/scene.json', (route) => route.fulfill({ json: scene }));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'My Code City.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: profileTitle, level: 1 })).toBeVisible();
   await expect(page.getByText('No source files to display')).toBeVisible();
   await expect(page.getByLabel('File details')).toHaveCount(0);
   await page.unroute('**/assets/scene.json');

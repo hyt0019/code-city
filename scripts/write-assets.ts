@@ -8,6 +8,10 @@ import { repositoryScene, repositorySlug } from '../src/core/repository-scene';
 import rawConfig from '../codecity.config';
 import { applyRepositorySignals } from '../src/core/repository-signals';
 import { redactScene } from '../src/core/privacy';
+function truncate(value: string, length: number) {
+  return value.length > length ? `${value.slice(0, length - 1)}…` : value;
+}
+
 export async function writeAssets(scene: CityScene) {
   const config = configSchema.parse(rawConfig);
   sceneSchema.parse(scene);
@@ -23,10 +27,19 @@ export async function writeAssets(scene: CityScene) {
   const themed = applyTheme(scene, config.appearance.theme);
   files.set('scene.json', `${JSON.stringify(themed, null, 2)}\n`);
   function banners(name: string, scoped: CityScene) {
+    const repository = name.startsWith('repos/') ? scoped.repositories[0] : undefined;
     const options = {
       ...config.profile,
       ...config.appearance,
-      size: name.startsWith('repos/') ? ('repository' as const) : ('profile' as const),
+      // A repository banner introduces that project rather than repeating the profile title.
+      ...(repository
+        ? {
+            title: truncate(repository.name, 28),
+            // Banners wrap the description onto two lines and end it with an ellipsis if needed.
+            subtitle: repository.description || config.profile.title,
+          }
+        : {}),
+      size: repository ? ('repository' as const) : ('profile' as const),
     };
     files.set(`${name}.svg`, renderBanner(applyTheme(scoped, config.appearance.theme), options));
     files.set(`${name}.dark.svg`, renderBanner(applyTheme(scoped, 'github-dark'), options));

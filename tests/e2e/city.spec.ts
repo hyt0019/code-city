@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { createFixture } from '../../fixtures/city';
+import { chooseRepository, demoTitle, expectRepository } from './helpers';
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/assets/scene.json', (route) => route.fulfill({ json: createFixture() }));
@@ -9,10 +10,10 @@ test('city renders, filters, zooms and supports building inspection', async ({ p
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'My Code City.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: demoTitle, level: 1 })).toBeVisible();
   await expect(page.locator('.city-art [data-building]')).toHaveCount(30);
   await expect(page.getByLabel('File details')).toContainText('src/main.ts');
-  await page.getByLabel('Filter repository').selectOption('tools');
+  await chooseRepository(page, 'tools');
   await expect(page.locator('.city-art [data-building]')).toHaveCount(7);
   await expect(page.locator('.city-art svg')).not.toContainText('atlas');
   await expect(page.getByLabel('File details')).toContainText('src/cli.py');
@@ -20,7 +21,7 @@ test('city renders, filters, zooms and supports building inspection', async ({ p
   await page.getByLabel('Zoom in', { exact: true }).click();
   await expect(page.locator('.zoom-controls')).toContainText('110%');
   await page.getByLabel('Reset view').click();
-  await expect(page.getByLabel('Filter repository')).toHaveValue('');
+  await expectRepository(page, '');
   await expect(page.locator('.city-art [data-building]')).toHaveCount(30);
   await page.getByRole('button', { name: 'src/router.ts, 426 lines', exact: true }).focus();
   await page.keyboard.press('Enter');
@@ -48,10 +49,9 @@ test('exports the customized SVG and navigates repositories', async ({ page }) =
   expect(svg).not.toContain('<script');
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Repositories', exact: false }).first().click();
   await expect(page.getByRole('region', { name: 'Repository list' })).toBeVisible();
   await page.locator('.repository-card').filter({ hasText: 'orbit' }).click();
-  await expect(page.getByLabel('Filter repository')).toHaveValue('orbit');
+  await expectRepository(page, 'orbit');
 });
 
 test('captures the selected A design', async ({ page }, testInfo) => {

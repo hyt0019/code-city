@@ -1,22 +1,794 @@
 [
   {
     "schemaVersion": 1,
-    "name": "loader",
+    "name": "saywell",
     "source": "github",
-    "commitSha": "371662e2a297ddf52b4f648ac987e992871a41ab",
-    "committedAt": "2026-09-13T15:20:18+08:00",
-    "url": "https://github.com/hyt0019/loader",
+    "commitSha": "9a7aa8bee765c8227b6c5450df054b42746d039f",
+    "committedAt": "2026-10-31T02:17:05+08:00",
+    "url": "https://github.com/hyt0019/saywell",
     "dirty": false,
-    "snapshotHash": "6fec8a0af291d76e47f3ab87399847d6654c42b00ede10d51da8d0ab4a40f1ad",
+    "snapshotHash": "6a827a183504d8b3276d9155d998ac1ea82eaf1929d15240d93008b9096729cc",
     "files": [
+      {
+        "path": ".gitattributes",
+        "language": "Config",
+        "category": "config",
+        "lines": 12,
+        "bytes": 212,
+        "contentHash": "29daa3cf410052fdde69019badb2f7109e9d4d003a991af86cc218155d80ac74",
+        "modifiedAt": "2026-10-09T10:15:57.000Z"
+      },
+      {
+        "path": ".github/workflows/tests.yml",
+        "language": "YAML",
+        "category": "config",
+        "lines": 20,
+        "bytes": 523,
+        "contentHash": "a49e28423c8cf4e576eb1ac88973c51a23a075df79c9a7b56e1ec143af2f3862",
+        "modifiedAt": "2026-10-04T15:38:33.000Z"
+      },
       {
         "path": ".gitignore",
         "language": "Config",
         "category": "config",
-        "lines": 18,
-        "bytes": 459,
-        "contentHash": "65840f944aeb6e5fb60d5b91f5235b08d29496e881c2b7294b5c6440ee68799d",
-        "modifiedAt": "2026-07-19T13:41:18.000Z"
+        "lines": 34,
+        "bytes": 417,
+        "contentHash": "aec2805e718918cba82629b888fa4b8b41ccd9009cc3191309813196b7eb675f",
+        "modifiedAt": "2026-10-09T10:15:57.000Z"
+      },
+      {
+        "path": "LICENSE",
+        "language": "Text",
+        "category": "docs",
+        "lines": 17,
+        "bytes": 1085,
+        "contentHash": "8cb758bfc36d74a5688ae89cc8fedd231a66bb5f326bb4119ad3856e685ab5a2",
+        "modifiedAt": "2026-10-09T10:15:57.000Z"
+      },
+      {
+        "path": "README.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 71,
+        "bytes": 8861,
+        "contentHash": "827fd2fb5d429ce4b4f2e80c43d48b9bba8c0675c8d75a4ec9c209f64c406291",
+        "modifiedAt": "2026-10-30T17:57:07.000Z"
+      },
+      {
+        "path": "THIRD_PARTY_NOTICES.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 32,
+        "bytes": 3621,
+        "contentHash": "a14c33c781e9c7c6151417b987154485a9bc58647cb15b3aa2c5aa7871dc7d6d",
+        "modifiedAt": "2026-10-22T11:41:17.000Z"
+      },
+      {
+        "path": "docs/DEVELOPMENT.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 99,
+        "bytes": 21745,
+        "contentHash": "c292d2c3c588fec00b589013a660e86d68a89f85ff0688e23926660586e0b85f",
+        "modifiedAt": "2026-10-30T17:57:07.000Z"
+      },
+      {
+        "path": "docs/PLAN.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 20,
+        "bytes": 2595,
+        "contentHash": "2e76a0d364ad5f8480bca745f7c40d6791cb8d064f75f7d44e771cef5227129a",
+        "modifiedAt": "2026-10-09T09:53:24.000Z"
+      },
+      {
+        "path": "docs/USER_GUIDE.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 124,
+        "bytes": 25835,
+        "contentHash": "938652d88580244fa3e4c2774e1cab3911125cb874e64cbe107f397c8c865bff",
+        "modifiedAt": "2026-10-30T17:57:07.000Z"
+      },
+      {
+        "path": "docs/VALIDATION.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 256,
+        "bytes": 56237,
+        "contentHash": "e359de3e54ed7f22d2b3cb51dded13a825bd400f73e4781a648be1d0ed6b2ecf",
+        "modifiedAt": "2026-10-30T18:17:05.000Z"
+      },
+      {
+        "path": "docs/releases/v0.1.0.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 21,
+        "bytes": 1889,
+        "contentHash": "c89a97760620fe212f321a1f1325d5889ca8c3e55406ee7974fcb7d15236cbce",
+        "modifiedAt": "2026-10-09T10:15:57.000Z"
+      },
+      {
+        "path": "docs/releases/v0.2.0.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 31,
+        "bytes": 3102,
+        "contentHash": "82190516cb7ff4f3674f585ad228ea05c38bd35875230163d332552a4b3ee64d",
+        "modifiedAt": "2026-10-16T19:02:56.000Z"
+      },
+      {
+        "path": "docs/releases/v0.3.0.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 23,
+        "bytes": 2343,
+        "contentHash": "b6e6dba4f3a3ad1de0caffbce85be0ce340ab3bf3fb4a5b589ae620833113672",
+        "modifiedAt": "2026-10-22T08:32:28.000Z"
+      },
+      {
+        "path": "docs/releases/v0.4.0.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 22,
+        "bytes": 1933,
+        "contentHash": "156d382a46493eed315b0190d715d224b056046831068978ee1d7a26d9905224",
+        "modifiedAt": "2026-10-22T10:53:09.000Z"
+      },
+      {
+        "path": "docs/releases/v0.4.1.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 14,
+        "bytes": 1378,
+        "contentHash": "b8a42c152df36edb2a990b17a33d305943c8b4255d852b722a12e778d55257f1",
+        "modifiedAt": "2026-10-22T11:07:15.000Z"
+      },
+      {
+        "path": "docs/releases/v0.5.0.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 19,
+        "bytes": 2687,
+        "contentHash": "48bc14a89befcedeaf56b2af7a9f7a776e52d885d534902532ef68af2d31baa8",
+        "modifiedAt": "2026-10-22T13:08:27.000Z"
+      },
+      {
+        "path": "docs/releases/v0.6.0.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 22,
+        "bytes": 2382,
+        "contentHash": "30d22d812c28461592aec99dd88bdf6388e42ba7a259efc6b7cb535ca0b52919",
+        "modifiedAt": "2026-10-22T13:28:42.000Z"
+      },
+      {
+        "path": "docs/releases/v0.6.1.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 16,
+        "bytes": 1896,
+        "contentHash": "8331067bd20a11058cb4d2b27c5e4d3ba877bfa090a4be4d5d8d501424cf89af",
+        "modifiedAt": "2026-10-22T14:15:37.000Z"
+      },
+      {
+        "path": "docs/releases/v0.6.2.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 16,
+        "bytes": 2306,
+        "contentHash": "68d1d7f128b0400004309c084e11eddd04d38deb4537e88e7b5379fa7cc73d30",
+        "modifiedAt": "2026-10-24T15:03:24.000Z"
+      },
+      {
+        "path": "docs/releases/v0.6.3.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 11,
+        "bytes": 1431,
+        "contentHash": "c98c0fd445d46b9d39a90b2c6bf253db4f28ff54c0c0644b5fc247664cfd97b2",
+        "modifiedAt": "2026-10-24T15:38:07.000Z"
+      },
+      {
+        "path": "docs/releases/v0.6.4.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 13,
+        "bytes": 1693,
+        "contentHash": "fea196f3cfc80cd9d350813f22a9aee9be3904cb61c7e5465fd2703bc902bc72",
+        "modifiedAt": "2026-10-29T12:05:01.000Z"
+      },
+      {
+        "path": "docs/releases/v0.6.5.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 15,
+        "bytes": 1668,
+        "contentHash": "a58654b97173dc6c572cb12e37674407c71e8927b7088c20faeaf298edfb8f20",
+        "modifiedAt": "2026-10-30T14:04:05.000Z"
+      },
+      {
+        "path": "docs/releases/v0.6.6.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 13,
+        "bytes": 1670,
+        "contentHash": "c9d589a5a03696ca709cf40a67ef8ff6ea2121cf4f40501acb0e603585a8db65",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "docs/releases/v0.6.7.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 11,
+        "bytes": 1435,
+        "contentHash": "d59b1207c48fbc3a1df88650ddac21bd11129dbf5af0f0507fe68d07397e61e7",
+        "modifiedAt": "2026-10-30T18:01:37.000Z"
+      },
+      {
+        "path": "pyproject.toml",
+        "language": "TOML",
+        "category": "config",
+        "lines": 37,
+        "bytes": 980,
+        "contentHash": "3e011aed9ee24f5393e27d62f96ef295509f3926edff23558dd1695e7d455927",
+        "modifiedAt": "2026-10-30T18:01:37.000Z"
+      },
+      {
+        "path": "requirements-lock.txt",
+        "language": "Text",
+        "category": "source",
+        "lines": 40,
+        "bytes": 774,
+        "contentHash": "774d9d0e24ba521af98f6b7922f96c1f3a87171332d0f09abfe7d7e38bbc71de",
+        "modifiedAt": "2026-10-22T11:41:17.000Z"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "language": "PowerShell",
+        "category": "source",
+        "lines": 22,
+        "bytes": 1482,
+        "contentHash": "8c9901327b79836f11b3e11bcee571fa108e67d7b53300a29cd2fb9f9f45d818",
+        "modifiedAt": "2026-10-22T10:53:02.000Z"
+      },
+      {
+        "path": "scripts/build_installer.ps1",
+        "language": "PowerShell",
+        "category": "source",
+        "lines": 34,
+        "bytes": 2320,
+        "contentHash": "4091045475b20b96999eb9ca93e41f9e1c2e6a581ce4fe817d35f3ad59a848bc",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "scripts/capture_ui.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 109,
+        "bytes": 4635,
+        "contentHash": "01d89ee62f2f6dd284801d641c84847bba607f37f3abf7dc8c25d8d3f985567b",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "scripts/collect_licenses.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 20,
+        "bytes": 834,
+        "contentHash": "85cb842f447d475067e0367c7296847b516f8422d06de39d04b91fa1e5181006",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "scripts/evaluate_text.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 42,
+        "bytes": 1628,
+        "contentHash": "3de9ee79aa7213753985d0ec981e1737b93406d5f868c08606935aeee5e3345d",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "scripts/make_icon.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 35,
+        "bytes": 1558,
+        "contentHash": "4f2ed90594cc6f3d62c9d3cf8a6fa49c3f093265f710a9d66739a261b6990328",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "scripts/publish_cos.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 79,
+        "bytes": 4985,
+        "contentHash": "a82a4bdcb9641ca8ee5704d49de2394505eae763ce9829712b4c1a5d7018dffb",
+        "modifiedAt": "2026-10-30T17:57:07.000Z"
+      },
+      {
+        "path": "scripts/run_app.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 39,
+        "bytes": 1447,
+        "contentHash": "e2ffdcc9786bc15d28d2927351f335aeee660009b9e6ccad7af3cbcd960e0a4f",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "scripts/sign_update.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 60,
+        "bytes": 3065,
+        "contentHash": "5752cecaafec0380bed0fdb436e1404ebb90f7ceec107fc5c4c46c75180b77d9",
+        "modifiedAt": "2026-10-30T17:57:07.000Z"
+      },
+      {
+        "path": "scripts/verify_private_files.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 21,
+        "bytes": 902,
+        "contentHash": "ea8b1c35bf237aeaf805f8020ecdd6963eff285d31ecd8f0f3f4b8df3c04ff3d",
+        "modifiedAt": "2026-10-04T10:59:40.000Z"
+      },
+      {
+        "path": "scripts/verify_terminal_input.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 158,
+        "bytes": 7641,
+        "contentHash": "f8fa676e6e793ca41c4e24f3f38fb44be54131b71320e6562f942b595eaede48",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "scripts/verify_windows_input.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 76,
+        "bytes": 2923,
+        "contentHash": "52422d15bc2a222db7466f948f075bfc1a7d71a0459ab0cbc7c6bc1908083da7",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "src/saywell/__init__.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 2,
+        "bytes": 63,
+        "contentHash": "c09df844cff49fad48cf316d8a4e3678d8133d35b87f13f21b13052e0a07f11f",
+        "modifiedAt": "2026-10-30T18:01:37.000Z"
+      },
+      {
+        "path": "src/saywell/api_config.py",
+        "language": "Python",
+        "category": "config",
+        "lines": 42,
+        "bytes": 1742,
+        "contentHash": "947b46035e82d2c1fc267a758ff21baa1b27180322497504f033c5d35da00d44",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "src/saywell/app.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 1253,
+        "bytes": 60035,
+        "contentHash": "09a7653d8808b319bb1d0f97cf5ae7f74149c22a1317ef30a17f63dcf74167ce",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "src/saywell/asr.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 119,
+        "bytes": 6173,
+        "contentHash": "d9a58c013e35138b7baf51fe36f2d312a3f7422a07c1a3c0275ab4203fb94790",
+        "modifiedAt": "2026-10-22T11:41:17.000Z"
+      },
+      {
+        "path": "src/saywell/audio.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 108,
+        "bytes": 4568,
+        "contentHash": "2cfb3303d5712e3f5b9c0c96d433e5aedd75e05761336504126d2ea3a4933c56",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "src/saywell/checks.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 124,
+        "bytes": 5716,
+        "contentHash": "40822032a35cd8797ade71b51f29dca9591808defded78d1daa84753d2fe280b",
+        "modifiedAt": "2026-10-22T08:30:40.000Z"
+      },
+      {
+        "path": "src/saywell/cleanup.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 260,
+        "bytes": 16811,
+        "contentHash": "ae66f8cc98edd3f8edab6cb92a0f2ebc53e876bcb38e7ccf623a833451e7471e",
+        "modifiedAt": "2026-10-30T14:04:02.000Z"
+      },
+      {
+        "path": "src/saywell/cli.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 82,
+        "bytes": 3898,
+        "contentHash": "1b81acde66f891159fb7b36d3ed57632d667313f07a3ad32ece106fdce2088c4",
+        "modifiedAt": "2026-10-22T11:41:17.000Z"
+      },
+      {
+        "path": "src/saywell/core.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 171,
+        "bytes": 10829,
+        "contentHash": "b6db4ed6fa35147e4e66c221d8d556128293a663d9c392e15b102f2fc58cde6e",
+        "modifiedAt": "2026-10-30T14:04:02.000Z"
+      },
+      {
+        "path": "src/saywell/dashboard.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 601,
+        "bytes": 29338,
+        "contentHash": "4804c26e9e0c64bfae7f2aee6117b192bd543e48cda1d55b82a11aeedd90dc9e",
+        "modifiedAt": "2026-10-29T12:05:01.000Z"
+      },
+      {
+        "path": "src/saywell/history.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 60,
+        "bytes": 2526,
+        "contentHash": "e61cf0d6a54f8fc2a64c3efe670aae730fb5d8b6a1e25bfb2ab5f3ce0c6a4c09",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "src/saywell/icons.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 187,
+        "bytes": 6673,
+        "contentHash": "faeb521dc7cd176b8086f6203ca473fc11d8091933c20027b6cb312118c426a4",
+        "modifiedAt": "2026-10-22T08:30:40.000Z"
+      },
+      {
+        "path": "src/saywell/llama.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 199,
+        "bytes": 9673,
+        "contentHash": "6d579b1fee7c72f53bd7d2a4e25a1649a892373b35ca464d6ef8ea95e296566f",
+        "modifiedAt": "2026-10-22T11:41:17.000Z"
+      },
+      {
+        "path": "src/saywell/models.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 666,
+        "bytes": 30184,
+        "contentHash": "f4043aea5fdd808998de6349aeea8b635c49364a0bd4d84a2855390ce1bfc046",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "src/saywell/pipeline.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 206,
+        "bytes": 9932,
+        "contentHash": "d229337e4b792e817c7d3cfd9480d74d7b5dc0fb18e0064960c2ef45bbf142ba",
+        "modifiedAt": "2026-10-30T14:04:02.000Z"
+      },
+      {
+        "path": "src/saywell/session.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 25,
+        "bytes": 975,
+        "contentHash": "342f059982454e1410e0d3aee79230f29e30e84daccca5956d6d270a30b0faf4",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "src/saywell/settings.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 218,
+        "bytes": 11077,
+        "contentHash": "f301941a58e8d6d6a552884cd878c58d3a44ee59021e4732f2a4de6cab752c30",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "src/saywell/shortcuts.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 90,
+        "bytes": 4779,
+        "contentHash": "1b5a223f9647c5b8ce2820a1c5f198ac9681a34d0013cff8f435b45e35612f09",
+        "modifiedAt": "2026-10-29T12:05:01.000Z"
+      },
+      {
+        "path": "src/saywell/signing.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 84,
+        "bytes": 3666,
+        "contentHash": "346a39bada0fd540bebcd36eed87435d443e4ec3d3becd41de089e9c274549e8",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "src/saywell/startup.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 73,
+        "bytes": 3147,
+        "contentHash": "317e4c4185c0b3c6e54da9c72aecc59b15d4beb6cc38ff5fd163b24ad30c0e69",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "src/saywell/stats.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 135,
+        "bytes": 6361,
+        "contentHash": "47f0d82f18d8583591ef510d35d3f612bc49271dd62bf73de933b54fb96725ac",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "src/saywell/ui.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 2248,
+        "bytes": 108211,
+        "contentHash": "0749c5276fbfcc7f42780b07c9f8a436e67f721df40b994baaa0119ecee70c65",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "src/saywell/updates.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 180,
+        "bytes": 9239,
+        "contentHash": "d23eaa28e3ed7122a2ea78a972c1ced4719d3bd78237bfb74c2a3e641c0f37bd",
+        "modifiedAt": "2026-10-30T17:57:07.000Z"
+      },
+      {
+        "path": "src/saywell/vocabulary.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 359,
+        "bytes": 17882,
+        "contentHash": "93b4a976d4a8d05510a460be6d600209601adaf5cce8864dc9f5dac165c8cbbe",
+        "modifiedAt": "2026-10-22T11:41:17.000Z"
+      },
+      {
+        "path": "src/saywell/windows.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 291,
+        "bytes": 15283,
+        "contentHash": "56dde68637211d0f457308d227f275f13415d6bed59cd854f691d9149cf9db67",
+        "modifiedAt": "2026-10-29T12:05:01.000Z"
+      },
+      {
+        "path": "tests/conftest.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 5,
+        "bytes": 254,
+        "contentHash": "5c7c760942676aa8fc521032e3f1a905b8b879ff510ae1ce3f93b75ac1b8d149",
+        "modifiedAt": "2026-10-16T17:17:54.000Z"
+      },
+      {
+        "path": "tests/fixtures/cleanup-cases.json",
+        "language": "JSON",
+        "category": "test",
+        "lines": 24,
+        "bytes": 3615,
+        "contentHash": "dbcc737df5dfe111340baf14972c50e209e85de41fba9cb0709a03ab28ed2271",
+        "modifiedAt": "2026-10-30T14:04:02.000Z"
+      },
+      {
+        "path": "tests/fixtures/spoken-example.txt",
+        "language": "Text",
+        "category": "test",
+        "lines": 6,
+        "bytes": 1077,
+        "contentHash": "bda69224db3d017f06b9146e0212032cffd8cb440e32bc81afd5dd0590c372cf",
+        "modifiedAt": "2026-10-04T10:59:40.000Z"
+      },
+      {
+        "path": "tests/test_api_config.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 125,
+        "bytes": 6005,
+        "contentHash": "945f04d53baedf2a9d0527762c5e884551a40805d834fd2fbd6d0f87995f0f7c",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "tests/test_audio_models.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 80,
+        "bytes": 3357,
+        "contentHash": "ce9a589e8636fded7cdff5b09cd615effba6ddc2770571b97c5863df33eaa54b",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "tests/test_cleanup.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 226,
+        "bytes": 12502,
+        "contentHash": "f007a04f1299e802c1c623af166dbdf028a0db8d28dd10309d45f7bb5d005c0a",
+        "modifiedAt": "2026-10-30T14:04:02.000Z"
+      },
+      {
+        "path": "tests/test_history.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 60,
+        "bytes": 2816,
+        "contentHash": "d3d144a46341eb13bb23076333df87f8fb477673c8cde2c19966de68091dfaff",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "tests/test_llama_checks.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 170,
+        "bytes": 9604,
+        "contentHash": "937d6d7cf6217b89afdde3ed4a825143e6f280f81f7cf0e5f702c421ed3cd33d",
+        "modifiedAt": "2026-10-22T08:30:40.000Z"
+      },
+      {
+        "path": "tests/test_model_choice.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 636,
+        "bytes": 35107,
+        "contentHash": "1e55eb9100e061d7a428c23b3aa0142e338aee07882ef09404692d6510b9fded",
+        "modifiedAt": "2026-10-24T15:38:07.000Z"
+      },
+      {
+        "path": "tests/test_output.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 17,
+        "bytes": 861,
+        "contentHash": "20b18d338c4a62931e6469d3be3dcd2199d645c5e457cac3c88a34799d531112",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "tests/test_pipeline_memory.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 55,
+        "bytes": 2264,
+        "contentHash": "9a14c367a7d1db776fee1ed6fdc34106db228e78812aea9f9c5012f3a12c3823",
+        "modifiedAt": "2026-10-22T11:41:17.000Z"
+      },
+      {
+        "path": "tests/test_session_ui.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 511,
+        "bytes": 26101,
+        "contentHash": "7f90b438098d344a46495b3afe26e18065131459a13f0974dbf24cd7f6557338",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "tests/test_settings.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 64,
+        "bytes": 3292,
+        "contentHash": "2d8ee7cfbc5b8b00325f9046ab751f7ee622cae006554750f7b02844303f93cf",
+        "modifiedAt": "2026-10-22T13:28:23.000Z"
+      },
+      {
+        "path": "tests/test_shortcuts.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 287,
+        "bytes": 14302,
+        "contentHash": "e94a63d9555837f071c0caf22f8ca03ac72fea81d097a2987fdb2dd60f77b072",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "tests/test_startup.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 105,
+        "bytes": 5324,
+        "contentHash": "37e0dce6c0fd4bcaa34f8d5afd6b7ddc0cf3967b766ccbcba06f347c70c085fc",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      },
+      {
+        "path": "tests/test_stats_dashboard.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 173,
+        "bytes": 9724,
+        "contentHash": "f2acd3e5f731d8bdd7ddc8639607050f4334e0eae7289d230a022dad7d300d5b",
+        "modifiedAt": "2026-10-22T08:30:40.000Z"
+      },
+      {
+        "path": "tests/test_updates.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 170,
+        "bytes": 9970,
+        "contentHash": "61f554e439228c73861c61ddeba2c1b43ff7e7bc4fb08b31ab71a1de97a07e72",
+        "modifiedAt": "2026-10-30T17:57:07.000Z"
+      },
+      {
+        "path": "tests/test_vocabulary.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 306,
+        "bytes": 17342,
+        "contentHash": "080cf1855ec03e6c17660ace95c065e717805a7a4e52d0d75b87b77912ef35d1",
+        "modifiedAt": "2026-10-30T15:08:47.000Z"
+      },
+      {
+        "path": "tests/test_windows_target.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 33,
+        "bytes": 1660,
+        "contentHash": "0d2a934158d22c6ebd2b8da64be87dcc23cb341969c5186041c8046c10492681",
+        "modifiedAt": "2026-10-16T19:00:03.000Z"
+      }
+    ],
+    "skipped": [],
+    "description": "按住说话，松开就是一段干净的文字。本地语音识别，AI 整理口误与重复。",
+    "stars": 3,
+    "archived": false
+  },
+  {
+    "schemaVersion": 1,
+    "name": "loader",
+    "source": "github",
+    "commitSha": "47e7b9d76d04010f7fed2165fd27e04af876cc81",
+    "committedAt": "2026-11-02T17:29:09+08:00",
+    "url": "https://github.com/hyt0019/loader",
+    "dirty": false,
+    "snapshotHash": "9bf34632d566d4f763ac47de921cb4286d4041a106aa5e457560aa44b490a10e",
+    "files": [
+      {
+        "path": ".dockerignore",
+        "language": "Config",
+        "category": "config",
+        "lines": 27,
+        "bytes": 269,
+        "contentHash": "40f9814e17287b97d32469ce97000fd58259e0da1f22f9ad0b31d4dda5b2965a",
+        "modifiedAt": "2026-10-10T12:35:41.000Z"
+      },
+      {
+        "path": ".env.example",
+        "language": "Config",
+        "category": "config",
+        "lines": 1,
+        "bytes": 424,
+        "contentHash": "8a817fc5ed22cc89ccac1f2527a676522410bd776944870983bdf831e6007c94",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
+      },
+      {
+        "path": ".gitignore",
+        "language": "Config",
+        "category": "config",
+        "lines": 19,
+        "bytes": 523,
+        "contentHash": "b7e9e1398d85d907fd40cb276431d4a569f38bc55a41a2c7ac1c3dc3e41d6870",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
       },
       {
         "path": ".streamlit/config.toml",
@@ -26,6 +798,15 @@
         "bytes": 376,
         "contentHash": "54408c6bc527071d19fd074ec4524e82aa8776aab8099b3cb6f09e6ddb4e3573",
         "modifiedAt": "2026-09-02T08:57:21.000Z"
+      },
+      {
+        "path": "Dockerfile",
+        "language": "Dockerfile",
+        "category": "config",
+        "lines": 19,
+        "bytes": 1148,
+        "contentHash": "7ec23374142645caa857ede8c034226d71d7d761764ff7b9e38f70987843d993",
+        "modifiedAt": "2026-10-10T11:40:54.000Z"
       },
       {
         "path": "LICENSE",
@@ -40,19 +821,55 @@
         "path": "README.md",
         "language": "Markdown",
         "category": "docs",
-        "lines": 98,
-        "bytes": 5052,
-        "contentHash": "25c0155b1c06505d7dfb26c9a982c18bbe9212352894a85681c3ade9cbc769cd",
-        "modifiedAt": "2026-09-10T16:51:29.000Z"
+        "lines": 146,
+        "bytes": 11096,
+        "contentHash": "ecdacd8e5ab99087da709f8fae7c583d34e1cff7dd8ad5bca5b7aac1b216bf2d",
+        "modifiedAt": "2026-11-02T09:29:09.000Z"
       },
       {
         "path": "app.py",
         "language": "Python",
         "category": "source",
-        "lines": 1427,
-        "bytes": 89871,
-        "contentHash": "6d23ce6c9a9f071da39c63b1aed3dd144830db7bf2d0c4f8794063b83eab9fe2",
-        "modifiedAt": "2026-09-13T07:20:18.000Z"
+        "lines": 927,
+        "bytes": 61340,
+        "contentHash": "564e7f386f2fba9ca8251b6ef60d670ac856716853fc2dfffe7337e5ced8ad16",
+        "modifiedAt": "2026-10-10T11:40:54.000Z"
+      },
+      {
+        "path": "block_engine.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 843,
+        "bytes": 44801,
+        "contentHash": "d977d6c4b342405c306f9890e25f50aa0a651961899638922227869a3741de16",
+        "modifiedAt": "2026-10-29T17:30:13.000Z"
+      },
+      {
+        "path": "deploy/README.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 129,
+        "bytes": 7204,
+        "contentHash": "cbdbaa44217732d03d5b40900493e2199225c96c1ea3e745e93b91891c1ba735",
+        "modifiedAt": "2026-10-18T15:18:41.000Z"
+      },
+      {
+        "path": "docker-compose.shared.yml",
+        "language": "YAML",
+        "category": "config",
+        "lines": 21,
+        "bytes": 1439,
+        "contentHash": "5b19e5ebc9242a95f28a1a5543db734080053ecc5c3bc719ea5d7fe8f0891ba3",
+        "modifiedAt": "2026-10-18T15:18:41.000Z"
+      },
+      {
+        "path": "docker-compose.yml",
+        "language": "YAML",
+        "category": "config",
+        "lines": 31,
+        "bytes": 1247,
+        "contentHash": "d0e611a4b732df5e6ab3cd5d607fd3eac29dc5a73c5c1b17212938d67a468ed9",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
       },
       {
         "path": "docs/assets/brand-mark.svg",
@@ -76,10 +893,28 @@
         "path": "packer_pro.py",
         "language": "Python",
         "category": "source",
-        "lines": 1648,
-        "bytes": 90683,
-        "contentHash": "03582711793cd62081b22faaedfe88edb195597e2a1ff45ba9e4977d67c29963",
-        "modifiedAt": "2026-09-10T16:51:29.000Z"
+        "lines": 1907,
+        "bytes": 109119,
+        "contentHash": "a2001de8c6df7ec8e3187aed63861f6bdfcbb06c3898f240199a0ad34fa9de4b",
+        "modifiedAt": "2026-10-29T17:30:13.000Z"
+      },
+      {
+        "path": "planner_core.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 621,
+        "bytes": 36963,
+        "contentHash": "a576b194b359203c6aa3964eeda100ff00d2f23456fa6cb778a9d3fe8237abdf",
+        "modifiedAt": "2026-10-29T17:30:13.000Z"
+      },
+      {
+        "path": "requirements-server.txt",
+        "language": "Text",
+        "category": "source",
+        "lines": 10,
+        "bytes": 325,
+        "contentHash": "fba47119d6fc627988c328ba53896bf3afdeba75ebdd88ef29e7d5052e043987",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
       },
       {
         "path": "requirements.txt",
@@ -109,13 +944,58 @@
         "modifiedAt": "2026-07-21T09:50:21.000Z"
       },
       {
+        "path": "server/__init__.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 0,
+        "bytes": 0,
+        "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
+      },
+      {
+        "path": "server/jobs.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 155,
+        "bytes": 7387,
+        "contentHash": "85dd67b7fe2c1260adb3bff85463425a63761d32e7e48b787f83f9ecec1bdd83",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
+      },
+      {
+        "path": "server/main.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 290,
+        "bytes": 15398,
+        "contentHash": "f07999bc42d9740d50343d19156299f5b62d947ca80b3e70914fafa4eb81b093",
+        "modifiedAt": "2026-10-29T17:30:13.000Z"
+      },
+      {
+        "path": "server/worker.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 35,
+        "bytes": 2083,
+        "contentHash": "2739b09b2007b125d8dd22255c0c36f121d48de7454417ead8ede4fd947bfedf",
+        "modifiedAt": "2026-10-29T17:30:13.000Z"
+      },
+      {
         "path": "tests/test_enhanced_packing.py",
         "language": "Python",
         "category": "test",
-        "lines": 146,
-        "bytes": 7326,
-        "contentHash": "73ec5c69cb63efb36324d6da1c27c58bd7dde72a6f692727e2a0435662fe59fa",
-        "modifiedAt": "2026-09-10T16:51:29.000Z"
+        "lines": 224,
+        "bytes": 12942,
+        "contentHash": "19dbbfcf2e7a0bc5bb3537c2f0908b21eb81b8708dd8a5d604e0a0785a36c5cd",
+        "modifiedAt": "2026-10-10T12:35:41.000Z"
+      },
+      {
+        "path": "tests/test_gap_stability.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 122,
+        "bytes": 7586,
+        "contentHash": "93caf75272159e2f6b9b585e4a0d1ceb683f02bd7cda5d60734ba2a9790131cb",
+        "modifiedAt": "2026-10-29T17:30:13.000Z"
       },
       {
         "path": "tests/test_plan_import.py",
@@ -125,6 +1005,96 @@
         "bytes": 7594,
         "contentHash": "6c5055f7d504b9b630b023436c56e9e138adfcf0e4f6022097f78e34e0813a1e",
         "modifiedAt": "2026-09-13T07:20:18.000Z"
+      },
+      {
+        "path": "tests/test_server.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 160,
+        "bytes": 9640,
+        "contentHash": "216d79fe1eb5ba55f085c3ae363568a90a4e8a3457674e274863e4e1bbf94b5b",
+        "modifiedAt": "2026-10-29T17:30:13.000Z"
+      },
+      {
+        "path": "tests/test_stacking_rules.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 259,
+        "bytes": 15854,
+        "contentHash": "cc67c581563027e5034e89c4ddbfc3864370c78d151a14b6f9cf67dc91847cea",
+        "modifiedAt": "2026-10-18T15:13:34.000Z"
+      },
+      {
+        "path": "tools/three-bundle-entry.js",
+        "language": "JavaScript",
+        "category": "source",
+        "lines": 7,
+        "bytes": 530,
+        "contentHash": "3ed6eea3a87ab627a5a14429b5af308cb64b35f71a48edd542dc116ae1cc436c",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
+      },
+      {
+        "path": "web/css/app.css",
+        "language": "CSS",
+        "category": "source",
+        "lines": 403,
+        "bytes": 31425,
+        "contentHash": "ec222374e58a4aa9b0f7d6d48f57e21cf1601004fb33964c2352bf2204311d6a",
+        "modifiedAt": "2026-11-02T09:29:09.000Z"
+      },
+      {
+        "path": "web/favicon.svg",
+        "language": "SVG",
+        "category": "asset",
+        "lines": 5,
+        "bytes": 278,
+        "contentHash": "392476d905a7d2b72fbb660fe448a4d02a4b2694f8729d30c0f5fcf45f94561a",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
+      },
+      {
+        "path": "web/index.html",
+        "language": "HTML",
+        "category": "source",
+        "lines": 369,
+        "bytes": 29985,
+        "contentHash": "02e32595f50db2655eb436b533b7cc01361e5e23cad0a8d254f473b85d4f9e1a",
+        "modifiedAt": "2026-11-02T09:29:09.000Z"
+      },
+      {
+        "path": "web/js/api.js",
+        "language": "JavaScript",
+        "category": "source",
+        "lines": 53,
+        "bytes": 2078,
+        "contentHash": "393905d5cfe5fef004fa926058b6071b755aed9536e234153c393c10002be11f",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
+      },
+      {
+        "path": "web/js/app.js",
+        "language": "JavaScript",
+        "category": "source",
+        "lines": 965,
+        "bytes": 46339,
+        "contentHash": "37e37f8c506ba9ff3d5efe495fd07b131ca79c3cd3eb5e507db94f33859e6c84",
+        "modifiedAt": "2026-11-02T09:29:09.000Z"
+      },
+      {
+        "path": "web/js/format.js",
+        "language": "JavaScript",
+        "category": "source",
+        "lines": 51,
+        "bytes": 2239,
+        "contentHash": "ccb92f23e885a6f79e747a9cbb0ee0368fa6cf694b303fc69be2cf15cb6e1fdd",
+        "modifiedAt": "2026-10-10T10:47:34.000Z"
+      },
+      {
+        "path": "web/js/viewer3d.js",
+        "language": "JavaScript",
+        "category": "source",
+        "lines": 551,
+        "bytes": 25593,
+        "contentHash": "e19e0deafc31adeea5f7d8c8056da7986fbb81197b1001abf85981808524be88",
+        "modifiedAt": "2026-11-02T09:29:09.000Z"
       },
       {
         "path": "客户使用说明.txt",
@@ -155,7 +1125,581 @@
       }
     ],
     "skipped": [],
-    "description": "面向真实装柜约束的三维智能装箱系统，支持多策略优化、货物旋转、支撑与碰撞校验、交互式三维复核，以及 JSON/XLSX 方案流转。A constraint-aware 3D container loading optimizer with multi-strategy search, cargo rotation, support and collision validation, interactive 3D review, and JSON/XLSX workflows.",
+    "description": "面向真实装柜约束的三维装箱系统：多策略优化、碰撞与支撑校验、三维复核。",
+    "stars": 0,
+    "archived": false
+  },
+  {
+    "schemaVersion": 1,
+    "name": "reed-relay",
+    "source": "github",
+    "commitSha": "5be8eb8787eebcc3beae2cc39ca88c91309dc7f0",
+    "committedAt": "2026-10-02T21:54:48+08:00",
+    "url": "https://github.com/hyt0019/reed-relay",
+    "dirty": false,
+    "snapshotHash": "6bb4ad26814473a0d3674794383bf078f05768031f6ddd977994c03329112aad",
+    "files": [
+      {
+        "path": ".github/workflows/test.yml",
+        "language": "YAML",
+        "category": "config",
+        "lines": 15,
+        "bytes": 416,
+        "contentHash": "7da48f912b8011fbd34ba5dc7f67dba464c243f06a0ac8da6d6c78a653ad8a25",
+        "modifiedAt": "2026-09-30T02:38:15.000Z"
+      },
+      {
+        "path": ".gitignore",
+        "language": "Config",
+        "category": "config",
+        "lines": 15,
+        "bytes": 156,
+        "contentHash": "44d8234cb2ad55d1c6d15a8fdd13803b00eaa75af6684e93fe868ee8fb3088b9",
+        "modifiedAt": "2026-10-02T10:02:59.000Z"
+      },
+      {
+        "path": "README.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 73,
+        "bytes": 8925,
+        "contentHash": "59190a73189a9c1f50b3b63251aacd5ff7407eec4f91a734f3606044c8471cf1",
+        "modifiedAt": "2026-10-02T13:13:07.000Z"
+      },
+      {
+        "path": "build.ps1",
+        "language": "PowerShell",
+        "category": "source",
+        "lines": 20,
+        "bytes": 1231,
+        "contentHash": "c0e80bcc2a51ec0deafc0f8b3b5d5248c9448631f5017b17e8876facea5cbcff",
+        "modifiedAt": "2026-09-30T02:38:15.000Z"
+      },
+      {
+        "path": "design/render_previews.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 202,
+        "bytes": 12110,
+        "contentHash": "8dccbd84b41b25fad963368dbe4ed23fc135456566915c48979d4e96cd2f7a80",
+        "modifiedAt": "2026-09-29T13:38:15.000Z"
+      },
+      {
+        "path": "design/方案.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 147,
+        "bytes": 26550,
+        "contentHash": "35ccd045b29d9fb5a4429af8db69269793a8d7d0852588984d9669fe1953ba3a",
+        "modifiedAt": "2026-10-02T13:54:48.000Z"
+      },
+      {
+        "path": "docs/FORMAT.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 11,
+        "bytes": 3493,
+        "contentHash": "f8b8d6321b7dc26d6e15a472373e64d54432c7badc57f8e9a8f4484e57f622b0",
+        "modifiedAt": "2026-10-02T12:40:07.000Z"
+      },
+      {
+        "path": "docs/PROGRESS.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 116,
+        "bytes": 21747,
+        "contentHash": "37763ab051bace2dc959dfddf3b24e1e034306b33b6857bba51ed0de74b88491",
+        "modifiedAt": "2026-10-02T13:54:48.000Z"
+      },
+      {
+        "path": "docs/THIRD_PARTY.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 16,
+        "bytes": 2003,
+        "contentHash": "ca32dd2be96a3b78da7298e57ab29373a0bad90b57e74dd874feab110a04acac",
+        "modifiedAt": "2026-10-02T06:23:28.000Z"
+      },
+      {
+        "path": "docs/TRANSCRIPTION_STUDY.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 28,
+        "bytes": 4406,
+        "contentHash": "faab75c599ed236a7f97471b4426a13b51bb261983fee0ad56d834d755cd2ed8",
+        "modifiedAt": "2026-10-02T11:23:23.000Z"
+      },
+      {
+        "path": "docs/USER_GUIDE.md",
+        "language": "Markdown",
+        "category": "docs",
+        "lines": 116,
+        "bytes": 18734,
+        "contentHash": "81b52726fdfc4dffa8dab072af00317a0e87a5dc91b9b6e753e6f206d7ef8a4f",
+        "modifiedAt": "2026-10-02T13:13:07.000Z"
+      },
+      {
+        "path": "examples/晨风.reedscore.json",
+        "language": "JSON",
+        "category": "config",
+        "lines": 174,
+        "bytes": 3544,
+        "contentHash": "cfcc81a99867e25869254b64e5adf4d537a7724ab9819d661df22dbeb38e1e09",
+        "modifiedAt": "2026-09-29T13:45:48.000Z"
+      },
+      {
+        "path": "examples/默认口琴.profile.json",
+        "language": "JSON",
+        "category": "config",
+        "lines": 69,
+        "bytes": 826,
+        "contentHash": "8674e6ed57f37ba8b5ec9d046b5462a0aefd90c289185c842b5db0bab0c7ffd5",
+        "modifiedAt": "2026-09-29T13:59:14.000Z"
+      },
+      {
+        "path": "packaging/analyze_harmonica.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 83,
+        "bytes": 4429,
+        "contentHash": "65ce8476b7db63cd8befa33fb60cb39ae79a1a16dade76e5b6e71555d47556a3",
+        "modifiedAt": "2026-10-02T05:48:11.000Z"
+      },
+      {
+        "path": "packaging/check_overlay.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 54,
+        "bytes": 2265,
+        "contentHash": "a1a882b80f29a59ab99c96943dd3803c6af89a30542d34fdcb441cc16385f6c2",
+        "modifiedAt": "2026-09-30T08:12:18.000Z"
+      },
+      {
+        "path": "packaging/converter_entry.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 2,
+        "bytes": 77,
+        "contentHash": "ea72aaf64f9b097fd57862695d167be40c395d4dc350a1c1bca7c89cfb15841a",
+        "modifiedAt": "2026-09-30T02:38:15.000Z"
+      },
+      {
+        "path": "packaging/launch-player-admin.ps1",
+        "language": "PowerShell",
+        "category": "source",
+        "lines": 16,
+        "bytes": 941,
+        "contentHash": "db2df952cc2a140289afc727c2ff486014ed6a5979a94b4ca41c15fc8b480f3c",
+        "modifiedAt": "2026-10-02T13:54:48.000Z"
+      },
+      {
+        "path": "packaging/player_entry.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 2,
+        "bytes": 74,
+        "contentHash": "d153a4ed8fb04ea3b099a9cfb5e5763d6eceb7978ed3223f2915ed630840037d",
+        "modifiedAt": "2026-09-30T02:38:15.000Z"
+      },
+      {
+        "path": "packaging/smoke.ps1",
+        "language": "PowerShell",
+        "category": "source",
+        "lines": 76,
+        "bytes": 8932,
+        "contentHash": "3e27ea99628a3ef07fa64b9585e976e135a257d2b09f615f19c3bb8096aba1ae",
+        "modifiedAt": "2026-10-02T12:40:07.000Z"
+      },
+      {
+        "path": "pyproject.toml",
+        "language": "TOML",
+        "category": "config",
+        "lines": 22,
+        "bytes": 1001,
+        "contentHash": "cca9be13a7e1a526c7b739f51d87c6dbb2ead5c3395af803a6180ce69bacd2d9",
+        "modifiedAt": "2026-10-02T13:13:07.000Z"
+      },
+      {
+        "path": "setup.ps1",
+        "language": "PowerShell",
+        "category": "source",
+        "lines": 23,
+        "bytes": 1375,
+        "contentHash": "7b7d8c8885683a34e18759c20b7c57bddea01bd20769b47d4ec6fb1364a2761d",
+        "modifiedAt": "2026-09-30T02:38:15.000Z"
+      },
+      {
+        "path": "src/reed_relay/__init__.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 2,
+        "bytes": 99,
+        "contentHash": "6531aa40f224b52f086f128f914813ed7e87fc89893441714cb8c177039577f9",
+        "modifiedAt": "2026-10-02T13:13:07.000Z"
+      },
+      {
+        "path": "src/reed_relay/app.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 162,
+        "bytes": 8815,
+        "contentHash": "2821f9f0c85fb1b432a696edfc7735d30e32d3e9cb4fd688fa3188095c06cb99",
+        "modifiedAt": "2026-10-02T12:40:07.000Z"
+      },
+      {
+        "path": "src/reed_relay/assets/harmonica.json",
+        "language": "JSON",
+        "category": "config",
+        "lines": 1,
+        "bytes": 35030,
+        "contentHash": "6a1b942e74639f49869997c5452d10dabd9ae8e8dc6fd09ec63e36145accbd0c",
+        "modifiedAt": "2026-10-02T05:48:11.000Z"
+      },
+      {
+        "path": "src/reed_relay/audition.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 205,
+        "bytes": 9204,
+        "contentHash": "f8a733f03912c6a1dd531068fc37823f78f27d069ffaee9addf2c6862ea05762",
+        "modifiedAt": "2026-10-02T10:02:59.000Z"
+      },
+      {
+        "path": "src/reed_relay/backend.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 1286,
+        "bytes": 66125,
+        "contentHash": "a4dea7ad13138a7aaf05e113c5539c0579b5e159a826197897ba82502112d9e7",
+        "modifiedAt": "2026-10-02T13:54:48.000Z"
+      },
+      {
+        "path": "src/reed_relay/binding.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 83,
+        "bytes": 4429,
+        "contentHash": "0c68c49eeae5ceebfbfc03431585dadc02079415bf356537511ff0a218ebdea8",
+        "modifiedAt": "2026-10-02T06:07:54.000Z"
+      },
+      {
+        "path": "src/reed_relay/capture.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 176,
+        "bytes": 7847,
+        "contentHash": "f885091ae193a07224f4ade3e9447e1aa0dea3f61eca882ec92426521c51e200",
+        "modifiedAt": "2026-09-30T03:34:11.000Z"
+      },
+      {
+        "path": "src/reed_relay/converter/__init__.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 1,
+        "bytes": 83,
+        "contentHash": "8854f3d9131c2dc02ee9fdf7813e4b8e6a8d52b703f18297b3d69d8eb50fcab8",
+        "modifiedAt": "2026-09-29T15:43:24.000Z"
+      },
+      {
+        "path": "src/reed_relay/converter/audio.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 76,
+        "bytes": 3634,
+        "contentHash": "462c757b9f961a91814adc48f5e833626da43189383cc40085a60d717e90365c",
+        "modifiedAt": "2026-09-29T15:43:24.000Z"
+      },
+      {
+        "path": "src/reed_relay/converter/transcribe.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 98,
+        "bytes": 6312,
+        "contentHash": "23735704434cde262b775843836b3b93a71d0055a2331d93d993692131cb0e80",
+        "modifiedAt": "2026-10-02T11:23:23.000Z"
+      },
+      {
+        "path": "src/reed_relay/core/__init__.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 1,
+        "bytes": 70,
+        "contentHash": "19f04071de2ab784ccb6f1b0ae619854f679658ec80f8006a98c2ede59fe900a",
+        "modifiedAt": "2026-09-29T13:45:48.000Z"
+      },
+      {
+        "path": "src/reed_relay/core/calibration.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 183,
+        "bytes": 9355,
+        "contentHash": "36a95c185695b9d62e4dd2048a10cf106fdcb30311b5106d40df47d0d7528726",
+        "modifiedAt": "2026-09-30T08:12:18.000Z"
+      },
+      {
+        "path": "src/reed_relay/core/harmonica.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 87,
+        "bytes": 4794,
+        "contentHash": "93eb1bbb38ef14480d01ad6f0df44a91c9b3ae6407eb1e4d892a058900d8db7c",
+        "modifiedAt": "2026-10-02T06:07:54.000Z"
+      },
+      {
+        "path": "src/reed_relay/core/melody.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 156,
+        "bytes": 7700,
+        "contentHash": "8a52a7206a082ac4387082e0f1059212c9a30722cadf5d18d4b6d80d7144109b",
+        "modifiedAt": "2026-10-02T11:37:29.000Z"
+      },
+      {
+        "path": "src/reed_relay/core/profile.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 188,
+        "bytes": 10106,
+        "contentHash": "b114bb8a1d5fa643a0a7ee159395e9b2b7b8047e6401f9cede6b1c6e8dc205be",
+        "modifiedAt": "2026-10-02T06:07:54.000Z"
+      },
+      {
+        "path": "src/reed_relay/core/score.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 147,
+        "bytes": 7191,
+        "contentHash": "0177bfd22d40e8decdb7ae1b2ac4a01a99d4d35c7c9272978b81a37f90ec7bf5",
+        "modifiedAt": "2026-10-02T09:57:18.000Z"
+      },
+      {
+        "path": "src/reed_relay/core/tuning.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 49,
+        "bytes": 2294,
+        "contentHash": "66e8928c22b0598368b8d737fcf0e48d92b9dd50a3221d235965b130fc63f7b9",
+        "modifiedAt": "2026-09-29T13:45:48.000Z"
+      },
+      {
+        "path": "src/reed_relay/launcher.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 20,
+        "bytes": 944,
+        "contentHash": "2730233c429d411963d9eb1a5806296150ec0ec401a35f40cf1d8d155f872bd0",
+        "modifiedAt": "2026-10-02T10:23:42.000Z"
+      },
+      {
+        "path": "src/reed_relay/library.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 93,
+        "bytes": 4535,
+        "contentHash": "7f2a1d9a4133bc92d22b81e5c30a40cc1e25105ced51479614213ef0667e8023",
+        "modifiedAt": "2026-10-02T12:18:07.000Z"
+      },
+      {
+        "path": "src/reed_relay/overlay.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 17,
+        "bytes": 819,
+        "contentHash": "782b4ae8e23a020a5ed815d3a44ac33d5df635ae5ca9acacec0325a0be7d24f0",
+        "modifiedAt": "2026-09-30T08:12:18.000Z"
+      },
+      {
+        "path": "src/reed_relay/player/__init__.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 1,
+        "bytes": 67,
+        "contentHash": "c4bc45dcd4e936cfd19c4f34c6d9fd2b203e040e43a2727f7ce907fd791196a0",
+        "modifiedAt": "2026-09-29T13:59:14.000Z"
+      },
+      {
+        "path": "src/reed_relay/player/engine.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 123,
+        "bytes": 5377,
+        "contentHash": "4a785ee209a1b955c462229d6ae500a38cc2ae1383c3971e4210035093cb5be3",
+        "modifiedAt": "2026-10-02T12:57:50.000Z"
+      },
+      {
+        "path": "src/reed_relay/player/permissions.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 68,
+        "bytes": 4017,
+        "contentHash": "23f017aca3fe94b46a73c9046bf193570ea58332c8d17098147d9aedea3bfc22",
+        "modifiedAt": "2026-10-02T13:54:48.000Z"
+      },
+      {
+        "path": "src/reed_relay/player/windows.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 174,
+        "bytes": 7791,
+        "contentHash": "eb066650663eca0c6ebe057e45d6d2d85b639c62302dc608215267f38a95e1f9",
+        "modifiedAt": "2026-10-02T06:07:54.000Z"
+      },
+      {
+        "path": "src/reed_relay/storage.py",
+        "language": "Python",
+        "category": "source",
+        "lines": 143,
+        "bytes": 6816,
+        "contentHash": "a80bad7edb90f145c7eb90e707f4ec48fa1ea6e6eaf4b0d56b76b8d6f2af9da0",
+        "modifiedAt": "2026-10-02T10:23:42.000Z"
+      },
+      {
+        "path": "tests/test_binding_audition.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 169,
+        "bytes": 8397,
+        "contentHash": "1f019658ab43b1e3289efc329d1902d53b1f0c4c2ab70b2c80e72e393ea17f30",
+        "modifiedAt": "2026-10-02T11:37:29.000Z"
+      },
+      {
+        "path": "tests/test_calibration.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 110,
+        "bytes": 4534,
+        "contentHash": "e68a59122857684f4dcb6743ca78087207a8ad71a1e6104c3e6161c5de85ecc2",
+        "modifiedAt": "2026-09-30T08:12:18.000Z"
+      },
+      {
+        "path": "tests/test_calibration_backend.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 166,
+        "bytes": 8115,
+        "contentHash": "41e87014b296df174a80a54689f59974fd19a2edabb17575521f62aa2b649172",
+        "modifiedAt": "2026-09-30T08:12:18.000Z"
+      },
+      {
+        "path": "tests/test_capture.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 118,
+        "bytes": 5412,
+        "contentHash": "573cb4cfcf6d63aa13c2a1ea5b542e8bc2cf176db183e2b275194991ff5156d4",
+        "modifiedAt": "2026-09-30T03:34:11.000Z"
+      },
+      {
+        "path": "tests/test_converter.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 61,
+        "bytes": 3266,
+        "contentHash": "395df4864a5a4a0592b38c456e2828a6f620cd1a38afa13e930f31497c31cd21",
+        "modifiedAt": "2026-10-02T11:23:23.000Z"
+      },
+      {
+        "path": "tests/test_core.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 65,
+        "bytes": 3197,
+        "contentHash": "f89c2658c03bdde9712cfdf6a8ed6339a84bad6e9dc20022c4fe24f0d278dc1f",
+        "modifiedAt": "2026-09-29T13:45:48.000Z"
+      },
+      {
+        "path": "tests/test_editor.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 113,
+        "bytes": 5098,
+        "contentHash": "d68e4924f13a82b3abaa837c2601bad34cb7ce2e0d6c6c33d4ab234fcbb1aabe",
+        "modifiedAt": "2026-10-02T11:37:29.000Z"
+      },
+      {
+        "path": "tests/test_harmonica.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 74,
+        "bytes": 3984,
+        "contentHash": "7e10c25b5aa0821bdc0d388cf31c1f5afd3fd3508e6fbfe46cc604a0cb43f2f2",
+        "modifiedAt": "2026-10-02T05:48:11.000Z"
+      },
+      {
+        "path": "tests/test_library.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 141,
+        "bytes": 7895,
+        "contentHash": "15ebeb585de1210a76d1b8f360d633064a9bb374debf19ca74941133bf027e67",
+        "modifiedAt": "2026-10-02T12:40:07.000Z"
+      },
+      {
+        "path": "tests/test_library_ui.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 69,
+        "bytes": 3455,
+        "contentHash": "63fbecda4181c01a43615c2e8235001fbecbc0860b4d07ba2dee47722b0242f8",
+        "modifiedAt": "2026-10-02T12:40:07.000Z"
+      },
+      {
+        "path": "tests/test_melody.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 76,
+        "bytes": 4737,
+        "contentHash": "f883974a0bc0979dc7898dfd58410b84bf0f196ef18df9a20c3ace8fdd720354",
+        "modifiedAt": "2026-10-02T11:37:29.000Z"
+      },
+      {
+        "path": "tests/test_permissions.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 108,
+        "bytes": 5457,
+        "contentHash": "6deae5e7a30940e943ebef2427801d04c59f2619a131da70dd04da11e93a081e",
+        "modifiedAt": "2026-10-02T13:54:48.000Z"
+      },
+      {
+        "path": "tests/test_player.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 117,
+        "bytes": 5964,
+        "contentHash": "27308d5e09766a88517b018b58d652880e0a50a05aa32c52873b1aa5a6d81de2",
+        "modifiedAt": "2026-10-02T12:57:50.000Z"
+      },
+      {
+        "path": "tests/test_player_seek.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 199,
+        "bytes": 8190,
+        "contentHash": "23cbff0dea31a0177dca10b84402b4bf23c7f59e1a52be53547b34441a20002f",
+        "modifiedAt": "2026-10-02T13:54:48.000Z"
+      },
+      {
+        "path": "tests/test_storage.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 168,
+        "bytes": 9000,
+        "contentHash": "1549f0939489ad71005da956a002f994e4462db3c4f2ff224431c0e7f83c5a39",
+        "modifiedAt": "2026-10-02T11:23:23.000Z"
+      },
+      {
+        "path": "tests/test_windows.py",
+        "language": "Python",
+        "category": "test",
+        "lines": 34,
+        "bytes": 1454,
+        "contentHash": "d4c90f45d13fd93fa035e082d0bf1b327e4c6ffae3b6d1ab1979e1e63e5a453b",
+        "modifiedAt": "2026-09-30T02:38:15.000Z"
+      }
+    ],
+    "skipped": [],
+    "description": "把音频转成保留原调的可编辑曲谱，再按自定义键位在游戏中自动演奏。",
     "stars": 0,
     "archived": false
   },
@@ -163,11 +1707,11 @@
     "schemaVersion": 1,
     "name": "code-city",
     "source": "github",
-    "commitSha": "564df909fd8b59a6f1c4e7060abac8e5a26b8144",
-    "committedAt": "2026-09-22T01:07:52+08:00",
+    "commitSha": "28914e7b55d4b3f4ba7692a79a3a46d4372fb248",
+    "committedAt": "2026-09-22T01:15:49+08:00",
     "url": "https://github.com/hyt0019/code-city",
     "dirty": false,
-    "snapshotHash": "198df4f5601decb290d0911117cad4711c1107c9a06dd42d710a489a7c61359d",
+    "snapshotHash": "2451d7544c629979b40ff6f80404741705be014f7d6a910baa0f32ab15ed5026",
     "files": [
       {
         "path": ".github/workflows/deploy-pages.yml",
@@ -236,10 +1780,10 @@
         "path": "README.md",
         "language": "Markdown",
         "category": "docs",
-        "lines": 236,
-        "bytes": 20036,
-        "contentHash": "542fecfd4adeb0bb153ebd1726de42e59fb19e73b03fb235b801a238cf000aca",
-        "modifiedAt": "2026-09-21T08:31:28.000Z"
+        "lines": 238,
+        "bytes": 20793,
+        "contentHash": "e06e71e396947271a82b4f65eb03fef7961f69ec468be0974447f5dfd495c40c",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "code-city-project-brief.md",
@@ -263,10 +1807,10 @@
         "path": "fixtures/city.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 107,
-        "bytes": 3622,
-        "contentHash": "7dc88df066225f8c5a742b800159ad7d0b69211699c150b725df9c4f5574a945",
-        "modifiedAt": "2026-09-20T02:49:13.000Z"
+        "lines": 104,
+        "bytes": 3521,
+        "contentHash": "c58954491c66ac17dc4eab56537cc9828e89601f79d7de9dfb647606f28c44d1",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "index.html",
@@ -299,10 +1843,10 @@
         "path": "playwright.pages.config.ts",
         "language": "TypeScript",
         "category": "config",
-        "lines": 12,
-        "bytes": 435,
-        "contentHash": "8c387451f6fc9cacf302875e28b77ae4fd91b905ee32f5df99eca8b8112cda1d",
-        "modifiedAt": "2026-09-20T03:30:58.000Z"
+        "lines": 14,
+        "bytes": 495,
+        "contentHash": "694d662609ad39fc24633e1d6e672fd9fed999333035c7ee2a5f96041f24e8e6",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "public/favicon.svg",
@@ -363,9 +1907,9 @@
         "language": "TypeScript",
         "category": "source",
         "lines": 951,
-        "bytes": 36518,
-        "contentHash": "5c22f01101c9b2085e42c533fa3bbbd363e6923e67bae4445964abce25f1b464",
-        "modifiedAt": "2026-09-21T08:31:28.000Z"
+        "bytes": 36533,
+        "contentHash": "2b2758a731e12ce72d8b83338bf92d48397895bf531876cdf2d57784539fa635",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "src/CityLoader.tsx",
@@ -389,10 +1933,10 @@
         "path": "src/core/architecture.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 214,
-        "bytes": 7030,
-        "contentHash": "e34be6287c60cb48c6c66651307f51e4e8a35cd3a542360134d417395e2d8fe0",
-        "modifiedAt": "2026-09-21T08:31:28.000Z"
+        "lines": 247,
+        "bytes": 8360,
+        "contentHash": "bcc63d471dc06b2c04cd0c8c33335a92db5da0f5aebe20363fcdfe37e9728458",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "src/core/config.ts",
@@ -425,10 +1969,10 @@
         "path": "src/core/metrics.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 51,
-        "bytes": 1871,
-        "contentHash": "8edce98f91e47ef952fe266d1a7cced0c5f0b5c538e0352921dc7b1816ec07bf",
-        "modifiedAt": "2026-09-20T14:48:08.000Z"
+        "lines": 48,
+        "bytes": 1890,
+        "contentHash": "2f33eb942ad95998e0d3fc94383c25c504e88fa1d9e4e774fdd9d20b5a90859e",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "src/core/model.ts",
@@ -506,10 +2050,10 @@
         "path": "src/layout/treemap.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 199,
-        "bytes": 7655,
-        "contentHash": "f6ef0de6c0e703e495921e8af7072b678efc33f5fb56b8b1f535e116b4705e82",
-        "modifiedAt": "2026-09-20T14:48:08.000Z"
+        "lines": 198,
+        "bytes": 7587,
+        "contentHash": "102afa5222faa0074418f2d4623bc3029d2a27ee631427ab68ffa8945e8f6919",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "src/main.tsx",
@@ -542,10 +2086,10 @@
         "path": "src/renderers/three/viewer.ts",
         "language": "TypeScript",
         "category": "source",
-        "lines": 564,
-        "bytes": 19704,
-        "contentHash": "1dabc1361be756890bafe9961283cfaac72eaa0857a679f751e91dbeeeeed85c",
-        "modifiedAt": "2026-09-21T17:07:52.000Z"
+        "lines": 587,
+        "bytes": 20831,
+        "contentHash": "9546173db5c96245470dd29e340787489e7f8d8da114d83b6a83e702560d19ea",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "src/scanner/exclusions.ts",
@@ -641,10 +2185,10 @@
         "path": "tests/architecture.test.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 60,
-        "bytes": 3138,
-        "contentHash": "f1aee2bb28b6de68d30772f29780541f242a7b5477b9348ddc95d8080b0c8aa8",
-        "modifiedAt": "2026-09-21T08:31:28.000Z"
+        "lines": 74,
+        "bytes": 3958,
+        "contentHash": "8433a089045b3fc95525a4aad8deb6f4ed70f28795ef39466cb52fe0cab30b7d",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "tests/district-labels.test.ts",
@@ -749,10 +2293,10 @@
         "path": "tests/isometric.test.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 34,
-        "bytes": 1479,
-        "contentHash": "dc63ee7ad2c29da67590d653b64b36fcc04ca7f82c78cc258ef70bedf95567f7",
-        "modifiedAt": "2026-09-20T02:49:13.000Z"
+        "lines": 38,
+        "bytes": 1775,
+        "contentHash": "a6447dc5f2021a1c8f54128e0e420eddc4caaeee100b46b05c1a404fcf8e88bb",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "tests/layout.test.ts",
@@ -767,10 +2311,10 @@
         "path": "tests/metrics.test.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 28,
-        "bytes": 1279,
-        "contentHash": "5e7665c0c8aa766d2e710d07c62a8ede78e724c51c6552f530c4329c94e46456",
-        "modifiedAt": "2026-09-20T13:48:36.000Z"
+        "lines": 47,
+        "bytes": 2320,
+        "contentHash": "562b2d352dfd122ed62e4ed08fa97948694e27d7134d767378f9868fdbd3b2b8",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "tests/pages.test.ts",
@@ -785,10 +2329,10 @@
         "path": "tests/pages/repository.spec.ts",
         "language": "TypeScript",
         "category": "test",
-        "lines": 53,
-        "bytes": 3212,
-        "contentHash": "6189be12451ee23ecc7bf08e42df671525ef3f07491ca0bfe99b4d8ffc35a93a",
-        "modifiedAt": "2026-09-20T08:40:16.000Z"
+        "lines": 56,
+        "bytes": 3217,
+        "contentHash": "bbac0fc55da5d510989fecca20e702ec3908c3d7542b807d7cc02258c8eb37bd",
+        "modifiedAt": "2026-09-21T17:15:49.000Z"
       },
       {
         "path": "tests/privacy-fixture.ts",
@@ -855,462 +2399,7 @@
       }
     ],
     "skipped": [],
-    "description": "将本地与 GitHub 代码仓库转换为确定性的等距代码城市，支持 README SVG 横幅和交互式浏览。Turn local and GitHub repositories into deterministic isometric code cities, with embeddable SVG banners and an interactive explorer.",
-    "stars": 0,
-    "archived": false
-  },
-  {
-    "schemaVersion": 1,
-    "name": "ReplayFlashFix",
-    "source": "github",
-    "commitSha": "61648508bdccdce43d41cfbfcdbc3d973a3d86df",
-    "committedAt": "2026-09-15T17:46:52+08:00",
-    "url": "https://github.com/hyt0019/replayflashfix",
-    "dirty": false,
-    "snapshotHash": "fbbe9e97eeadf0117e451f6d0dba06273dc7f114ebd529532ca1034acaa5265c",
-    "files": [
-      {
-        "path": ".gitattributes",
-        "language": "Config",
-        "category": "config",
-        "lines": 13,
-        "bytes": 219,
-        "contentHash": "f8469690321ae037751a2d5b0b21af03f41624dae6315e6fe39c7ffcf6ab4a63",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
-        "language": "YAML",
-        "category": "config",
-        "lines": 38,
-        "bytes": 1102,
-        "contentHash": "a5dee5ee4a2d1985780da781199c46817380abb5880286d396452b317dd775f8",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": ".github/ISSUE_TEMPLATE/config.yml",
-        "language": "YAML",
-        "category": "config",
-        "lines": 1,
-        "bytes": 28,
-        "contentHash": "1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": ".github/workflows/build-windows.yml",
-        "language": "YAML",
-        "category": "config",
-        "lines": 32,
-        "bytes": 919,
-        "contentHash": "6760d98233a0883a185cfa1f97e2270f042d4192000bdae2ac31a740a15331c8",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": ".github/workflows/test.yml",
-        "language": "YAML",
-        "category": "config",
-        "lines": 22,
-        "bytes": 588,
-        "contentHash": "7b7fd1463928e1cd9ff6f66b291e419c3ff78a3755bfa188faf3a0ad0c391d3c",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": ".gitignore",
-        "language": "Config",
-        "category": "config",
-        "lines": 38,
-        "bytes": 477,
-        "contentHash": "f7646f77e1a65d157d23114876a5a240ba60d981c2852509e4bf84f3a9598da5",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "CHANGELOG.md",
-        "language": "Markdown",
-        "category": "docs",
-        "lines": 26,
-        "bytes": 2148,
-        "contentHash": "a825730d6c35c6cedf8196d97b118e9b2da84cf2ad611f1e446991b3adb5a992",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "CONTRIBUTING.md",
-        "language": "Markdown",
-        "category": "docs",
-        "lines": 21,
-        "bytes": 1276,
-        "contentHash": "86c6595ae8520abc0cbc8549bba33fe52101aefd62b4e1cf85ad83905efaccb0",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "LICENSE",
-        "language": "Text",
-        "category": "docs",
-        "lines": 17,
-        "bytes": 1105,
-        "contentHash": "6a35e5201151961bc781468531dedafb48b8492e595d9be01fb6d700717df4a5",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "README.md",
-        "language": "Markdown",
-        "category": "docs",
-        "lines": 154,
-        "bytes": 9937,
-        "contentHash": "6eb0ce39e4ecb47adfea7b33153287c2c0d87c48dc6164ef1ea954fc10a71847",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "README_EN.md",
-        "language": "Markdown",
-        "category": "docs",
-        "lines": 123,
-        "bytes": 7632,
-        "contentHash": "20d9d24594abb175cf169cc8e7e2240ac99af122685a583bfbd11718b8290ea1",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "SECURITY.md",
-        "language": "Markdown",
-        "category": "docs",
-        "lines": 11,
-        "bytes": 711,
-        "contentHash": "8d6e00a16c2ddd30c060c7104c25435ead1baf02e8eeccb6197f22da60e9ba96",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "THIRD_PARTY_NOTICES.md",
-        "language": "Markdown",
-        "category": "docs",
-        "lines": 26,
-        "bytes": 1975,
-        "contentHash": "9d6b0786a09050e8a2095bfd4d82788c96661c5f172e185ae90d4444bd494140",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "docs/RELEASING.md",
-        "language": "Markdown",
-        "category": "docs",
-        "lines": 37,
-        "bytes": 2662,
-        "contentHash": "62471b855c80d351ba05f3ba97e9ca89a0d1c4aae1ceed750469e8177608f3e0",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "docs/images/hero.svg",
-        "language": "SVG",
-        "category": "docs",
-        "lines": 59,
-        "bytes": 5304,
-        "contentHash": "3c17a9e6f86f9b848d520fdf48da2c313c0b3a06c3f670eea85d98933103bd16",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "docs/images/how-it-works.svg",
-        "language": "SVG",
-        "category": "docs",
-        "lines": 18,
-        "bytes": 2717,
-        "contentHash": "f8942fba73be6c6d3e1ddf64c8340eb6fd7ab7be8a2cb0a6f29fcdad1043ac9c",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "docs/images/ui-preview.svg",
-        "language": "SVG",
-        "category": "docs",
-        "lines": 32,
-        "bytes": 8363,
-        "contentHash": "c3eaec633db08b0af6fa9fa06d86c10424cfb08ed674688e0c9178b54c962caf",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "docs/licenses/FFmpeg-GPL-3.0.txt",
-        "language": "Text",
-        "category": "docs",
-        "lines": 553,
-        "bytes": 35821,
-        "contentHash": "0b383d5a63da644f628d99c33976ea6487ed89aaa59f0b3257992deac1171e6b",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "pyproject.toml",
-        "language": "TOML",
-        "category": "config",
-        "lines": 49,
-        "bytes": 1488,
-        "contentHash": "165973384501b3f7ad09544c435e8df9d9970a03fc14675a8e79d47e2bbc5a37",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "remove_desktop_flash.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 10,
-        "bytes": 397,
-        "contentHash": "5b0ed7ddcddd0e9bfa129c26de45143f7764b03fea3b27af35958740eeae4e73",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "requirements-dev.txt",
-        "language": "Text",
-        "category": "source",
-        "lines": 6,
-        "bytes": 103,
-        "contentHash": "bba607917a9607349c6d4928b919ebfe5b7d99390ccaaacbb5183908d49737ac",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "requirements.txt",
-        "language": "Text",
-        "category": "source",
-        "lines": 5,
-        "bytes": 101,
-        "contentHash": "b43edbc5feaaba093a56fb952a78314bec35c706fbcab5beecf1cb70d091fb99",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "scripts/assemble_release.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 78,
-        "bytes": 4161,
-        "contentHash": "b4d9edc52b9da411ea11bac4ee0517d2a56ba8d793102ebf1ca68f2ab9443f2e",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "scripts/build_windows.ps1",
-        "language": "PowerShell",
-        "category": "source",
-        "lines": 60,
-        "bytes": 2886,
-        "contentHash": "dfe9b1751ff9f3a1cad14292352ec870ff37d9e0c4beea86511497a08ac29e67",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "scripts/capture_ui.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 54,
-        "bytes": 2272,
-        "contentHash": "c22c3e159faa1b8983ea413256f1569c31e7d7a04136c881bf0517720dede5dd",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "scripts/generate_icons.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 45,
-        "bytes": 2289,
-        "contentHash": "a0faf63928747c833322bcd722562268543100c55d2ec243480b57b4d00641a0",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "src/replay_flash_fix/__init__.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 4,
-        "bytes": 111,
-        "contentHash": "7231ede7f01d31cc5321ab3a16c8bb3e807b843be787019969db062141db6739",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "src/replay_flash_fix/assets/logo.svg",
-        "language": "SVG",
-        "category": "asset",
-        "lines": 11,
-        "bytes": 582,
-        "contentHash": "2096268488a31e9b5ce3e1187ab13373277565d7e2b93d1ba70606551c4e97e9",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "src/replay_flash_fix/cli.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 4,
-        "bytes": 134,
-        "contentHash": "21fc9b039f96c9bbb3023ea048378a52a9b490d2279f9c6d7d2a0255a414b7fc",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "src/replay_flash_fix/engine.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 1386,
-        "bytes": 57575,
-        "contentHash": "d0c8e706b47fae9e41d309d858117fe1c32bb3aef0299c093a181e41db4d71ef",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "src/replay_flash_fix/gui.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 1108,
-        "bytes": 48180,
-        "contentHash": "d90de6674d67fb5c14cc6f115e0e7cb1197607a27b48a04dbdfe6aab3fbc6156",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "src/replay_flash_fix/processes.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 93,
-        "bytes": 3657,
-        "contentHash": "0cccdd14c57a9cbdb7021a89b6f6d31df6562eb539c8cdbbaed2b10b0f5f50a7",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "src/replay_flash_fix/selftest.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 61,
-        "bytes": 3084,
-        "contentHash": "e0285122e97b7983e657b804e17a23bcd73f5ad2718d8a7ba1674c7623b41360",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "tests/conftest.py",
-        "language": "Python",
-        "category": "test",
-        "lines": 6,
-        "bytes": 209,
-        "contentHash": "10e1b2dce0511d446be74677b246f4ed82cf900a9e7d2181beef918dcecd7fb2",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "tests/test_engine.py",
-        "language": "Python",
-        "category": "test",
-        "lines": 63,
-        "bytes": 2648,
-        "contentHash": "8acbf9990b4e9cd5910cc5b5076dfa02472af6ebb58e2d771bc4bda2f12c288d",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "tests/test_package.py",
-        "language": "Python",
-        "category": "test",
-        "lines": 15,
-        "bytes": 777,
-        "contentHash": "79a4e7bb2e0950ad744d10b274e6731466d9519f4c284d959e1d4d776fe183a4",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "tests/test_runtime.py",
-        "language": "Python",
-        "category": "test",
-        "lines": 179,
-        "bytes": 9222,
-        "contentHash": "d9c53922a42db948747f63e6d631ae649bb339ac967744b9259d9d348d470592",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "修复闪屏.ps1",
-        "language": "PowerShell",
-        "category": "source",
-        "lines": 87,
-        "bytes": 3766,
-        "contentHash": "b3880eea3f916b7dfc32a23b273f3fe705f653735d18e169e7bca56e410b7e20",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "启动命令.txt",
-        "language": "Text",
-        "category": "source",
-        "lines": 3,
-        "bytes": 143,
-        "contentHash": "41d8edb3daf48dbbce4bc825262fecbf4be3bf56c3dfc1680077d6d812246dae",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      },
-      {
-        "path": "启动界面.ps1",
-        "language": "PowerShell",
-        "category": "source",
-        "lines": 52,
-        "bytes": 2556,
-        "contentHash": "bd39af3370f18c0cba223c585f8bf25e2399cc97ef7c0716a625c989b0752227",
-        "modifiedAt": "2026-09-15T09:46:52.000Z"
-      }
-    ],
-    "skipped": [],
-    "description": "修复 NVIDIA 即时重放中的桌面闪帧，支持 Windows 图形界面和批量处理。",
-    "stars": 0,
-    "archived": false
-  },
-  {
-    "schemaVersion": 1,
-    "name": "TJU-auto-course-selector",
-    "source": "github",
-    "commitSha": "fa1d99ede4f77fe75d75c69ad4b21453ea75b8b0",
-    "committedAt": "2026-09-18T18:09:18+08:00",
-    "url": "https://github.com/hyt0019/tju-auto-course-selector",
-    "dirty": false,
-    "snapshotHash": "63a1be520d0f09238495d66c3d836d9a441db66793a9a06ffb35537b908e7597",
-    "files": [
-      {
-        "path": "README.md",
-        "language": "Markdown",
-        "category": "docs",
-        "lines": 137,
-        "bytes": 11297,
-        "contentHash": "1b0c232401befa55f4b4cceaa130261a29186891257f0e228d38b9a6017fb9aa",
-        "modifiedAt": "2026-09-18T10:09:18.000Z"
-      },
-      {
-        "path": "config.txt",
-        "language": "Text",
-        "category": "config",
-        "lines": 20,
-        "bytes": 1265,
-        "contentHash": "c1259664c18913820793c54726738da24e806abcd20c86b51ad939e10826404e",
-        "modifiedAt": "2026-09-18T10:09:18.000Z"
-      },
-      {
-        "path": "docs/images/01-network.svg",
-        "language": "SVG",
-        "category": "docs",
-        "lines": 58,
-        "bytes": 4471,
-        "contentHash": "50c325529c93856b48dd111411e0e7a2b6d9b3bcfdabe619c83625f4354fc697",
-        "modifiedAt": "2026-09-18T10:09:18.000Z"
-      },
-      {
-        "path": "docs/images/02-lesson-id.svg",
-        "language": "SVG",
-        "category": "docs",
-        "lines": 46,
-        "bytes": 3643,
-        "contentHash": "44c0d1d402d769beb4dc55781e849d9864fc8222b5f2fa1860ae552d360e7d65",
-        "modifiedAt": "2026-09-18T10:09:18.000Z"
-      },
-      {
-        "path": "docs/images/03-cookie.svg",
-        "language": "SVG",
-        "category": "docs",
-        "lines": 35,
-        "bytes": 3032,
-        "contentHash": "6efd97c0984ef9243968f54155a7df48b78b8b3a80d35172415a196ec4cd85fa",
-        "modifiedAt": "2026-09-18T10:09:18.000Z"
-      },
-      {
-        "path": "main.py",
-        "language": "Python",
-        "category": "source",
-        "lines": 292,
-        "bytes": 12824,
-        "contentHash": "094a759905aeb582264658b3636b80ecf84e3d046015146f1baa4dcdb199b575",
-        "modifiedAt": "2026-09-18T10:09:18.000Z"
-      },
-      {
-        "path": "test_main.py",
-        "language": "Python",
-        "category": "test",
-        "lines": 75,
-        "bytes": 3768,
-        "contentHash": "00b64637dcfa069139c9e934f121c9a2497c67af3da8694872c7dd3736c1ffc5",
-        "modifiedAt": "2026-09-18T10:09:18.000Z"
-      }
-    ],
-    "skipped": [],
-    "description": "天津大学选课脚本：满员自动重试、成功停止、登录失效提示，附图文配置教程。Python 标准库实现。",
+    "description": "把代码仓库变成一座城市：每个仓库一片城区，每个文件一栋建筑。",
     "stars": 0,
     "archived": false
   },
@@ -1319,9 +2408,9 @@
     "privacy": "city-only",
     "name": "private-one",
     "totals": {
-      "files": 45,
-      "lines": 1387,
-      "bytes": 62101
+      "files": 54,
+      "lines": 2027,
+      "bytes": 125594
     }
   },
   {
@@ -1329,9 +2418,9 @@
     "privacy": "city-only",
     "name": "private-two",
     "totals": {
-      "files": 160,
-      "lines": 16706,
-      "bytes": 994261
+      "files": 181,
+      "lines": 19453,
+      "bytes": 1194458
     }
   }
 ]

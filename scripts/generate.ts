@@ -8,7 +8,7 @@ import { layoutCity } from '../src/layout/treemap';
 import { writeAssets } from './write-assets';
 import { collectGitHub } from '../src/scanner/github';
 import type { z } from 'zod';
-import { repositoryInput } from '../src/core/config';
+import { repositoryInput, selectRepositories } from '../src/core/config';
 import { publishableSnapshot } from '../src/core/privacy';
 import { privateInputs } from '../src/scanner/private-inputs';
 import type { RepositorySnapshot } from '../src/core/model';
@@ -27,7 +27,7 @@ for (let index = 0; index < args.length; index++) {
     inputsFromArgs.push(repositoryInput.parse({ github: args[++index] }));
   else if (args[index] === '--help') {
     console.log(
-      'Usage: npm run generate -- [--repo PATH ... | --github OWNER/REPO ...] [--city-only] | --demo\nCity-only CLI inputs use private-1, private-2, ... as public aliases. Local and GitHub inputs may be combined (maximum 8). Without flags, uses codecity.config.ts plus CODECITY_PRIVATE_REPOSITORIES, or the demo.',
+      'Usage: npm run generate -- [--repo PATH ... | --github OWNER/REPO ...] [--city-only] | --demo\nCity-only CLI inputs use private-1, private-2, ... as public aliases. Local and GitHub inputs may be combined; the first 8 are shown. Without flags, uses codecity.config.ts plus CODECITY_PRIVATE_REPOSITORIES, or the demo.',
     );
     process.exit(0);
   } else throw new Error(`Unknown or incomplete argument: ${args[index]}`);
@@ -42,11 +42,16 @@ if (cityOnly)
     input.name = `private-${index + 1}`;
   });
 const secretInputs =
-  demo || inputsFromArgs.length ? [] : privateInputs(process.env.CODECITY_PRIVATE_REPOSITORIES);
+  demo || inputsFromArgs.length
+    ? []
+    : privateInputs(process.env.CODECITY_PRIVATE_REPOSITORIES, config.owner);
 if (secretInputs.length && !process.env.CODECITY_GITHUB_TOKEN)
   throw new Error('CODECITY_PRIVATE_REPOSITORIES requires CODECITY_GITHUB_TOKEN.');
-const inputs = inputsFromArgs.length ? inputsFromArgs : [...config.repositories, ...secretInputs];
-if (!demo && inputs.length > 8) throw new Error('Select at most 8 repositories.');
+const { selected: inputs, warning } = selectRepositories(
+  inputsFromArgs.length ? inputsFromArgs : [...config.repositories, ...secretInputs],
+);
+// GitHub Actions shows ::warning:: lines on the run summary, where they are easy to notice.
+if (warning) console.warn(`${process.env.GITHUB_ACTIONS ? '::warning::' : 'Warning: '}${warning}`);
 if (demo || !inputs.length) await writeAssets(createFixture());
 else {
   const snapshots = [];
@@ -75,6 +80,7 @@ else {
       throw error;
     }
     snapshot.privacy = input.privacy;
+    if (input.description) snapshot.description = input.description;
     snapshots.push(snapshot);
     console.log(
       input.privacy === 'city-only'

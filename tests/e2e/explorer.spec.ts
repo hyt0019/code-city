@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { createFixture } from '../../fixtures/city';
+import { chooseRepository, expectRepository } from './helpers';
 import { createHash } from 'node:crypto';
+import { daylightTheme } from '../../src/core/theme';
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/assets/scene.json', (route) => route.fulfill({ json: createFixture() }));
@@ -10,7 +12,7 @@ test('light theme and single-repository exports preserve the selected buildings'
   page,
 }, testInfo) => {
   await page.goto('/?repo=tools');
-  await expect(page.getByLabel('Filter repository')).toHaveValue('tools');
+  await expectRepository(page, 'tools');
   const ids = await page
     .locator('.city-art [data-building]')
     .evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-building')));
@@ -35,7 +37,7 @@ test('light theme and single-repository exports preserve the selected buildings'
   for await (const chunk of (await download.createReadStream())!) chunks.push(chunk as Buffer);
   const svg = Buffer.concat(chunks).toString();
   expect(svg.match(/data-building=/g)).toHaveLength(7);
-  expect(svg).toContain('DAYLIGHT SKYLINE');
+  expect(svg).toContain(daylightTheme.background);
   expect(svg).toContain('width="900" height="315"');
   expect(svg).not.toContain('src/main.ts');
   const fits = await page.locator('.export-preview svg').evaluate((svg) => {
@@ -154,7 +156,7 @@ test('3D renders, rotates with keyboard, inspects files and resets without idle 
     leaderBeforeDrag!,
   );
   await page.getByLabel('Reset view').click();
-  await page.getByLabel('Filter repository').selectOption('tools');
+  await chooseRepository(page, 'tools');
   await expect(page.locator('.three-label')).toHaveCount(1);
   await expect(page.locator('.three-label')).toHaveText('tools');
   await page.getByLabel('Inspect file', { exact: true }).selectOption({ index: 1 });

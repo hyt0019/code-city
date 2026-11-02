@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { chooseRepository } from './helpers';
 import { privacyFixture, privateMarkers } from '../privacy-fixture';
 
 test('mixes public and private districts without exposing private inspection or export details', async ({
@@ -18,7 +19,7 @@ test('mixes public and private districts without exposing private inspection or 
   await privateBuildings.first().dispatchEvent('click');
   await page.locator('.city-art').dispatchEvent('mouseleave');
   await expect(page.getByLabel('File details')).toHaveCount(0);
-  await page.getByLabel('Filter repository').selectOption('private-one');
+  await chooseRepository(page, 'private-one');
   await expect(page.locator('.city-art [data-building]')).toHaveCount(2);
   await expect(page.getByLabel('File details')).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'View committed source' })).toHaveCount(0);
@@ -30,13 +31,13 @@ test('mixes public and private districts without exposing private inspection or 
   const canvas = page.locator('.city-three canvas');
   await canvas.click();
   await expect(page.getByLabel('File details')).toHaveCount(0);
-  await page.getByLabel('Filter repository').selectOption('public-project');
+  await chooseRepository(page, 'public-project');
   await expect(page.getByLabel('Inspect file', { exact: true }).locator('option')).toHaveCount(1);
   await expect(page.getByRole('link', { name: 'View committed source' })).toHaveAttribute(
     'href',
     /public-project\/blob\/a{40}\/src\/main.ts/,
   );
-  await page.getByLabel('Filter repository').selectOption('private-one');
+  await chooseRepository(page, 'private-one');
   await page.screenshot({ path: `previews/privacy-${info.project.name}.png`, fullPage: true });
   await page.getByRole('button', { name: 'Export SVG', exact: true }).click();
   await page.getByLabel('Export scope').selectOption('private-one');

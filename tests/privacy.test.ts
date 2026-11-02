@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promis
 import { basename, dirname, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
-import { configSchema, sceneSchema } from '../src/core/config';
+import { configSchema, sceneSchema, selectRepositories } from '../src/core/config';
 import { publishableSnapshot, redactScene } from '../src/core/privacy';
 import { applyHeightMetric, sceneStats } from '../src/core/metrics';
 import { layoutCity } from '../src/layout/treemap';
@@ -107,11 +107,40 @@ describe('city-only publication', () => {
         })),
       }).repositories,
     ).toHaveLength(8);
-    expect(() =>
-      configSchema.parse({ repositories: Array.from({ length: 9 }, () => ({ path: '.' })) }),
-    ).toThrow();
+    const nine = configSchema.parse({
+      repositories: Array.from({ length: 9 }, (_, i) => ({ path: '.', name: `d-${i}` })),
+    }).repositories;
+    expect(nine).toHaveLength(9);
+    const many = selectRepositories([
+      ...nine.slice(0, 7),
+      ...privateInputs('example/confidential-project\nexample/another-secret'),
+      nine[8],
+    ]);
+    expect(many.selected).toHaveLength(8);
+    expect(many.warning).toBe(
+      'Showing the first 8 of 10 repositories; skipped 2: d-8 and 1 private.',
+    );
+    expect(many.warning).not.toContain('secret');
+    expect(selectRepositories(nine.slice(0, 8)).warning).toBe('');
+    expect(
+      privateInputs(
+        '# private districts\nexample/confidential-project\n\nexample/second@release/v2 as side-project\nthird',
+        'example',
+      ),
+    ).toEqual([
+      { github: 'example/confidential-project', name: 'private-1', privacy: 'city-only' },
+      {
+        github: 'example/second',
+        name: 'side-project',
+        ref: 'release/v2',
+        privacy: 'city-only',
+      },
+      { github: 'example/third', name: 'private-3', privacy: 'city-only' },
+    ]);
     for (const value of [
       'confidential-project',
+      'example/confidential-project as',
+      'https://github.com/example/confidential-project',
       '[{"github":"example/confidential-project"}]',
       JSON.stringify([
         { github: 'example/confidential-project', name: 'private-one', privacy: 'full' },
