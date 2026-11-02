@@ -120,7 +120,8 @@ test('3D renders, rotates with keyboard, inspects files and resets without idle 
     await frame();
     await frame();
     const before = state.cityDrawCalls;
-    for (let i = 0; i < 8; i++) await frame();
+    // Also span the end of the page intro: unrelated page updates must not redraw the city.
+    for (let i = 0; i < 8 || performance.now() < 2600; i++) await frame();
     return { before, after: state.cityDrawCalls };
   });
   expect(idleFrames.before).toBeGreaterThan(0);

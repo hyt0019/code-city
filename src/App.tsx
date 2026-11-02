@@ -224,6 +224,12 @@ export default function App({
     };
   }, [layers, dimension]);
   const focusId = hoveredId || selectedId;
+  // A stable object: the 3D city redraws only when one of these values changes, never on
+  // unrelated page updates such as the end of the intro.
+  const threeState = useMemo(
+    () => ({ selectedId: focusId, repository, showLabels, zoom, reset }),
+    [focusId, repository, showLabels, zoom, reset],
+  );
   const selection = useMemo(
     () => renderSelection(scene, { selectedId: focusId, repository, showLabels }),
     [scene, focusId, repository, showLabels],
@@ -520,13 +526,7 @@ export default function App({
                 <City3D
                   ref={threeView}
                   scene={scene}
-                  state={{
-                    selectedId: hoveredId || selectedId,
-                    repository,
-                    showLabels,
-                    zoom,
-                    reset,
-                  }}
+                  state={threeState}
                   events={{
                     hover: setHoveredId,
                     select: selectBuilding,
